@@ -6,7 +6,7 @@ import 'package:mysolar/features/app/splash_screen/splash_screen.dart';
 import 'package:mysolar/features/user_auth/presentation/pages/home_page.dart';
 import 'package:mysolar/features/user_auth/presentation/pages/login_page.dart';
 import 'package:mysolar/features/user_auth/presentation/pages/sign_up_page.dart';
-
+import 'add_appliances.dart';
 Future main() async {
   WidgetsFlutterBinding.ensureInitialized();
   if (kIsWeb) {
@@ -25,13 +25,22 @@ Future main() async {
   runApp(MyApp());
 }
 
+
+
 class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-
     return MaterialApp(
       debugShowCheckedModeBanner: false,
       title: 'Flutter Firebase',
+      theme: ThemeData(
+        primarySwatch: Colors.deepOrange,  // Set the primary color to deep orange
+        elevatedButtonTheme: ElevatedButtonThemeData(
+          style: ElevatedButton.styleFrom(
+            backgroundColor: Colors.deepOrange,  // Set the ElevatedButton color to deep orange
+          ),
+        ),
+      ),
       routes: {
         '/': (context) => SplashScreen(
           // Here, you can decide whether to show the LoginPage or HomePage based on user authentication
@@ -40,7 +49,9 @@ class MyApp extends StatelessWidget {
         '/login': (context) => LoginPage(),
         '/signUp': (context) => SignUpPage(),
         '/home': (context) => HomePage(),
+        '/add_appliances': (context) => AddAppliances(),
       },
     );
   }
 }
+
