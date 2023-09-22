@@ -59,6 +59,16 @@ class HomePage extends StatelessWidget {
               child: Text("Appliances Page"),
             ),
           ),
+          Positioned(
+            top: 1,
+            left: 0,
+            child: ElevatedButton(
+              onPressed: () {
+                Navigator.pushNamed(context, "/weather_pg");
+              },
+              child: Text("Weather Page"),
+            ),
+          ),
         ],
       ),
     );
