@@ -13,7 +13,18 @@ class CurrentWeatherPage extends StatefulWidget {
 class _CurrentWeatherPageState extends State<CurrentWeatherPage> {
   WeatherModel? weatherModel;
 
+  @override
+  void initState() {
+    getWeather();
+    super.initState();
+  }
 
+  getWeather() async{
+    weatherModel = await WeatherAPICall().request();
+    setState(() {
+     
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
