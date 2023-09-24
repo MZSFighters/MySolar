@@ -8,6 +8,7 @@ import 'package:mysolar/features/user_auth/presentation/pages/login_page.dart';
 import 'package:mysolar/features/user_auth/presentation/pages/sign_up_page.dart';
 import 'add_appliances.dart';
 import 'package:mysolar/weather/current_forecast.dart';
+import 'package:mysolar/load_shedding/load_shedding.dart';
 
 Future main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -52,7 +53,8 @@ class MyApp extends StatelessWidget {
         '/signUp': (context) => SignUpPage(),
         '/home': (context) => HomePage(),
         '/add_appliances': (context) => AddAppliances(),
-        '/weather_pg': (context) => CurrentWeatherPage()
+        '/weather_pg': (context) => CurrentWeatherPage(),
+        '/loadshedding_pg': (context) => LoadShedding()
       },
     );
   }

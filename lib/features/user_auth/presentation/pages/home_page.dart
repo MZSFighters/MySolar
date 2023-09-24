@@ -69,6 +69,16 @@ class HomePage extends StatelessWidget {
               child: Text("Weather Page"),
             ),
           ),
+          Positioned(
+            top: 50,
+            left: 50,
+            child: ElevatedButton(
+              onPressed: () {
+                Navigator.pushNamed(context, "/loadshedding_pg");
+              },
+              child: Text("Load Shedding Page"),
+            ),
+          ),
         ],
       ),
     );
