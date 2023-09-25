@@ -2,6 +2,7 @@ import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart'; // Import Firebase Auth
+import 'package:mysolar/CustomTheme.dart';
 import 'package:mysolar/features/app/splash_screen/splash_screen.dart';
 import 'package:mysolar/features/user_auth/presentation/pages/home_page.dart';
 import 'package:mysolar/features/user_auth/presentation/pages/login_page.dart';
@@ -9,6 +10,8 @@ import 'package:mysolar/features/user_auth/presentation/pages/sign_up_page.dart'
 import 'add_appliances.dart';
 import 'package:mysolar/weather/current_forecast.dart';
 import 'package:mysolar/load_shedding/load_shedding.dart';
+import 'package:mysolar/themes.dart';
+import 'package:mysolar/CustomTheme.dart';
 
 Future main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -25,7 +28,10 @@ Future main() async {
   } else {
     await Firebase.initializeApp();
   }
-  runApp(MyApp());
+  runApp(CustomTheme(
+    initialThemeKey: MyThemeKeys.BLUE,
+    child: MyApp(),
+  ));
 }
 
 
@@ -36,14 +42,15 @@ class MyApp extends StatelessWidget {
     return MaterialApp(
       debugShowCheckedModeBanner: false,
       title: 'Flutter Firebase',
-      theme: ThemeData(
-        primarySwatch: Colors.deepOrange,  // Set the primary color to deep orange
-        elevatedButtonTheme: ElevatedButtonThemeData(
-          style: ElevatedButton.styleFrom(
-            backgroundColor: Colors.deepOrange,  // Set the ElevatedButton color to deep orange
-          ),
-        ),
-      ),
+      theme: CustomTheme.of(context),
+      // theme: ThemeData(
+      //   primarySwatch: Colors.deepOrange,  // Set the primary color to deep orange
+      //   elevatedButtonTheme: ElevatedButtonThemeData(
+      //     style: ElevatedButton.styleFrom(
+      //       backgroundColor: Colors.deepOrange,  // Set the ElevatedButton color to deep orange
+      //     ),
+      //   ),
+      // ),
       routes: {
         '/': (context) => SplashScreen(
           // Here, you can decide whether to show the LoginPage or HomePage based on user authentication
