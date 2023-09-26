@@ -7,11 +7,11 @@ import 'package:mysolar/features/app/splash_screen/splash_screen.dart';
 import 'package:mysolar/features/user_auth/presentation/pages/home_page.dart';
 import 'package:mysolar/features/user_auth/presentation/pages/login_page.dart';
 import 'package:mysolar/features/user_auth/presentation/pages/sign_up_page.dart';
-import 'add_appliances.dart';
 import 'package:mysolar/weather/current_forecast.dart';
 import 'package:mysolar/load_shedding/load_shedding.dart';
 import 'package:mysolar/themes.dart';
 import 'package:mysolar/CustomTheme.dart';
+import 'devices.dart';
 
 Future main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -34,8 +34,6 @@ Future main() async {
   ));
 }
 
-
-
 class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
@@ -53,17 +51,16 @@ class MyApp extends StatelessWidget {
       // ),
       routes: {
         '/': (context) => SplashScreen(
-          // Here, you can decide whether to show the LoginPage or HomePage based on user authentication
-          child: LoginPage(),
-        ),
+              // Here, you can decide whether to show the LoginPage or HomePage based on user authentication
+              child: LoginPage(),
+            ),
         '/login': (context) => LoginPage(),
         '/signUp': (context) => SignUpPage(),
         '/home': (context) => HomePage(),
-        '/add_appliances': (context) => AddAppliances(),
+        '/devices': (context) => SelectDevice(),
         '/weather_pg': (context) => CurrentWeatherPage(),
         '/loadshedding_pg': (context) => LoadShedding()
       },
     );
   }
 }
-
