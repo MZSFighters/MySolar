@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
-import 'package:mysolar/themes.dart';
+import 'package:mysolar/themes/themes.dart';
 
 class _CustomTheme extends InheritedWidget {
   final CustomThemeState data;
@@ -32,13 +32,13 @@ class CustomTheme extends StatefulWidget {
 
   static ThemeData of(BuildContext context) {
     _CustomTheme? inherited =
-     (context.dependOnInheritedWidgetOfExactType<_CustomTheme>());
+        (context.dependOnInheritedWidgetOfExactType<_CustomTheme>());
     return inherited!.data.theme;
   }
 
   static CustomThemeState instanceOf(BuildContext context) {
     _CustomTheme? inherited =
-     (context.dependOnInheritedWidgetOfExactType<_CustomTheme>());
+        (context.dependOnInheritedWidgetOfExactType<_CustomTheme>());
     return inherited!.data;
   }
 }

@@ -4,7 +4,7 @@ import 'dart:async';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'models/device.dart';
-import 'data_repository.dart';
+import 'database_functionality/data_repository.dart';
 import 'package:flutter_multi_formatter/flutter_multi_formatter.dart';
 import 'models/time.dart';
 

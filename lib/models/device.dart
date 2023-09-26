@@ -1,4 +1,4 @@
-import 'package:mysolar/data_repository.dart';
+import 'package:mysolar/database_functionality/data_repository.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 
 class Device {

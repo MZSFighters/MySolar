@@ -2,15 +2,15 @@ import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart'; // Import Firebase Auth
-import 'package:mysolar/CustomTheme.dart';
+import 'package:mysolar/themes/CustomTheme.dart';
 import 'package:mysolar/features/app/splash_screen/splash_screen.dart';
 import 'package:mysolar/features/user_auth/presentation/pages/home_page.dart';
 import 'package:mysolar/features/user_auth/presentation/pages/login_page.dart';
 import 'package:mysolar/features/user_auth/presentation/pages/sign_up_page.dart';
 import 'package:mysolar/weather/current_forecast.dart';
 import 'package:mysolar/load_shedding/load_shedding.dart';
-import 'package:mysolar/themes.dart';
-import 'package:mysolar/CustomTheme.dart';
+import 'package:mysolar/themes/themes.dart';
+import 'package:mysolar/themes/CustomTheme.dart';
 import 'devices.dart';
 
 Future main() async {
