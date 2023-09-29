@@ -44,6 +44,7 @@ dependencies:
   firebase_auth: ^4.6.3
   firebase_storage: ^11.2.4
   flutter_multi_formatter: ^2.11.11
+  day_picker: 2.2.0
 
 dev_dependencies:
   flutter_test:

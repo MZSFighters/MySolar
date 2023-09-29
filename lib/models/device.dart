@@ -31,6 +31,7 @@ class Device {
   }
 
   Map<String, dynamic> toJson(Device device) => <String, dynamic>{
+        'userId': device.userId,
         'name': device.name,
         'startTime': device.startTime,
         'endTime': device.endTime,

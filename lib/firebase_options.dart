@@ -70,8 +70,10 @@ class DefaultFirebaseOptions {
     projectId: 'mysolar-72ca5',
     databaseURL: 'https://mysolar-72ca5-default-rtdb.firebaseio.com',
     storageBucket: 'mysolar-72ca5.appspot.com',
-    androidClientId: '878845743646-pr7ir1um9ge6kkflphjv79j6ndg1c8e8.apps.googleusercontent.com',
-    iosClientId: '878845743646-e0d9btpqrjksebrtf06rnahjn2hu26tv.apps.googleusercontent.com',
+    androidClientId:
+        '878845743646-pr7ir1um9ge6kkflphjv79j6ndg1c8e8.apps.googleusercontent.com',
+    iosClientId:
+        '878845743646-e0d9btpqrjksebrtf06rnahjn2hu26tv.apps.googleusercontent.com',
     iosBundleId: 'com.example.deviceScheduler',
   );
 
@@ -82,8 +84,10 @@ class DefaultFirebaseOptions {
     projectId: 'mysolar-72ca5',
     databaseURL: 'https://mysolar-72ca5-default-rtdb.firebaseio.com',
     storageBucket: 'mysolar-72ca5.appspot.com',
-    androidClientId: '878845743646-pr7ir1um9ge6kkflphjv79j6ndg1c8e8.apps.googleusercontent.com',
-    iosClientId: '878845743646-4jqktbchg0isl3sppi8qg81i4resbhep.apps.googleusercontent.com',
+    androidClientId:
+        '878845743646-pr7ir1um9ge6kkflphjv79j6ndg1c8e8.apps.googleusercontent.com',
+    iosClientId:
+        '878845743646-4jqktbchg0isl3sppi8qg81i4resbhep.apps.googleusercontent.com',
     iosBundleId: 'com.example.deviceScheduler.RunnerTests',
   );
 }

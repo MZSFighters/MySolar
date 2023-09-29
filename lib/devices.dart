@@ -218,6 +218,8 @@ class _DeviceListState extends State<DeviceList> {
             endTime: e['endTime'],
             kw: e['kw']))
         .toList();
+
+    print("FUCCCCCCCCCCCK");
   });
 }
 
@@ -248,9 +250,6 @@ class _CustomListTileState extends State<CustomListTile> {
 
   //Dialog Box
 
-  TextEditingController startTimeController = TextEditingController();
-  TextEditingController endTimeController = TextEditingController();
-
   makeDialog(context, snapshot) {
     BuildContext dialogContext;
     showDialog(
@@ -260,27 +259,15 @@ class _CustomListTileState extends State<CustomListTile> {
         Device device = Device.devices.firstWhere((element) =>
             element.id == snapshot.data?.docs.elementAt(widget.index).id);
 
-        startTimeController.text =
-            Time.converMinutesToHourMinutes(device.startTime);
-
-        endTimeController.text =
-            Time.converMinutesToHourMinutes(device.endTime);
-
         return Dialog(
           child: Column(
             children: [
-              Text("Start Time"),
-              TextFormField(
-                controller: startTimeController,
-                keyboardType: TextInputType.number,
-                inputFormatters: [MaskedInputFormatter('##:##')],
-              ),
-              Text("End Time:"),
-              TextFormField(
-                controller: endTimeController,
-                keyboardType: TextInputType.number,
-                inputFormatters: [MaskedInputFormatter('##:##')],
-              ),
+              TextButton(
+                  onPressed: () {
+                    update(device);
+                    Navigator.pop(dialogContext);
+                  },
+                  child: Text("Pick Times")),
               TextButton(
                   onPressed: () {
                     update(device);
@@ -296,20 +283,5 @@ class _CustomListTileState extends State<CustomListTile> {
 
   update(Device device) {
     DataRepository dataRepository = DataRepository();
-
-    int initStartTime = device.startTime;
-    int initEndTime = device.endTime;
-
-    if (Time.validateInputTime(startTimeController.text)) {
-      var startTime = Time.convertToMinutes(startTimeController.text);
-      var endTime = Time.convertToMinutes(endTimeController.text);
-
-      // if there has been some change in time update it in the database
-      if (startTime != initStartTime || initEndTime != endTime) {
-        device.startTime = startTime;
-        device.endTime = endTime;
-        dataRepository.updateDevice(device);
-      }
-    }
   }
 }
