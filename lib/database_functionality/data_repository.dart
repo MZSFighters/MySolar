@@ -1,26 +1,41 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import '/models/device.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'dart:async';
+import 'package:mysolar/models/time.dart';
 
 final FirebaseAuth auth = FirebaseAuth.instance;
 
 class DataRepository {
-  static final User? user = auth.currentUser;
-  static String userId = user!.uid;
-
-  static final CollectionReference collection =
+  String? userId;
+  CollectionReference collection =
       FirebaseFirestore.instance.collection('appliances');
 
+  DataRepository() {
+    User? user = auth.currentUser;
+    userId = user!.uid;
+    collection = FirebaseFirestore.instance.collection('appliances');
+
+    StreamSubscription sub = getStream().listen((event) {
+      Device.devices = event.docs
+          .map((e) => Device(
+              id: e.id,
+              name: e['name'],
+              time: Time.fromJson(e['time']),
+              kw: e['kw']))
+          .toList();
+      print("Device List Updated");
+    });
+  }
+
   // return a Stream of devices in appliances
-  static Stream<QuerySnapshot> getStream() {
-    return collection
-        .where("userId", isEqualTo: DataRepository.userId)
-        .snapshots();
+  Stream<QuerySnapshot> getStream() {
+    return collection.where("userId", isEqualTo: userId).snapshots();
   }
 
   //add device to database
   Future<DocumentReference> addDevice(Device device) {
-    device.userId = DataRepository.userId;
+    device.userId = userId;
     return collection.add(device.toJson(device));
   }
 

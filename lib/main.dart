@@ -11,7 +11,7 @@ import 'package:mysolar/weather/current_forecast.dart';
 import 'package:mysolar/load_shedding/load_shedding.dart';
 import 'package:mysolar/themes/themes.dart';
 import 'package:mysolar/themes/CustomTheme.dart';
-import 'devices.dart';
+import 'deviceList.dart';
 
 Future main() async {
   WidgetsFlutterBinding.ensureInitialized();

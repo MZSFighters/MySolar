@@ -2,7 +2,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:mysolar/SettingsPage.dart';
 import 'package:mysolar/ManualPage.dart';
-import 'package:mysolar/devices.dart';
+import 'package:mysolar/deviceList.dart';
 import 'package:mysolar/weather/current_forecast.dart';
 import 'package:mysolar/HelpPage.dart';
 

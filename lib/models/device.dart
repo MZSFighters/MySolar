@@ -1,5 +1,6 @@
-import 'package:mysolar/database_functionality/data_repository.dart';
-import 'package:firebase_auth/firebase_auth.dart';
+import 'dart:ffi';
+
+import 'time.dart';
 
 class Device {
   // A lot of these should not be null
@@ -7,34 +8,50 @@ class Device {
   String? userId;
   String? id;
   String name;
-  int startTime;
-  int endTime;
   int kw;
+  Time time;
+  bool on = false; //by default devices are off,
 
-  static List<Device> devices = <Device>[];
+  static List<Device> devices =
+      <Device>[]; //Must create a new DataRepository (check database functionality) before using this list
 
-  static final repository = DataRepository();
+  Device({this.id, required this.name, required this.time, required this.kw});
 
-  Device(
-      {this.id,
-      required this.name,
-      required this.startTime,
-      required this.endTime,
-      required this.kw});
+  bool checkIfOn() {
+    final currentTime = DateTime.now();
+
+    int hours = currentTime.hour;
+    int minutes = currentTime.minute;
+
+    int timeInMinutes = hours * 60 + minutes;
+
+    if (time.sameDay == true)
+    // then the device is on if the current time is between startTime and endTime
+    {
+      if (time.startTime <= timeInMinutes && time.endTime >= timeInMinutes) {
+        on = true;
+        return true;
+      }
+    } else {
+      if (time.startTime <= timeInMinutes && time.endTime <= timeInMinutes) {
+        on = true;
+        return true;
+      }
+    }
+
+    on = false;
+    return false;
+  }
 
   static Device fromJson(json) {
     return Device(
-        name: json['name'],
-        startTime: json['startTime'],
-        endTime: json['endTime'],
-        kw: json['kw']);
+        name: json['name'], time: Time.fromJson(json['time']), kw: json['kw']);
   }
 
   Map<String, dynamic> toJson(Device device) => <String, dynamic>{
         'userId': device.userId,
         'name': device.name,
-        'startTime': device.startTime,
-        'endTime': device.endTime,
+        'time': Time.toJson(time),
         'kw': device.kw,
       };
 }

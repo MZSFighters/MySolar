@@ -8,7 +8,20 @@ class Time {
 
   Time({required this.startTime, required this.endTime, required this.sameDay});
 
-  Map<String, dynamic> ToJson(Time time) => <String, dynamic>{
+  static Time makeTime(String startTimeText, String endTimeText) {
+    var time = Time(
+        startTime: convertToMinutes(startTimeText),
+        endTime: convertToMinutes(endTimeText),
+        sameDay: true);
+
+    if (time.startTime > time.endTime) {
+      time.sameDay = false;
+    }
+
+    return time;
+  }
+
+  static Map<String, dynamic> toJson(Time time) => <String, dynamic>{
         'startTime': time.startTime,
         'endTime': time.endTime,
         'sameDay': time.sameDay
@@ -33,24 +46,6 @@ class Time {
     }
   }
 
-  static int handleTimeOfDay(TimeOfDay timeOfDay) {
-    var hours = timeOfDay.hour;
-    var minutes = timeOfDay.minute;
-
-    String hhmm;
-
-    if (minutes < 10) // if minutes are single digit
-    {
-      hhmm = "$hours:0$minutes";
-    } else {
-      hhmm = "$hours:$minutes";
-    }
-
-    hhmm = handleSingleDigitHour(hhmm);
-
-    return convertToMinutes(hhmm);
-  }
-
   static bool validateInputTime(String input) {
     // if string is only of length 4 append a zero to its left
 
@@ -73,7 +68,7 @@ class Time {
     return minuteTime;
   }
 
-  static converMinutesToHourMinutes(int minutes) {
+  static convertToHourMinutes(int minutes) {
     String str = "";
     str += (minutes / 60).floor().toString();
     str += ":";
