@@ -19,12 +19,12 @@ class DataRepository {
     StreamSubscription sub = getStream().listen((event) {
       Device.devices = event.docs
           .map((e) => Device(
+              userId: userId,
               id: e.id,
               name: e['name'],
               time: Time.fromJson(e['time']),
               kw: e['kw']))
           .toList();
-      print("Device List Updated");
     });
   }
 
@@ -41,6 +41,7 @@ class DataRepository {
 
   // update device in database
   void updateDevice(Device device) async {
+    device.userId = userId;
     await collection.doc(device.id).update(device.toJson(device));
   }
 

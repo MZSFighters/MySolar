@@ -1,6 +1,5 @@
 // ignore_for_file: prefer_const_constructors, prefer_const_literals_to_create_immutables
 
-import 'dart:async';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'models/device.dart';
@@ -55,13 +54,6 @@ class DeviceList extends StatefulWidget {
 class _DeviceListState extends State<DeviceList> {
   @override
   Widget build(BuildContext context) {
-    print("Devices which are currently on:");
-    for (int i = 0; i < Device.devices.length; i++) {
-      if (Device.devices[i].checkIfOn()) {
-        print(
-            "${Time.convertToHourMinutes(Device.devices[i].time.startTime)}, ${Time.convertToHourMinutes(Device.devices[i].time.endTime)}  ${Device.devices[i].name}");
-      }
-    }
     return StreamBuilder(
         stream: dr.getStream(),
         builder: (context, AsyncSnapshot<QuerySnapshot> snapshot) {
@@ -105,7 +97,7 @@ class _CustomListTileState extends State<CustomListTile> {
         makeDialog(context, widget.snapshot);
       },
       title: Text("${device.name}"),
-      subtitle: Text("Device is on: ${device.on}"),
+      subtitle: Text("Device is on: ${device.checkIfOn()}"),
     );
   }
 
@@ -122,7 +114,6 @@ class _CustomListTileState extends State<CustomListTile> {
 
         Device device = Device.devices.firstWhere((element) =>
             element.id == snapshot.data?.docs.elementAt(widget.index).id);
-
         return Dialog(
           child: Column(
             children: [
@@ -155,13 +146,7 @@ class _CustomListTileState extends State<CustomListTile> {
               ),
               TextButton(
                   onPressed: () {
-                    update(device);
-                    Navigator.pop(dialogContext);
-                  },
-                  child: Text("Pick Times")),
-              TextButton(
-                  onPressed: () {
-                    update(device);
+                    update(device, _startTimeController, _endTimeController);
                     Navigator.pop(dialogContext);
                   },
                   child: Text("Update"))
@@ -172,5 +157,10 @@ class _CustomListTileState extends State<CustomListTile> {
     );
   }
 
-  update(Device device) {}
+  update(Device device, TextEditingController startTimeController,
+      TextEditingController endTimeController) {
+    var time = Time.makeTime(startTimeController.text, endTimeController.text);
+    device.time = time;
+    dr.updateDevice(device);
+  }
 }

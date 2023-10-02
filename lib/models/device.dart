@@ -1,5 +1,3 @@
-import 'dart:ffi';
-
 import 'time.dart';
 
 class Device {
@@ -15,7 +13,12 @@ class Device {
   static List<Device> devices =
       <Device>[]; //Must create a new DataRepository (check database functionality) before using this list
 
-  Device({this.id, required this.name, required this.time, required this.kw});
+  Device(
+      {this.id,
+      required this.name,
+      required this.time,
+      required this.kw,
+      this.userId});
 
   bool checkIfOn() {
     final currentTime = DateTime.now();
