@@ -60,9 +60,9 @@ class HomePage extends StatelessWidget {
             right: 0,
             child: ElevatedButton(
               onPressed: () {
-                Navigator.pushNamed(context, "/add_appliances");
+                Navigator.pushNamed(context, "/graph_pg");
               },
-              child: Text("Appliances Page"),
+              child: Text("Graph Page"),
             ),
           ),
           Positioned(
