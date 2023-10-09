@@ -1,0 +1,47 @@
+{
+  "project_info": {
+    "project_number": "878845743646",
+    "project_id": "mysolar-72ca5",
+    "storage_bucket": "mysolar-72ca5.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:878845743646:android:b6df52d34fc68dae46140f",
+        "android_client_info": {
+          "package_name": "com.example.mysolar"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "878845743646-pr7ir1um9ge6kkflphjv79j6ndg1c8e8.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.example.mysolar",
+            "certificate_hash": "acc0d8f575442f50f467346c7c887fa7f41f19b7"
+          }
+        },
+        {
+          "client_id": "878845743646-h3bb8g0eqalramek3pumspedjmogp60a.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyB48FkizzKstPPE4de64JQ5xxG4pyoHWXY"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "878845743646-h3bb8g0eqalramek3pumspedjmogp60a.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
