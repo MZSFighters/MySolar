@@ -30,10 +30,14 @@ class _SelectDeviceState extends State<SelectDevice> {
       home: Scaffold(
         floatingActionButton: addDeviceWidget(),
         floatingActionButtonLocation: FloatingActionButtonLocation.centerFloat,
-        appBar: AppBar(title: Text("Devices")),
+        appBar: AppBar(
+            leading: BackButton(
+              onPressed: () => Navigator.of(context).pop(),
+            ),
+            title: Center(child: Text(" Your Devices"))),
         body: Column(
           children: [
-            DeviceList(),
+            Expanded(child: DeviceList()),
           ],
         ),
       ),
@@ -92,12 +96,26 @@ class _CustomListTileState extends State<CustomListTile> {
   Widget build(BuildContext context) {
     Device device = Device.devices.firstWhere((element) =>
         element.id == widget.snapshot.data!.docs.elementAt(widget.index).id);
-    return ListTile(
-      onTap: () {
-        makeDialog(context, widget.snapshot);
+    return GestureDetector(
+      onTap: () async {
+        setState(() {
+          device.on = !device.on;
+        });
       },
-      title: Text("${device.name}"),
-      subtitle: Text("Device is on: ${device.checkIfOn()}"),
+      child: Card(
+        elevation: 8.0,
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.circular(15.0),
+        ),
+        margin: EdgeInsets.symmetric(horizontal: 10.0, vertical: 5.0),
+        child: Container(
+            decoration: BoxDecoration(
+                borderRadius: BorderRadius.circular(15.0),
+                color: !device.on
+                    ? Color.fromRGBO(126, 126, 126, 0.894)
+                    : Color.fromRGBO(134, 182, 255, 0.878)),
+            child: makeListTile(device)),
+      ),
     );
   }
 
@@ -162,5 +180,56 @@ class _CustomListTileState extends State<CustomListTile> {
     var time = Time.makeTime(startTimeController.text, endTimeController.text);
     device.time = time;
     dr.updateDevice(device);
+  }
+
+  makeListTile(Device device) {
+    return ListTile(
+      title: Row(
+        children: [
+          Text(
+            device.name,
+            style: TextStyle(color: Colors.black, fontWeight: FontWeight.bold),
+          ),
+        ],
+      ),
+      subtitle: Column(
+        children: [
+          Row(
+            children: [
+              Text("Start Time: "),
+              Text(
+                "${Time.convertToHourMinutes(device.time.startTime)}",
+                style: TextStyle(fontWeight: FontWeight.bold),
+              ),
+              Padding(padding: EdgeInsets.symmetric(horizontal: 5)),
+              Text("End Time:"),
+              Text(
+                "${Time.convertToHourMinutes(device.time.endTime)}",
+                style: TextStyle(fontWeight: FontWeight.bold),
+              )
+            ],
+          ),
+          Padding(padding: EdgeInsets.all(2.0)),
+          Row(
+            children: [
+              Text("Power Consumption:"),
+              Text(
+                "${device.kw} kw",
+                style: TextStyle(fontWeight: FontWeight.bold),
+              )
+            ],
+          )
+        ],
+      ),
+      trailing: SizedBox(
+        width: 40,
+        child: TextButton(
+            onPressed: () {
+              makeDialog(context, widget.snapshot);
+            },
+            child: Icon(Icons.more_vert,
+                color: const Color.fromARGB(255, 0, 0, 0), size: 30.0)),
+      ),
+    );
   }
 }
