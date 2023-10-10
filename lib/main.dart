@@ -133,7 +133,7 @@ class MyApp extends StatelessWidget {
         '/weather_pg': (context) => CurrentWeatherPage(),
         '/loadshedding_pg': (context) => LoadShedding(),
         '/graph_pg': (context) =>
-            BatteryGraph(hourlyKw: hourlyKw, hourlyAppliances: hourlyAppliances)
+            BatteryGraph(hourlyKw: powerConsumption(), hourlyAppliances: appliancesUsage()),
       },
     );
   }
