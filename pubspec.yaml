@@ -34,6 +34,8 @@ dependencies:
   dio: ^5.3.2
   intl: ^0.17.0
   http: ^0.13.3
+  #The following is for the graph
+  fl_chart: ^0.36.0
 
 
   # The following adds the Cupertino Icons font to your application.

@@ -1,6 +1,7 @@
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
+import 'package:mysolar/graph/graph.dart';
 import 'package:mysolar/themes/CustomTheme.dart';
 import 'package:mysolar/features/app/splash_screen/splash_screen.dart';
 import 'package:mysolar/features/user_auth/presentation/pages/home_page.dart';
@@ -11,6 +12,80 @@ import 'package:mysolar/load_shedding/load_shedding.dart';
 import 'package:mysolar/themes/themes.dart';
 
 import 'deviceList.dart';
+import 'dart:math';
+import 'package:mysolar/models/device.dart';
+
+// ************* mockdata for graph ************ //
+
+// hourly kw in battery
+List<double> generateMockData() {
+  final random = Random();
+  return List.generate(25, (index) {
+    double value = random.nextDouble() * 20 - 10;
+    return double.parse(value.toStringAsFixed(3));
+  });
+}
+
+//DataRepository dr = DataRepository();
+//DeviceList devices = DeviceList();
+
+List<double> powerConsumption() {
+  List<double> powerUsage = <double>[];
+  List<Device> devices = <Device>[];
+  for (int i = 0; i < Device.devices.length; i++) {
+    devices.add(Device.devices[i]);
+  }
+  PowerUsageTracker put = PowerUsageTracker();
+  put.updatePowerUsageForDay(devices);
+
+  for (int hour = 0; hour < 24; hour++) {
+    double x = put.getPowerUsageForHour(hour);
+    powerUsage.add(x);
+  }
+  powerUsage.add(0);
+  return powerUsage;
+}
+
+List<List<String>> appliancesUsage() {
+  List<List<String>> all_appliances = [];
+  List<String> hourly_appliances = [];
+  List<Device> devices = <Device>[];
+  for (int i = 0; i < Device.devices.length; i++) {
+    devices.add(Device.devices[i]);
+  }
+  for (int hour = 0; hour < 24; hour++) {
+    PowerUsageTracker put = PowerUsageTracker();
+    put.updatePowerUsageForDay(devices);
+    List<Device> y = put.getDevicesForHour(hour);
+    for (int i = 0; i < y.length; i++) {
+      hourly_appliances.add(y[i].name);
+    }
+    all_appliances.add(hourly_appliances);
+  }
+  return all_appliances;
+}
+
+final List<double> hourlyKw = powerConsumption();
+
+final List<List<String>> hourlyAppliances = appliancesUsage();
+
+// random applainces used durimg an hour
+
+List<List<String>> generateApplianceData() {
+  final List<String> appliances = ["light", "geyser", "wifi", "stove", "oven"];
+  final random = Random();
+
+  return List.generate(24, (index) {
+    int numberOfAppliances =
+        random.nextInt(5) + 1; // At least one appliance and at most 5
+    return List.generate(numberOfAppliances,
+        (i) => appliances[random.nextInt(appliances.length)]);
+  });
+}
+
+//final List<List<String>> hourlyAppliances = generateApplianceData();
+
+// ************************ //
 
 Future main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -58,7 +133,9 @@ class MyApp extends StatelessWidget {
         '/home': (context) => HomePage(),
         '/devices': (context) => SelectDevice(),
         '/weather_pg': (context) => CurrentWeatherPage(),
-        '/loadshedding_pg': (context) => LoadShedding()
+        '/loadshedding_pg': (context) => LoadShedding(),
+        '/graph_pg': (context) =>
+            BatteryGraph(hourlyKw: hourlyKw, hourlyAppliances: hourlyAppliances)
       },
     );
   }
