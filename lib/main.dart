@@ -14,6 +14,7 @@ import 'package:mysolar/themes/themes.dart';
 import 'package:mysolar/themes/CustomTheme.dart';
 import 'deviceList.dart';
 import 'dart:math';
+import 'package:mysolar/models/device.dart';
 
 // ************* mockdata for graph ************ //
 
@@ -26,8 +27,48 @@ List<double> generateMockData() {
   });
 }
 
-final List<double> hourlyKw = generateMockData();
+//DataRepository dr = DataRepository();
+//DeviceList devices = DeviceList();
 
+List<double> powerConsumption() {
+  List<double> powerUsage = <double>[];
+  List<Device> devices = <Device>[];
+  for (int i = 0; i < Device.devices.length; i++) {
+    devices.add(Device.devices[i]);
+  }
+  PowerUsageTracker put = PowerUsageTracker();
+  put.updatePowerUsageForDay(devices);
+
+  for (int hour = 0; hour < 24; hour++) {
+    double x = put.getPowerUsageForHour(hour);
+    powerUsage.add(x);
+  }
+  powerUsage.add(0);
+  return powerUsage;
+}
+
+List<List<String>> appliancesUsage() {
+  List<List<String>> all_appliances = [];
+  List<String> hourly_appliances = [];
+  List<Device> devices = <Device>[];
+  for (int i = 0; i < Device.devices.length; i++) {
+    devices.add(Device.devices[i]);
+  }
+  for (int hour = 0; hour < 24; hour++) {
+    PowerUsageTracker put = PowerUsageTracker();
+    put.updatePowerUsageForDay(devices);
+    List<Device> y = put.getDevicesForHour(hour);
+    for (int i = 0; i < y.length; i++) {
+      hourly_appliances.add(y[i].name);
+    }
+    all_appliances.add(hourly_appliances);
+  }
+  return all_appliances;
+}
+
+final List<double> hourlyKw = powerConsumption();
+
+final List<List<String>> hourlyAppliances = appliancesUsage();
 
 // random applainces used durimg an hour
 
@@ -36,16 +77,16 @@ List<List<String>> generateApplianceData() {
   final random = Random();
 
   return List.generate(24, (index) {
-    int numberOfAppliances = random.nextInt(5) + 1; // At least one appliance and at most 5
-    return List.generate(numberOfAppliances, (i) => appliances[random.nextInt(appliances.length)]);
+    int numberOfAppliances =
+        random.nextInt(5) + 1; // At least one appliance and at most 5
+    return List.generate(numberOfAppliances,
+        (i) => appliances[random.nextInt(appliances.length)]);
   });
 }
 
-final List<List<String>> hourlyAppliances = generateApplianceData();
+//final List<List<String>> hourlyAppliances = generateApplianceData();
 
 // ************************ //
-
-
 
 Future main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -94,7 +135,8 @@ class MyApp extends StatelessWidget {
         '/devices': (context) => SelectDevice(),
         '/weather_pg': (context) => CurrentWeatherPage(),
         '/loadshedding_pg': (context) => LoadShedding(),
-        '/graph_pg': (context) => BatteryGraph(hourlyKw: hourlyKw, hourlyAppliances: hourlyAppliances)
+        '/graph_pg': (context) =>
+            BatteryGraph(hourlyKw: hourlyKw, hourlyAppliances: hourlyAppliances)
       },
     );
   }
