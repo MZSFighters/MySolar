@@ -183,6 +183,7 @@ class _CustomListTileState extends State<CustomListTile> {
   }
 
   makeListTile(Device device) {
+    device.checkIfOn();
     return ListTile(
       title: Row(
         children: [

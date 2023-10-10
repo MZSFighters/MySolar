@@ -7,13 +7,13 @@ class EditProfilePage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) => Scaffold(
-    appBar: AppBar(
-      title: Text('Edit Profile'),
-      //backgroundColor: Colors.blue,
-    ),
-    //drawer: NavigationDrawer(),
-    body: EditProfileTextFields(),
-  );
+        appBar: AppBar(
+          title: Text('Edit Profile'),
+          //backgroundColor: Colors.blue,
+        ),
+        //drawer: NavigationDrawer(),
+        body: EditProfileTextFields(),
+      );
 }
 
 class EditProfileTextFields extends StatefulWidget {
@@ -38,43 +38,42 @@ class _EditProfileTextFieldsState extends State<EditProfileTextFields> {
 
   @override
   Widget build(BuildContext context) => Scaffold(
-    
-    body: Column(children: <Widget>[
-       Padding(
-        padding: EdgeInsets.symmetric(horizontal: 8, vertical: 16),
-        child: TextField(
-          controller: controllerName,
-          decoration: InputDecoration(
-            prefixIcon: Icon(Icons.person),
-            labelText: "Enter your full name",
-          ),
-        ),),
-        Padding(
-          padding: EdgeInsets.symmetric(horizontal: 8, vertical: 16),
-          child: TextField(
-            controller: controllerEmail,
-            decoration: InputDecoration(
-              prefixIcon: Icon(Icons.email),
-              labelText: "Enter your email address"
+        body: Column(children: <Widget>[
+          Padding(
+            padding: EdgeInsets.symmetric(horizontal: 8, vertical: 16),
+            child: TextField(
+              controller: controllerName,
+              decoration: InputDecoration(
+                prefixIcon: Icon(Icons.person),
+                labelText: "Enter your full name",
+              ),
             ),
-          ),),
-        Padding(
+          ),
+          Padding(
+            padding: EdgeInsets.symmetric(horizontal: 8, vertical: 16),
+            child: TextField(
+              controller: controllerEmail,
+              decoration: InputDecoration(
+                  prefixIcon: Icon(Icons.email),
+                  labelText: "Enter your email address"),
+            ),
+          ),
+          Padding(
             padding: EdgeInsets.symmetric(horizontal: 8, vertical: 16),
             child: TextField(
               controller: controllerPic,
               decoration: InputDecoration(
-                prefixIcon: Icon(Icons.portrait),
-                labelText: "Enter in the url of your picture"
-              ),
-            ),),
-            ElevatedButton(
-              
-              onPressed: () {
-                ScaffoldMessenger.of(context).showSnackBar(
-                  SnackBar(content: Text("Info Saved"))
-                );
-            }, child: Text('Save'),
-            )
-    ]),
-  );
+                  prefixIcon: Icon(Icons.portrait),
+                  labelText: "Enter in the url of your picture"),
+            ),
+          ),
+          ElevatedButton(
+            onPressed: () {
+              ScaffoldMessenger.of(context)
+                  .showSnackBar(SnackBar(content: Text("Info Saved")));
+            },
+            child: Text('Save'),
+          )
+        ]),
+      );
 }

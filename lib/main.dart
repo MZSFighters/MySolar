@@ -12,6 +12,7 @@ import 'package:mysolar/load_shedding/load_shedding.dart';
 import 'package:mysolar/themes/themes.dart';
 
 import 'deviceList.dart';
+
 import 'dart:math';
 import 'package:mysolar/models/device.dart';
 
@@ -25,9 +26,6 @@ List<double> generateMockData() {
     return double.parse(value.toStringAsFixed(3));
   });
 }
-
-//DataRepository dr = DataRepository();
-//DeviceList devices = DeviceList();
 
 List<double> powerConsumption() {
   List<double> powerUsage = <double>[];

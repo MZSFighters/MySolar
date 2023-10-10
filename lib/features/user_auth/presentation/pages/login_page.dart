@@ -1,12 +1,10 @@
-
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:mysolar/features/user_auth/presentation/pages/sign_up_page.dart';
 import 'package:mysolar/features/user_auth/presentation/widgets/form_container_widget.dart';
+import "../../../../database_functionality/data_repository.dart";
 
 import '../../firebase_auth_implementation/firebase_auth_services.dart';
-
-
 
 class LoginPage extends StatefulWidget {
   const LoginPage({super.key});
@@ -16,16 +14,12 @@ class LoginPage extends StatefulWidget {
 }
 
 class _LoginPageState extends State<LoginPage> {
-
   bool _isSigning = false;
-
-
 
   final FirebaseAuthService _auth = FirebaseAuthService();
 
   TextEditingController _emailController = TextEditingController();
   TextEditingController _passwordController = TextEditingController();
-
 
   @override
   void dispose() {
@@ -33,7 +27,6 @@ class _LoginPageState extends State<LoginPage> {
     _passwordController.dispose();
     super.dispose();
   }
-
 
   @override
   Widget build(BuildContext context) {
@@ -61,13 +54,17 @@ class _LoginPageState extends State<LoginPage> {
                 hintText: "Email",
                 isPasswordField: false,
               ),
-              SizedBox(height: 10,),
+              SizedBox(
+                height: 10,
+              ),
               FormContainerWidget(
                 controller: _passwordController,
                 hintText: "Password",
                 isPasswordField: true,
               ),
-              SizedBox(height: 30,),
+              SizedBox(
+                height: 30,
+              ),
               GestureDetector(
                 onTap: _signIn,
                 child: Container(
@@ -77,23 +74,40 @@ class _LoginPageState extends State<LoginPage> {
                     color: Colors.deepOrangeAccent,
                     borderRadius: BorderRadius.circular(10),
                   ),
-                  child: Center(child:Text("Login",style: TextStyle(color: Colors.white,fontWeight: FontWeight.bold),)),
+                  child: Center(
+                      child: Text(
+                    "Login",
+                    style: TextStyle(
+                        color: Colors.white, fontWeight: FontWeight.bold),
+                  )),
                 ),
               ),
-              SizedBox(height: 20,),
-              Row(mainAxisAlignment: MainAxisAlignment.center,
+              SizedBox(
+                height: 20,
+              ),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.center,
                 children: [
                   Text("Don't have an account?"),
-                  SizedBox(width: 5,),
+                  SizedBox(
+                    width: 5,
+                  ),
                   GestureDetector(
-                      onTap: (){
-                        Navigator.pushAndRemoveUntil(context, MaterialPageRoute(builder: (context) => SignUpPage()), (route) => false);
+                      onTap: () {
+                        Navigator.pushAndRemoveUntil(
+                            context,
+                            MaterialPageRoute(
+                                builder: (context) => SignUpPage()),
+                            (route) => false);
                       },
-                      child: Text("Sign Up",style: TextStyle(color: Colors.deepOrange,fontWeight: FontWeight.bold),))
+                      child: Text(
+                        "Sign Up",
+                        style: TextStyle(
+                            color: Colors.deepOrange,
+                            fontWeight: FontWeight.bold),
+                      ))
                 ],
               )
-
-
             ],
           ),
         ),
@@ -102,18 +116,17 @@ class _LoginPageState extends State<LoginPage> {
   }
 
   void _signIn() async {
-
     String email = _emailController.text;
     String password = _passwordController.text;
 
     User? user = await _auth.signInWithEmailAndPassword(email, password);
 
-    if (user!= null){
+    if (user != null) {
       print("User is successfully signedIn");
+      DataRepository dr = DataRepository();
       Navigator.pushNamed(context, "/home");
-    } else{
+    } else {
       print("Some error happend");
     }
-
   }
 }
