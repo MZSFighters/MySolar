@@ -32,9 +32,11 @@ List<double> powerConsumption() {
   List<Device> devices = Device.devices;
   PowerUsageTracker put = PowerUsageTracker();
   put.updatePowerUsageForDay(devices);
-
+  DateTime currentDate = DateTime.now();
   for (int hour = 0; hour < 24; hour++) {
-    double x = put.getPowerUsageForHour(hour);
+    DateTime currentHourTime = currentDate.add(Duration(hours: hour));
+    double x = put.getPowerUsageForHour(int.parse(currentHourTime.toString()) -
+        int.parse((currentHourTime.add(Duration(hours: hour))).toString()));
     powerUsage.add(x);
   }
   powerUsage.add(0);
@@ -43,15 +45,20 @@ List<double> powerConsumption() {
 
 List<List<String>> appliancesUsage() {
   List<List<String>> all_appliances = [];
-  List<String> hourly_appliances = [];
+
   List<Device> devices = <Device>[];
   for (int i = 0; i < Device.devices.length; i++) {
     devices.add(Device.devices[i]);
   }
+  DateTime currentDate = DateTime.now();
+  PowerUsageTracker put = PowerUsageTracker();
+  put.updatePowerUsageForDay(devices);
   for (int hour = 0; hour < 24; hour++) {
-    PowerUsageTracker put = PowerUsageTracker();
-    put.updatePowerUsageForDay(devices);
-    List<Device> y = put.getDevicesForHour(hour);
+    List<String> hourly_appliances = [];
+    DateTime currentHourTime = currentDate.add(Duration(hours: hour));
+    List<Device> y = put.getDevicesForHour(
+        int.parse(currentHourTime.toString()) -
+            int.parse((currentHourTime.add(Duration(hours: hour))).toString()));
     for (int i = 0; i < y.length; i++) {
       hourly_appliances.add(y[i].name);
     }
@@ -129,8 +136,8 @@ class MyApp extends StatelessWidget {
         '/devices': (context) => SelectDevice(),
         '/weather_pg': (context) => CurrentWeatherPage(),
         '/loadshedding_pg': (context) => LoadShedding(),
-        '/graph_pg': (context) =>
-            BatteryGraph(hourlyKw: powerConsumption(), hourlyAppliances: appliancesUsage()),
+        '/graph_pg': (context) => BatteryGraph(
+            hourlyKw: powerConsumption(), hourlyAppliances: appliancesUsage()),
       },
     );
   }
