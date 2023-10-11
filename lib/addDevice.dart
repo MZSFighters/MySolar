@@ -120,8 +120,7 @@ class _addDeviceWidgetState extends State<addDeviceWidget> {
                                 time: Time.makeTime(_startTimeController.text,
                                     _endTimeController.text),
                                 kw: int.parse(_kwController.text));
-                            DataRepository dr = DataRepository();
-                            dr.addDevice(device);
+                            DataRepository.addDevice(device);
                             //
                             _nameController.text = "";
                             _kwController.text = "";

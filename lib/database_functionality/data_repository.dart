@@ -7,14 +7,16 @@ import 'package:mysolar/models/time.dart';
 final FirebaseAuth auth = FirebaseAuth.instance;
 
 class DataRepository {
-  String? userId;
-  CollectionReference collection =
+  static String? userId;
+  static CollectionReference collection =
       FirebaseFirestore.instance.collection('appliances');
 
   DataRepository() {
     User? user = auth.currentUser;
     userId = user!.uid;
     collection = FirebaseFirestore.instance.collection('appliances');
+
+    print("DBWASRUN");
 
     StreamSubscription sub = getStream().listen((event) {
       Device.devices = event.docs
@@ -29,24 +31,24 @@ class DataRepository {
   }
 
   // return a Stream of devices in appliances
-  Stream<QuerySnapshot> getStream() {
+  static Stream<QuerySnapshot> getStream() {
     return collection.where("userId", isEqualTo: userId).snapshots();
   }
 
   //add device to database
-  Future<DocumentReference> addDevice(Device device) {
+  static Future<DocumentReference> addDevice(Device device) {
     device.userId = userId;
     return collection.add(device.toJson(device));
   }
 
   // update device in database
-  void updateDevice(Device device) async {
+  static void updateDevice(Device device) async {
     device.userId = userId;
     await collection.doc(device.id).update(device.toJson(device));
   }
 
   //delete device from databases
-  void deleteDevice(Device device) async {
+  static void deleteDevice(Device device) async {
     await collection.doc(device.id).delete();
   }
 }

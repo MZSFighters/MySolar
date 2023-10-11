@@ -8,8 +8,6 @@ import 'package:flutter_multi_formatter/flutter_multi_formatter.dart';
 import 'models/time.dart';
 import 'addDevice.dart';
 
-DataRepository dr = DataRepository();
-
 class SelectDevice extends StatefulWidget {
   const SelectDevice({super.key});
 
@@ -59,7 +57,7 @@ class _DeviceListState extends State<DeviceList> {
   @override
   Widget build(BuildContext context) {
     return StreamBuilder(
-        stream: dr.getStream(),
+        stream: DataRepository.getStream(),
         builder: (context, AsyncSnapshot<QuerySnapshot> snapshot) {
           if (snapshot.hasData) {
             return ListView.builder(
@@ -179,7 +177,7 @@ class _CustomListTileState extends State<CustomListTile> {
       TextEditingController endTimeController) {
     var time = Time.makeTime(startTimeController.text, endTimeController.text);
     device.time = time;
-    dr.updateDevice(device);
+    DataRepository.updateDevice(device);
   }
 
   makeListTile(Device device) {

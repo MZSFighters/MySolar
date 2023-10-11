@@ -29,10 +29,7 @@ List<double> generateMockData() {
 
 List<double> powerConsumption() {
   List<double> powerUsage = <double>[];
-  List<Device> devices = <Device>[];
-  for (int i = 0; i < Device.devices.length; i++) {
-    devices.add(Device.devices[i]);
-  }
+  List<Device> devices = Device.devices;
   PowerUsageTracker put = PowerUsageTracker();
   put.updatePowerUsageForDay(devices);
 

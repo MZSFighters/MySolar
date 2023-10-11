@@ -2,7 +2,6 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:mysolar/features/user_auth/presentation/pages/sign_up_page.dart';
 import 'package:mysolar/features/user_auth/presentation/widgets/form_container_widget.dart';
-import "../../../../database_functionality/data_repository.dart";
 
 import '../../firebase_auth_implementation/firebase_auth_services.dart';
 
@@ -123,7 +122,6 @@ class _LoginPageState extends State<LoginPage> {
 
     if (user != null) {
       print("User is successfully signedIn");
-      DataRepository dr = DataRepository();
       Navigator.pushNamed(context, "/home");
     } else {
       print("Some error happend");
