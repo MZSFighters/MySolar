@@ -68,6 +68,16 @@ class HomePage extends StatelessWidget {
             ),
           ),
           Positioned(
+            top: 50,
+            right: 0,
+            child: ElevatedButton(
+              onPressed: () {
+                Navigator.pushNamed(context, "/fetch_pg");
+              },
+              child: Text("fetch weather"),
+            ),
+          ),
+          Positioned(
             top: 1,
             left: 0,
             child: ElevatedButton(
