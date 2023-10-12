@@ -44,8 +44,6 @@ class Time {
   }
 
   static bool validateInputTime(String input) {
-    // if string is only of length 4 append a zero to its left
-
     input = handleSingleDigitHour(input);
 
     if (int.parse(input.substring(0, 2)) > 24 ||

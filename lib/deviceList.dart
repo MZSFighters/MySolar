@@ -24,7 +24,7 @@ class _SelectDeviceState extends State<SelectDevice> {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      title: "Your Devices",
+      title: "Your Appliances",
       home: Scaffold(
         floatingActionButton: addDeviceWidget(),
         floatingActionButtonLocation: FloatingActionButtonLocation.centerFloat,
@@ -32,7 +32,7 @@ class _SelectDeviceState extends State<SelectDevice> {
             leading: BackButton(
               onPressed: () => Navigator.of(context).pop(),
             ),
-            title: Center(child: Text(" Your Devices"))),
+            title: Center(child: Text(" Your Appliances"))),
         body: Column(
           children: [
             Expanded(child: DeviceList()),
@@ -120,8 +120,10 @@ class _CustomListTileState extends State<CustomListTile> {
   //Dialog Box
 
   makeDialog(context, snapshot) {
-    final TextEditingController _startTimeController = TextEditingController();
-    final TextEditingController _endTimeController = TextEditingController();
+    final nameFormKey = GlobalKey<FormState>();
+    final powerFormKey = GlobalKey<FormState>();
+    final startTimeFormKey = GlobalKey<FormState>();
+    final endTimeFormKey = GlobalKey<FormState>();
     BuildContext dialogContext;
     showDialog(
       context: context,
@@ -130,47 +132,146 @@ class _CustomListTileState extends State<CustomListTile> {
 
         Device device = Device.devices.firstWhere((element) =>
             element.id == snapshot.data?.docs.elementAt(widget.index).id);
+
+        final TextEditingController _nameController = TextEditingController();
+        _nameController.text = device.name;
+        final TextEditingController _kwController = TextEditingController();
+        _kwController.text = "${device.kw}";
+        final TextEditingController _startTimeController =
+            TextEditingController();
+        _startTimeController.text =
+            "${Time.convertToHourMinutes(device.time.startTime)}";
+        final TextEditingController _endTimeController =
+            TextEditingController();
+        _endTimeController.text =
+            "${Time.convertToHourMinutes(device.time.endTime)}";
+
         return Dialog(
-          child: Column(
-            children: [
-              Text(device.name),
-              Text('${device.time.startTime}'),
-              Text('${device.time.endTime}'),
-              Text("Enter Start Time"),
-              TextFormField(
-                controller: _startTimeController,
-                keyboardType: TextInputType.numberWithOptions(
-                    decimal: true), // Show numeric keyboard
-                inputFormatters: [
-                  MaskedInputFormatter('##:##')
-                ], // Allow numbers and a decimal point
-                decoration: InputDecoration(
-                  hintText: 'Start Time',
+          child: Padding(
+            padding: const EdgeInsets.all(20.0),
+            child: Column(
+              children: [
+                Padding(
+                  padding: const EdgeInsets.only(bottom: 30.0),
+                  child: Text(
+                    "Modify Appliance",
+                    style: TextStyle(
+                      fontWeight: FontWeight.bold,
+                      fontSize: 20.0,
+                    ),
+                  ),
                 ),
-              ),
-              Text("Enter end time"),
-              TextFormField(
-                controller: _endTimeController,
-                keyboardType: TextInputType.numberWithOptions(
-                    decimal: true), // Show numeric keyboard
-                inputFormatters: [
-                  MaskedInputFormatter('##:##')
-                ], // Allow numbers and a decimal point
-                decoration: InputDecoration(
-                  hintText: 'Enter end time',
+                Center(child: Text("Appliance Name")),
+                Form(
+                  key: nameFormKey,
+                  child: TextFormField(
+                    controller: _nameController,
+                    validator: validateNameInput,
+                  ),
                 ),
-              ),
-              TextButton(
-                  onPressed: () {
-                    update(device, _startTimeController, _endTimeController);
-                    Navigator.pop(dialogContext);
-                  },
-                  child: Text("Update"))
-            ],
+                Center(child: Text("Start Time")),
+                Form(
+                  key: startTimeFormKey,
+                  child: TextFormField(
+                    validator: validateTimeInput,
+                    controller: _startTimeController,
+                    keyboardType: TextInputType.numberWithOptions(
+                        decimal: true), // Show numeric keyboard
+                    inputFormatters: [
+                      MaskedInputFormatter('##:##')
+                    ], // Allow numbers and a decimal point
+                  ),
+                ),
+                Text("end time"),
+                Form(
+                  key: endTimeFormKey,
+                  child: TextFormField(
+                    validator: validateTimeInput,
+                    controller: _endTimeController,
+                    keyboardType:
+                        TextInputType.numberWithOptions(decimal: true),
+                    inputFormatters: [MaskedInputFormatter('##:##')],
+                  ),
+                ),
+                Text("Power Consumption (kw/h)"),
+                Form(
+                  key: powerFormKey,
+                  child: TextFormField(
+                    validator: validatePowerInput,
+                    controller: _kwController,
+                    keyboardType:
+                        TextInputType.numberWithOptions(decimal: true),
+                  ),
+                ),
+                Row(
+                  children: [
+                    Padding(
+                      padding: EdgeInsets.only(right: 40),
+                      child: TextButton(
+                          style: TextButton.styleFrom(
+                              backgroundColor: Colors.blue),
+                          onPressed: () {
+                            if (nameFormKey.currentState!.validate() &&
+                                powerFormKey.currentState!.validate() &&
+                                startTimeFormKey.currentState!.validate() &&
+                                endTimeFormKey.currentState!.validate()) {
+                              update(device, _startTimeController,
+                                  _endTimeController);
+                              Navigator.pop(dialogContext);
+                            }
+                          },
+                          child: Text("Update",
+                              style: TextStyle(color: Colors.white))),
+                    ),
+                    Padding(
+                      padding: EdgeInsets.only(left: 40),
+                      child: TextButton(
+                          style:
+                              TextButton.styleFrom(backgroundColor: Colors.red),
+                          onPressed: () {
+                            delete(device);
+                            Navigator.pop(dialogContext);
+                          },
+                          child: Text("delete",
+                              style: TextStyle(color: Colors.black))),
+                    ),
+                  ],
+                )
+              ],
+            ),
           ),
         );
       },
     );
+  }
+
+  String? validateTimeInput(value) {
+    if (value.isEmpty) {
+      return "Time must not be empty";
+    }
+    if (value.length != 5 || !Time.validateInputTime(value)) {
+      return "Time must be a valid 24-hr time";
+    }
+    return null;
+  }
+
+  String? validateNameInput(value) {
+    if (value.isEmpty) {
+      return "Name must not be empty";
+    }
+    return null;
+  }
+
+  String? validatePowerInput(value) {
+    if (value.isEmpty) {
+      return "Must specify a power value";
+    }
+
+    if (int.tryParse(value) == null) {
+      return "must be a valid integer value";
+    }
+
+    return null;
   }
 
   update(Device device, TextEditingController startTimeController,
@@ -178,6 +279,10 @@ class _CustomListTileState extends State<CustomListTile> {
     var time = Time.makeTime(startTimeController.text, endTimeController.text);
     device.time = time;
     DataRepository.updateDevice(device);
+  }
+
+  void delete(Device device) {
+    DataRepository.deleteDevice(device);
   }
 
   makeListTile(Device device) {

@@ -1,7 +1,3 @@
-import 'dart:convert';
-import 'dart:ffi';
-import 'package:mysolar/deviceList.dart';
-
 import 'time.dart';
 
 class Device {

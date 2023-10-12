@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'models/device.dart';
-import 'database_functionality/data_repository.dart';
 import 'package:flutter_multi_formatter/flutter_multi_formatter.dart';
 import 'models/time.dart';
+import "database_functionality/data_repository.dart";
 
 class addDeviceWidget extends StatefulWidget {
   const addDeviceWidget({
@@ -14,6 +14,11 @@ class addDeviceWidget extends StatefulWidget {
 }
 
 class _addDeviceWidgetState extends State<addDeviceWidget> {
+  final nameFormKey = GlobalKey<FormState>();
+  final powerFormKey = GlobalKey<FormState>();
+  final startTimeFormKey = GlobalKey<FormState>();
+  final endTimeFormKey = GlobalKey<FormState>();
+
   @override
   Widget build(BuildContext context) {
     final TextEditingController _nameController = TextEditingController();
@@ -27,129 +32,167 @@ class _addDeviceWidgetState extends State<addDeviceWidget> {
             context: context,
             builder: (context) {
               return Dialog(
-                  child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                    const SizedBox(
-                        height: 50), // Add some distance from the top
-                    const Text("Add your appliance details"),
-                    const SizedBox(
-                        height:
-                            20), // Add some distance between the text and the row
-                    Row(
-                      children: [
-                        Expanded(
-                          child: Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                              const Text("Appliance Name"),
-                              TextFormField(
-                                controller: _nameController,
-                                decoration: const InputDecoration(
-                                  hintText: 'Enter appliance name',
+                  child: Padding(
+                padding: const EdgeInsets.all(20.0),
+                child: Column(
+                    mainAxisSize: MainAxisSize.min,
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Row(
+                        children: [
+                          Expanded(
+                            child: Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                const Center(
+                                  child: Text(
+                                    "Add a new Appliance",
+                                    style: TextStyle(
+                                      fontWeight: FontWeight.bold,
+                                      fontSize: 20.0,
+                                    ),
+                                  ),
                                 ),
-                              ),
-                            ],
+                                const Padding(
+                                  padding: EdgeInsets.only(top: 20.00),
+                                  child: Center(child: Text("Appliance Name")),
+                                ),
+                                Form(
+                                  key: nameFormKey,
+                                  child: TextFormField(
+                                    controller: _nameController,
+                                    validator: validateNameInput,
+                                    decoration: const InputDecoration(
+                                      hintText: 'Appliance Name',
+                                    ),
+                                  ),
+                                ),
+                              ],
+                            ),
                           ),
-                        ),
-                      ],
-                    ),
-                    const SizedBox(width: 10),
-                    Expanded(
-                      child: Column(
+                        ],
+                      ),
+                      Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
-                          Form(
-                              child: Column(
+                          Column(
                             children: [
-                              const Text("Electricity Usage (Kw/hr)"),
-                              TextFormField(
-                                controller: _kwController,
-                                keyboardType:
-                                    const TextInputType.numberWithOptions(
-                                        decimal: true), // Show numeric keyboard
-                                inputFormatters: [
-                                  MaskedInputFormatter('00:00')
-                                ], // Allow numbers and a decimal point
-                                decoration: const InputDecoration(
-                                  hintText: 'kw',
+                              const Text("Enter power usage (kw/hr)"),
+                              Form(
+                                key: powerFormKey,
+                                child: TextFormField(
+                                  validator: validatePowerInput,
+                                  controller: _kwController,
+                                  keyboardType:
+                                      const TextInputType.numberWithOptions(
+                                          decimal: true),
+                                  decoration: const InputDecoration(
+                                    hintText: 'kw',
+                                  ),
                                 ),
                               ),
                               const Text("Enter Start Time"),
-                              TextFormField(
-                                controller: _startTimeController,
-                                validator: validateTimeInput,
-                                keyboardType:
-                                    const TextInputType.numberWithOptions(
-                                        decimal: true), // Show numeric keyboard
-                                inputFormatters: [
-                                  MaskedInputFormatter('00:00')
-                                ], // Allow numbers and a decimal point
-                                decoration: const InputDecoration(
-                                  hintText: 'start time',
+                              Form(
+                                key: startTimeFormKey,
+                                child: TextFormField(
+                                  controller: _startTimeController,
+                                  validator: validateTimeInput,
+                                  keyboardType:
+                                      const TextInputType.numberWithOptions(
+                                          decimal:
+                                              true), // Show numeric keyboard
+                                  inputFormatters: [
+                                    MaskedInputFormatter('00:00')
+                                  ], // Allow numbers and a decimal point
+                                  decoration: const InputDecoration(
+                                    hintText: 'start time',
+                                  ),
                                 ),
                               ),
                               const Text("Enter End time"),
-                              TextFormField(
-                                controller: _endTimeController,
-                                validator: validateTimeInput,
-                                keyboardType:
-                                    const TextInputType.numberWithOptions(
-                                        decimal: true),
-                                inputFormatters: [
-                                  MaskedInputFormatter('00:00')
-                                ],
-                                decoration: const InputDecoration(
-                                  hintText: 'end time',
+                              Form(
+                                key: endTimeFormKey,
+                                child: TextFormField(
+                                  validator: validateTimeInput,
+                                  controller: _endTimeController,
+                                  keyboardType:
+                                      const TextInputType.numberWithOptions(
+                                          decimal: true),
+                                  inputFormatters: [
+                                    MaskedInputFormatter('00:00')
+                                  ],
+                                  decoration: const InputDecoration(
+                                    hintText: 'end time',
+                                  ),
                                 ),
                               ),
                             ],
-                          ))
+                          )
                         ],
                       ),
-                    ),
-                    Column(
-                      mainAxisAlignment:
-                          MainAxisAlignment.center, // Center align vertically
-                      children: [
-                        const SizedBox(height: 40), // Move down by 20 pixels
-                        ElevatedButton(
-                          onPressed: () {
-                            Device device = Device(
-                                name: _nameController.text,
-                                time: Time.makeTime(_startTimeController.text,
-                                    _endTimeController.text),
-                                kw: int.parse(_kwController.text));
-                            DataRepository.addDevice(device);
-                            //
-                            _nameController.text = "";
-                            _kwController.text = "";
-                            _startTimeController.text = "";
-                            _endTimeController.text = "";
-                            Navigator.pop(context);
-                          },
-                          child: const Text("+"),
+                      Padding(
+                        padding:
+                            const EdgeInsets.only(top: 20.00, bottom: 2.00),
+                        child: Center(
+                          child: ElevatedButton(
+                            onPressed: () {
+                              if (nameFormKey.currentState!.validate() &&
+                                  powerFormKey.currentState!.validate() &&
+                                  startTimeFormKey.currentState!.validate() &&
+                                  endTimeFormKey.currentState!.validate()) {
+                                Device device = Device(
+                                    name: _nameController.text,
+                                    time: Time.makeTime(
+                                        _startTimeController.text,
+                                        _endTimeController.text),
+                                    kw: int.parse(_kwController.text));
+
+                                DataRepository.addDevice(device);
+                                _nameController.text = "";
+                                _kwController.text = "";
+                                _startTimeController.text = "";
+                                _endTimeController.text = "";
+                                Navigator.pop(context);
+                              }
+                            },
+                            child: const Text("Add Appliance"),
+                          ),
                         ),
-                      ],
-                    ),
-                  ]));
+                      ),
+                    ]),
+              ));
             });
       },
-      label: const Text("Add Device"),
+      label: const Text("Add Appliance"),
     );
   }
 
   String? validateTimeInput(value) {
-    if (value == null) {
-      return "Please Enter a Valid Number";
+    if (value.isEmpty) {
+      return "Time must not be empty";
     }
-    if (value.length != 5) {
-      return "Input must be of the form hh:mm";
+    if (value.length != 5 || !Time.validateInputTime(value)) {
+      return "Time must be a valid 24-hr time";
     }
-    if (int.parse(value.substring(0, 2)) >= 24 ||
-        int.parse(value.substring(3, 5)) >= 60) {
-      return "Invalid Time";
+    return null;
+  }
+
+  String? validateNameInput(value) {
+    if (value.isEmpty) {
+      return "Name must not be empty";
     }
+    return null;
+  }
+
+  String? validatePowerInput(value) {
+    if (value.isEmpty) {
+      return "Must specify a power value";
+    }
+
+    if (int.tryParse(value) == null) {
+      return "must be a valid integer value";
+    }
+
     return null;
   }
 }

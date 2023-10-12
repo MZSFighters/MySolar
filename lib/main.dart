@@ -30,6 +30,7 @@ List<double> generateMockData() {
 List<double> powerConsumption() {
   List<double> powerUsage = <double>[];
   List<Device> devices = Device.devices;
+  print(devices.length);
   PowerUsageTracker put = PowerUsageTracker();
   put.updatePowerUsageForDay(devices);
 
@@ -129,8 +130,8 @@ class MyApp extends StatelessWidget {
         '/devices': (context) => SelectDevice(),
         '/weather_pg': (context) => CurrentWeatherPage(),
         '/loadshedding_pg': (context) => LoadShedding(),
-        '/graph_pg': (context) =>
-            BatteryGraph(hourlyKw: powerConsumption(), hourlyAppliances: appliancesUsage()),
+        '/graph_pg': (context) => BatteryGraph(
+            hourlyKw: powerConsumption(), hourlyAppliances: appliancesUsage()),
       },
     );
   }
