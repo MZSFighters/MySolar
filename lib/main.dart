@@ -16,6 +16,9 @@ Future main() async {
         appId: "1:878845743646:web:d95ee7530329012546140f",
         messagingSenderId: "878845743646",
         projectId: "mysolar-72ca5",
+        authDomain: 'mysolar-72ca5.firebaseapp.com',
+        databaseURL: 'https://mysolar-72ca5-default-rtdb.firebaseio.com',
+        storageBucket: 'mysolar-72ca5.appspot.com',
         // Your web Firebase config options
       ),
     );
@@ -47,8 +50,9 @@ class MyApp extends StatelessWidget {
           child: LoginPage(),
         ),
         '/login': (context) => LoginPage(),
-        '/signUp': (context) => SignUpPage(),
+        '/signUp': (context) => SignUpScreen(),
         '/home': (context) => HomePage(),
+        '/power': (context) => PowerPage(),
         '/add_appliances': (context) => AddAppliances(),
       },
     );
