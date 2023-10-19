@@ -243,11 +243,10 @@ class _LoadSheddingState extends State<LoadShedding> {
     List<dynamic> seventhDay = dayTimes(stageNo, 7);
     String daySix = days[6];
 
-    return MaterialApp(
-        home: Scaffold(
+    return Scaffold(
             appBar: AppBar(
               title: const Text("Load Shedding Page"),
-              backgroundColor: Colors.deepOrange,
+              //backgroundColor: Colors.deepOrange,
             ),
             body: SingleChildScrollView(
                 child: Center(
@@ -274,14 +273,14 @@ class _LoadSheddingState extends State<LoadShedding> {
                     padding: EdgeInsets.only(bottom: 5),
                     decoration: BoxDecoration(
                         border:
-                            Border.all(width: 1.0, color: Colors.deepOrange)),
+                            Border.all(width: 1.0, color: Colors.red)),
                     child: Column(children: [
                       Container(
                         //height: screenHeight,
                         width: 200,
                         padding: EdgeInsets.only(top: 5, bottom: 5),
                         decoration:
-                            BoxDecoration(color: Colors.deepOrange), //shade200
+                            BoxDecoration(color: Colors.red), //shade200
                         child: Text(
                           dayZero,
                           style: const TextStyle(
@@ -443,7 +442,7 @@ class _LoadSheddingState extends State<LoadShedding> {
                             child: Text(i.toString()))
                     ]))
               ],
-            )))));
+            ))));
   }
 }
 //${(tempData['events'][0]['note'])[6]}

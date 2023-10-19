@@ -23,23 +23,20 @@ class _SelectDeviceState extends State<SelectDevice> {
 
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
-      title: "Your Appliances",
-      home: Scaffold(
+    return Scaffold(
         floatingActionButton: addDeviceWidget(),
         floatingActionButtonLocation: FloatingActionButtonLocation.centerFloat,
         appBar: AppBar(
-            leading: BackButton(
-              onPressed: () => Navigator.of(context).pop(),
-            ),
-            title: Center(child: Text(" Your Appliances"))),
+            // leading: BackButton(
+            //   onPressed: () => Navigator.of(context).pop(),
+            // ),
+            title: Center(child: Text("Your Appliances"))),
         body: Column(
           children: [
             Expanded(child: DeviceList()),
           ],
         ),
-      ),
-    );
+      );
   }
 }
 
