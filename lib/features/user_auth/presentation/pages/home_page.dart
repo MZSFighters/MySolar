@@ -67,8 +67,8 @@ class _MyHomePage2State extends State<MyHomePage2> {
             CurrentWeatherWidget(
               temperature: weatherModel!.currentWeather["temperature"], 
               weatherCode: weatherModel!.currentWeather["weathercode"], 
-              winddirection: weatherModel!.currentWeather["windspeed"], 
-              windspeed: weatherModel!.currentWeather["winddirection"], 
+              winddirection: weatherModel!.currentWeather["winddirection"], 
+              windspeed: weatherModel!.currentWeather["windspeed"], 
               isDay: weatherModel!.currentWeather["is_day"]
               ),
               Positioned(

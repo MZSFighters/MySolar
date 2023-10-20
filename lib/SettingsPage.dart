@@ -15,19 +15,24 @@ class SettingsPage extends StatelessWidget {
       //drawer: NavigationDrawer(),
       body: Column(
         children: <Widget>[
-          ElevatedButton(
+          Center(
+            child:           ElevatedButton(
             onPressed: () {
               Navigator.of(context)
                   .push(MaterialPageRoute(builder: (context) => ThemesPage()));
             },
             child: Text('Change Theme'),
           ),
-          ElevatedButton(
+          ),
+          Center(
+            child: ElevatedButton(
               onPressed: () {
                 Navigator.of(context).push(
                     MaterialPageRoute(builder: (context) => EditProfilePage()));
               },
-              child: Text('Edit Profile'))
+              child: Text('Edit Profile')),
+          )
+          
         ],
       ));
 }
