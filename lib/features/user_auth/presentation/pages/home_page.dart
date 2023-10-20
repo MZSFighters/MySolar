@@ -6,6 +6,120 @@ import 'package:mysolar/deviceList.dart';
 import 'package:mysolar/weather/current_forecast.dart';
 import 'package:mysolar/HelpPage.dart';
 import 'package:mysolar/database_functionality/data_repository.dart';
+<<<<<<< Updated upstream
+=======
+import 'package:mysolar/weather/current_weather_widget.dart';
+import 'package:mysolar/weather/models.dart';
+import 'package:one_clock/one_clock.dart';
+
+String? getCurrentUserId() {
+  final user = FirebaseAuth.instance.currentUser;
+  return user?.uid;
+}
+
+
+class MyHomePage2 extends StatefulWidget {
+  const MyHomePage2({super.key});
+
+  @override
+  State<MyHomePage2> createState() => _MyHomePage2State();
+}
+
+class _MyHomePage2State extends State<MyHomePage2> {
+
+  var weatherModel;
+
+  @override
+  void initState() {
+    getWeather();
+    super.initState();
+  }
+
+    getWeather() async{
+    weatherModel = await WeatherAPICall().request();
+    setState(() {
+     
+    });
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+    appBar: AppBar(
+      title: Text('Home'),
+    ),
+    drawer: NavigationDrawer(),
+    body: SafeArea(
+      child: SingleChildScrollView(
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          crossAxisAlignment: CrossAxisAlignment.center,
+          children: [
+            Location_Date_Widget(),
+            SizedBox(
+              height: 160,
+              width: 160,
+              child: MyAnalogClock(),
+            ),
+            
+            if (weatherModel != null)
+            CurrentWeatherWidget(
+              temperature: weatherModel!.currentWeather["temperature"], 
+              weatherCode: weatherModel!.currentWeather["weathercode"], 
+              winddirection: weatherModel!.currentWeather["winddirection"], 
+              windspeed: weatherModel!.currentWeather["windspeed"], 
+              isDay: weatherModel!.currentWeather["is_day"]
+              ),
+              Positioned(
+                top: 600,
+                left: 50,
+                child: ElevatedButton(
+                  onPressed: () {
+                    Navigator.pushNamed(context, "/graph_pg");
+              },
+              child: Text("view predicted battery power & grid usage"),
+            ),
+                ),
+              Positioned(
+                child: ElevatedButton(
+                  onPressed: () {
+                    Navigator.pushNamed(context, "/fetch_pg");
+                  },
+                  child: Text('fetch weather conditions'),
+                ),
+              ),
+              Positioned(
+                child: ElevatedButton(
+                  onPressed: () {
+                    Navigator.pushNamed(context, "/weather_pg");
+                  },
+                  child: Text('weather page'),
+                ),
+              ),
+              Positioned(
+                child: ElevatedButton(
+                  onPressed: () {
+                    Navigator.pushNamed(context, "/devices");
+                  },
+                  child: Text('manage appliances'),
+                ),
+              ),
+              Positioned(
+                child: ElevatedButton(
+                  onPressed: () {
+                    Navigator.pushNamed(context, "/loadshedding_pg");
+                  },
+                  child: Text('loadshedding schedule'),
+                ),
+              ),
+          ],
+        ),
+      )
+      ),
+    );
+  }
+}
+>>>>>>> Stashed changes
 
 class HomePage extends StatelessWidget {
   const HomePage({Key? key}) : super(key: key);
@@ -26,6 +140,7 @@ class HomePage extends StatelessWidget {
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
               Center(
+<<<<<<< Updated upstream
                 child: Text(
                   "Welcome Home buddy!",
                   style: TextStyle(fontWeight: FontWeight.bold, fontSize: 19),
@@ -54,12 +169,42 @@ class HomePage extends StatelessWidget {
                     ),
                   ),
                 ),
+=======
+                // child: Text(
+                //   "Welcome Home buddy!",
+                //   style: TextStyle(fontWeight: FontWeight.bold, fontSize: 19),
+                // ),
+>>>>>>> Stashed changes
               ),
+              // SizedBox(height: 30),
+              // GestureDetector(
+              //   // onTap: () {
+              //   //   FirebaseAuth.instance.signOut();
+              //   //   Navigator.pop(context, "/login");
+              //   // },
+              //   child: Container(
+              //     height: 45,
+              //     width: 100,
+              //     decoration: BoxDecoration(
+              //       color: Colors.deepOrangeAccent,
+              //       borderRadius: BorderRadius.circular(10),
+              //     ),
+              //     child: Center(
+              //       child: Text(
+              //         "Sign out",
+              //         style: TextStyle(
+              //             color: Colors.white,
+              //             fontWeight: FontWeight.bold,
+              //             fontSize: 18),
+              //       ),
+              //     ),
+              //   ),
+              // ),
             ],
           ),
           Positioned(
-            top: 1,
-            right: 0,
+            top: 150,
+            left: 100,
             child: ElevatedButton(
               onPressed: () {
                 Navigator.pushNamed(context, "/graph_pg");
@@ -69,7 +214,7 @@ class HomePage extends StatelessWidget {
           ),
           Positioned(
             top: 50,
-            right: 0,
+            right: 50,
             child: ElevatedButton(
               onPressed: () {
                 Navigator.pushNamed(context, "/fetch_pg");
@@ -78,8 +223,8 @@ class HomePage extends StatelessWidget {
             ),
           ),
           Positioned(
-            top: 1,
-            left: 0,
+            top: 100,
+            right: 50,
             child: ElevatedButton(
               onPressed: () {
                 Navigator.pushNamed(context, "/weather_pg");

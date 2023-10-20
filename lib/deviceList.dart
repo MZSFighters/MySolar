@@ -23,9 +23,13 @@ class _SelectDeviceState extends State<SelectDevice> {
 
   @override
   Widget build(BuildContext context) {
+<<<<<<< Updated upstream
     return MaterialApp(
       title: "Your Appliances",
       home: Scaffold(
+=======
+    return Scaffold( // used to be container incase problems
+>>>>>>> Stashed changes
         floatingActionButton: addDeviceWidget(),
         floatingActionButtonLocation: FloatingActionButtonLocation.centerFloat,
         appBar: AppBar(
