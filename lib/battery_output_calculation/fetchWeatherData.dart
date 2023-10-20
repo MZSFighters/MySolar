@@ -2,7 +2,7 @@ import 'dart:convert';
 import 'package:http/http.dart' as http;
 
 class WeatherService {
-  final String apiKey = 'cLTcCVlnbyykGMZwuxRBsa32G9sv76rG';
+  final String apiKey = 'qmBPwJo9VEc60GAqP5A62xz26YfT9VV5';
   final String endpoint = 'http://dataservice.accuweather.com/forecasts/v1/hourly/12hour/305448';
 
   Future<List<List<dynamic>>> fetchWeatherData() async {
