@@ -21,11 +21,12 @@ class FinalOutputCalculation {
     double possibleStorage = (1 -(lowestBatteryPercentage / 100.0)) * batterySize;
     double batteryStorageKw = 0;
     for (int i = 0; i < 12; i++) {
-      double solarOutputForHour = solarOutputData[i]['solarOutput'];
-      if (batteryStorageKw >= possibleStorage ) { //if whats in the battery > then what it can store:
-        continue;
+      double solarOutputForHour = double.parse(solarOutputData[i]['solarOutput'].toStringAsFixed(2));
+      double calculation = double.parse((solarOutputForHour - consumptionData[i]).toStringAsFixed(2));
+      if ((batteryStorageKw+calculation) >= possibleStorage ) { //if what will be in the battery > then what it can store:
+        batteryStorageKw = possibleStorage;
       } else {
-        batteryStorageKw = solarOutputForHour - consumptionData[i];
+        batteryStorageKw += calculation;  //only add calculation if it will not exceed possible storage
       }
 
       finalOutput.add({

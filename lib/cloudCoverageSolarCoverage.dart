@@ -8,7 +8,7 @@ class WeatherPage extends StatefulWidget {
 }
 
 class _WeatherPageState extends State<WeatherPage> {
-  final String apiKey = 'cLTcCVlnbyykGMZwuxRBsa32G9sv76rG';
+  final String apiKey = 'qmBPwJo9VEc60GAqP5A62xz26YfT9VV5';
   final String endpoint = 'http://dataservice.accuweather.com/forecasts/v1/hourly/12hour/305448';
 
   List<dynamic>? weatherData;
@@ -27,31 +27,118 @@ class _WeatherPageState extends State<WeatherPage> {
     final response = await http.get(Uri.parse('$endpoint?apikey=$apiKey&language=en-us&details=true&metric=true'));
 
     if (response.statusCode == 200) {
+      print(json.decode(response.body));
       return json.decode(response.body);
     } else {
       throw Exception('Failed to load weather data');
     }
   }
 
-  @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(title: Text('Weather Data')),
-      body: weatherData == null
-          ? Center(child: CircularProgressIndicator()) // loading indicator
-          : ListView.builder(
-              itemCount: weatherData!.length,
-              itemBuilder: (context, index) {
-                int cloudCover = weatherData![index]['CloudCover'];
-                double solarIrradiance = weatherData![index]['SolarIrradiance']['Value'];
-                String dateTime = weatherData![index]['DateTime'];
-                return ListTile(
-                  title: Text('Time: $dateTime'),
-                  subtitle: Text('Cloud Cover: $cloudCover%, Solar Irradiance: $solarIrradiance W/m²'),
-                );
-              },
+@override
+Widget build(BuildContext context) {
+  return Scaffold(
+    appBar: AppBar(title: Text('Weather Data')),
+    body: weatherData == null
+        ? Center(child: CircularProgressIndicator())
+        : SingleChildScrollView(
+            child: Column(
+              children: [
+                // Headings
+               Padding(
+                  padding: const EdgeInsets.all(20.0),
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                    children: [
+                      Text(
+                        '    Time',
+                        style: TextStyle(
+                          fontWeight: FontWeight.bold,
+                          color: Colors.deepOrange,
+                          fontSize: 16,
+                        ),
+                      ),
+                      Padding(
+                        padding: const EdgeInsets.only(left: 50.0),  // Adjust as needed
+                        child: Text(
+                          'Cloud \nCoverage (%)',
+                          style: TextStyle(
+                            fontWeight: FontWeight.bold,
+                            color: Colors.deepOrange,
+                            fontSize: 16,
+                          ),
+                        ),
+                      ),
+                      Padding(
+                        padding: const EdgeInsets.only(left: 30.0),  // Adjust as needed
+                        child: Text(
+                          'Solar \nIrradiance (W/m^2)',
+                          style: TextStyle(
+                            fontWeight: FontWeight.bold,
+                            color: Colors.deepOrange,
+                            fontSize: 16,
+                          ),
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
+                // Table
+                Table(
+                  border: TableBorder.all(),
+                  columnWidths: {
+                    0: FlexColumnWidth(0.65),
+                    1: FlexColumnWidth(0.75),
+                    2: FlexColumnWidth(1),
+                  },
+                  children: [
+                    ...weatherData!.map((item) {
+                      int cloudCover = item['CloudCover'];
+                      double solarIrradiance = item['SolarIrradiance']['Value'];
+                      String dateTime = item['DateTime'];
+                      String hour = DateTime.parse(dateTime).toLocal().hour.toString().padLeft(2, '0');
+                      return TableRow(children: [
+                        TableCell(
+                          child: Padding(
+                            padding: const EdgeInsets.symmetric(vertical: 8.0),
+                            child: Center(
+                              child: Text(
+                                '$hour:00',
+                                style: TextStyle(fontSize: 18), 
+                              ),
+                            ),
+                          ),
+                        ),
+                        TableCell(
+                          child: Padding(
+                            padding: const EdgeInsets.symmetric(vertical: 8.0),
+                            child: Center(
+                              child: Text(
+                                '$cloudCover%',
+                                style: TextStyle(fontSize: 18), 
+                              ),
+                            ),
+                          ),
+                        ),
+                        TableCell(
+                          child: Padding(
+                            padding: const EdgeInsets.symmetric(vertical: 8.0),
+                            child: Center(
+                              child: Text(
+                                '$solarIrradiance W/m²',
+                                style: TextStyle(fontSize: 18), 
+                              ),
+                            ),
+                          ),
+                        ),
+                      ]);
+                    }).toList(),
+                  ],
+                ),
+              ],
             ),
-    );
-  }
+          ),
+  );
 }
+}
+
 

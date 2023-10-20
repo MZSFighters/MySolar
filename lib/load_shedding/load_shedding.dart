@@ -12,7 +12,7 @@ class LoadShedding extends StatefulWidget {
 
 class _LoadSheddingState extends State<LoadShedding> {
   String jsonData = '';
-  Map<String, dynamic> data ={};
+  Map<String, dynamic>? data;
   List<dynamic> days = [];
   /*Map<String, dynamic> tempData = {
     "events": [
@@ -140,44 +140,33 @@ class _LoadSheddingState extends State<LoadShedding> {
 
 // Method that requests the load shedding data
   // @pragma('vm:entry-point', true)
-  Future<void> fetchData() async {
-    print("fetched data");
-    /*final url = Uri.parse(
-        "https://developer.sepush.co.za/business/2.0/area?id=eskde-3-universityofthewitwatersrandresearchsiteandsportscityofjohannesburggauteng&test=current");*/
-    final url = Uri.https('developer.sepush.co.za', '/business/2.0/area', {
-      'id':
-          'eskde-3-universityofthewitwatersrandresearchsiteandsportscityofjohannesburggauteng',
-      'test': 'current'
-    });
-    final headers = {
-      // "Access-Control-Allow-Origin": "*",
-      // 'Content-Type': 'application/json',
-      // 'Accept': '*/*',
-      'Token': 'F294A5CF-965A40F4-A8515DE0-DA856EDD',
-      //'Content-Type': 'application/json',
-    };
-    try {
-      final response = await http.get(url, headers: headers);
-      if (response.statusCode == 200) {
-        final decodeData = json.decode(response.body);
-        print(decodeData);
-        setState(() {
-          jsonData = json.encode(decodeData);
-        });
-      } else {
-        setState(() {
-          jsonData = 'Error: ${response.statusCode}';
-        });
-      }
-    } catch (e) {
+Future<void> fetchData() async {
+  print("fetched data");
+  final url = Uri.https('developer.sepush.co.za', '/business/2.0/area', {
+    'id':
+        'eskde-3-universityofthewitwatersrandresearchsiteandsportscityofjohannesburggauteng',
+    'test': 'current'
+  });
+  final headers = {
+    'Token': 'F294A5CF-965A40F4-A8515DE0-DA856EDD',
+  };
+  try {
+    final response = await http.get(url, headers: headers);
+    if (response.statusCode == 200) {
       setState(() {
-        jsonData = 'Error:$e';
+        data = json.decode(response.body);
       });
+    } else {
+      print('Error: ${response.statusCode}');
     }
+  } catch (e) {
+    print('Error:$e');
   }
+}
+
 
   List<dynamic> dayTimes(int stageNo, int dayNo) {
-    List<dynamic> scheduleDays = data['schedule']['days'];
+    List<dynamic> scheduleDays = data!['schedule']['days'];
     List<dynamic> times = [];
     int count = 0;
     for (var day in scheduleDays) {
@@ -212,7 +201,16 @@ class _LoadSheddingState extends State<LoadShedding> {
     //final double screenHeight = MediaQuery.of(context).size.height;
     //final double marginValue = screenWidth * 0.1;
     //final double topmargin = screenHeight * 0.01;
-  
+    if (data == null) {
+        return Scaffold(
+          appBar: AppBar(
+            title: const Text("Load Shedding Page"),
+            backgroundColor: Colors.deepOrange,
+          ),
+          body: Center(child: CircularProgressIndicator()),
+        );
+      }
+      
   if(jsonData.isNotEmpty){
     data = json.decode(jsonData);
 
@@ -220,7 +218,7 @@ class _LoadSheddingState extends State<LoadShedding> {
   }
     
 
-    int stageNo = int.parse((data['events'][0]['note'])[6]);
+    int stageNo = int.parse((data!['events'][0]['note'])[6]);
 
     List<dynamic> firstDay = dayTimes(stageNo, 1);
     String dayZero = days[0];

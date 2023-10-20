@@ -21,6 +21,7 @@ class DeviceConsumption {
     for (int i = 0; i < 12; i++) {
       int hourToCheck = (currentHour + i + 1) % 24;
       for (var appliance in appliances) {
+
         Map<String, dynamic> time = appliance['time'];
         int startTime = time['startTime'];
         int endTime = time['endTime'];
@@ -61,7 +62,7 @@ Future<List<List<String>>> devicesOnEachHour() async {
 
   List<Map<String, dynamic>> appliances = appliancesSnapshot.docs.map((doc) => doc.data() as Map<String, dynamic>).toList();
 
-  print("Fetched appliances: $appliances"); // Debug print
+ // print("Fetched appliances: $appliances"); // Debug print
 
   List<List<String>> devicesOn = List.generate(12, (index) => <String>[]);
   DateTime now = DateTime.now();
@@ -86,7 +87,7 @@ for (int i = 0; i < 12; i++) {
     }
   }
 }
-  print("Devices on each hour: $devicesOn"); // debug print
+ // print("Devices on each hour: $devicesOn"); // debug print
 
   return devicesOn;
 }

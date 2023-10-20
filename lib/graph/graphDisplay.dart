@@ -25,7 +25,7 @@ class BatteryGraphDisplay extends StatelessWidget {
     children: <Widget>[
       // Title
       Text(
-        "Predicted Battery And Grid Usage",
+        "Predicted Battery Power And Grid Usage",
         style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
         textAlign: TextAlign.center,
       ),
@@ -39,7 +39,7 @@ class BatteryGraphDisplay extends StatelessWidget {
             color: Colors.green,
           ),
           SizedBox(width: 10), // Spacing between the square and the text
-          Text("- Battery Usage"),
+          Text("- Battery Power (kW)"),
         ],
       ),
       SizedBox(height: 10), // Spacing
@@ -132,7 +132,7 @@ class BatteryGraphDisplay extends StatelessWidget {
                               color: const Color(0xff37434d), width: 1),
                         ),
                         minX: 0,
-                        maxX: 11,
+                        maxX: 11.5,
                         minY: -14,
                         maxY: 14,
                         lineTouchData: LineTouchData(
