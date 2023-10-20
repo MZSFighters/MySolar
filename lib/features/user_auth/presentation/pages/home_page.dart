@@ -3,11 +3,12 @@ import 'package:flutter/material.dart';
 import 'package:mysolar/SettingsPage.dart';
 import 'package:mysolar/ManualPage.dart';
 import 'package:mysolar/deviceList.dart';
+import 'package:mysolar/features/user_auth/presentation/pages/clock.dart';
+import 'package:mysolar/load_shedding/load_shedding.dart';
+import 'package:mysolar/weather/api_call.dart';
 import 'package:mysolar/weather/current_forecast.dart';
 import 'package:mysolar/HelpPage.dart';
 import 'package:mysolar/database_functionality/data_repository.dart';
-<<<<<<< Updated upstream
-=======
 import 'package:mysolar/weather/current_weather_widget.dart';
 import 'package:mysolar/weather/models.dart';
 import 'package:one_clock/one_clock.dart';
@@ -119,7 +120,6 @@ class _MyHomePage2State extends State<MyHomePage2> {
     );
   }
 }
->>>>>>> Stashed changes
 
 class HomePage extends StatelessWidget {
   const HomePage({Key? key}) : super(key: key);
@@ -135,46 +135,19 @@ class HomePage extends StatelessWidget {
       ),
       drawer: NavigationDrawer(),
       body: Stack(
-        children: [
+        children: <Widget>[
+          Positioned(
+
+            child: MyAnalogClock(),
+          ),
           Column(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
               Center(
-<<<<<<< Updated upstream
-                child: Text(
-                  "Welcome Home buddy!",
-                  style: TextStyle(fontWeight: FontWeight.bold, fontSize: 19),
-                ),
-              ),
-              SizedBox(height: 30),
-              GestureDetector(
-                onTap: () {
-                  FirebaseAuth.instance.signOut();
-                  Navigator.pushNamed(context, "/login");
-                },
-                child: Container(
-                  height: 45,
-                  width: 100,
-                  decoration: BoxDecoration(
-                    color: Colors.deepOrangeAccent,
-                    borderRadius: BorderRadius.circular(10),
-                  ),
-                  child: Center(
-                    child: Text(
-                      "Sign out",
-                      style: TextStyle(
-                          color: Colors.white,
-                          fontWeight: FontWeight.bold,
-                          fontSize: 18),
-                    ),
-                  ),
-                ),
-=======
                 // child: Text(
                 //   "Welcome Home buddy!",
                 //   style: TextStyle(fontWeight: FontWeight.bold, fontSize: 19),
                 // ),
->>>>>>> Stashed changes
               ),
               // SizedBox(height: 30),
               // GestureDetector(
@@ -249,7 +222,7 @@ class HomePage extends StatelessWidget {
               onPressed: () {
                 Navigator.pushNamed(context, "/devices");
               },
-              child: Text("Devices"),
+              child: Text("Appliances"),
             ),
           )
         ],
@@ -268,8 +241,8 @@ class NavigationDrawer extends StatefulWidget {
 class _NavigationDrawerState extends State<NavigationDrawer> {
   String Picture =
       'https://upload.wikimedia.org/wikipedia/en/a/a4/Hide_the_Pain_Harold_%28Andr%C3%A1s_Arat%C3%B3%29.jpg';
-  String Name = 'Muhammad Omar';
-  String Email = 'SmoothBrain@smooth.com';
+  String Name = 'Welcome';
+  var email = getCurrentUserId();
 
   @override
   Widget build(BuildContext context) => Drawer(
@@ -285,7 +258,8 @@ class _NavigationDrawerState extends State<NavigationDrawer> {
       );
 
   Widget BuildHeader(BuildContext context) => Container(
-        color: Colors.blue,
+        //color: Colors.blue,
+        color: Colors.grey,
         padding: EdgeInsets.only(
           top: 24 + MediaQuery.of(context).padding.top,
           bottom: 24,
@@ -300,11 +274,11 @@ class _NavigationDrawerState extends State<NavigationDrawer> {
           SizedBox(height: 12),
           Text(
             Name,
-            style: TextStyle(fontSize: 28, color: Colors.white),
+            style: TextStyle(fontSize: 28, color: Colors.black),
           ),
           Text(
-            Email,
-            style: TextStyle(fontSize: 16, color: Colors.white),
+            email.toString(),
+            style: TextStyle(fontSize: 16, color: Colors.black),
           ),
         ]),
       );
@@ -327,22 +301,22 @@ class _NavigationDrawerState extends State<NavigationDrawer> {
                   MaterialPageRoute(builder: (context) => SettingsPage()));
             },
           ),
-          ListTile(
-            leading: Icon(Icons.book),
-            title: Text('User Manual'),
-            onTap: () {
-              Navigator.of(context)
-                  .push(MaterialPageRoute(builder: (context) => ManualPage()));
-            },
-          ),
-          ListTile(
-            leading: Icon(Icons.question_mark),
-            title: Text('Help'),
-            onTap: () {
-              Navigator.of(context)
-                  .push(MaterialPageRoute(builder: (context) => HelpPage()));
-            },
-          ),
+          // ListTile( // user manual/tutorial : will do maybe before final submisison
+          //   leading: Icon(Icons.book),
+          //   title: Text('User Manual'),
+          //   onTap: () {
+          //     Navigator.of(context)
+          //         .push(MaterialPageRoute(builder: (context) => ManualPage()));
+          //   },
+          // ),
+          // ListTile( // help section : will do before final submission maybe?
+          //   leading: Icon(Icons.question_mark),
+          //   title: Text('Help'),
+          //   onTap: () {
+          //     Navigator.of(context)
+          //         .push(MaterialPageRoute(builder: (context) => HelpPage()));
+          //   },
+          // ),
           ListTile(
             leading: Icon(Icons.sunny),
             title: Text('Weather'),
@@ -352,18 +326,30 @@ class _NavigationDrawerState extends State<NavigationDrawer> {
             },
           ),
           ListTile(
-            leading: Icon(Icons.sunny),
+            leading: Icon(Icons.solar_power),
             title: Text('Devices'),
             onTap: () {
               Navigator.of(context).push(
                   MaterialPageRoute(builder: (context) => SelectDevice()));
             },
           ),
+          ListTile(
+            leading: Icon(Icons.electric_meter),
+            title: Text('Loadshedding Schedule'),
+            onTap: () {
+              Navigator.of(context).push(
+                MaterialPageRoute(builder: (context) => LoadShedding()));
+            },
+          ),
           const Divider(color: Colors.black54),
           ListTile(
             leading: Icon(Icons.door_back_door),
-            title: Text('Log Out'),
-            onTap: () => {},
+            title: Text('Sign Out'),
+            onTap: () {
+                FirebaseAuth.instance.signOut();
+                Navigator.pop(context);
+                Navigator.pop(context, "/login");
+                },
           ),
         ],
       );

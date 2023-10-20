@@ -37,6 +37,7 @@ dependencies:
   #The following is for the graph
   fl_chart: ^0.36.0
 
+  one_clock: ^1.0.8
 
   # The following adds the Cupertino Icons font to your application.
   # Use with the CupertinoIcons class for iOS style icons.
