@@ -2,6 +2,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:mysolar/SettingsPage.dart';
 import 'package:mysolar/ManualPage.dart';
+import 'package:mysolar/appWorkings.dart';
 import 'package:mysolar/deviceList.dart';
 import 'package:mysolar/features/user_auth/presentation/pages/clock.dart';
 import 'package:mysolar/load_shedding/load_shedding.dart';
@@ -13,113 +14,111 @@ import 'package:mysolar/weather/current_weather_widget.dart';
 import 'package:mysolar/weather/models.dart';
 import 'package:one_clock/one_clock.dart';
 
-String? getCurrentUserId() {
-  final user = FirebaseAuth.instance.currentUser;
-  return user?.uid;
-}
+final user = FirebaseAuth.instance.currentUser;
+final userEmail = user?.email;
 
 
-class MyHomePage2 extends StatefulWidget {
-  const MyHomePage2({super.key});
+// class MyHomePage2 extends StatefulWidget {
+//   const MyHomePage2({super.key});
 
-  @override
-  State<MyHomePage2> createState() => _MyHomePage2State();
-}
+//   @override
+//   State<MyHomePage2> createState() => _MyHomePage2State();
+// }
 
-class _MyHomePage2State extends State<MyHomePage2> {
+// class _MyHomePage2State extends State<MyHomePage2> {
 
-  var weatherModel;
+//   var weatherModel;
 
-  @override
-  void initState() {
-    getWeather();
-    super.initState();
-  }
+//   @override
+//   void initState() {
+//     getWeather();
+//     super.initState();
+//   }
 
-    getWeather() async{
-    weatherModel = await WeatherAPICall().request();
-    setState(() {
+//     getWeather() async{
+//     weatherModel = await WeatherAPICall().request();
+//     setState(() {
      
-    });
-  }
+//     });
+//   }
 
-  @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-    appBar: AppBar(
-      title: Text('Home'),
-    ),
-    drawer: NavigationDrawer(),
-    body: SafeArea(
-      child: SingleChildScrollView(
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          crossAxisAlignment: CrossAxisAlignment.center,
-          children: [
-            Location_Date_Widget(),
-            SizedBox(
-              height: 160,
-              width: 160,
-              child: MyAnalogClock(),
-            ),
+//   @override
+//   Widget build(BuildContext context) {
+//     return Scaffold(
+//     appBar: AppBar(
+//       title: Text('Home'),
+//     ),
+//     drawer: NavigationDrawer(),
+//     body: SafeArea(
+//       child: SingleChildScrollView(
+//         child: Column(
+//           mainAxisAlignment: MainAxisAlignment.center,
+//           crossAxisAlignment: CrossAxisAlignment.center,
+//           children: [
+//             Location_Date_Widget(),
+//             SizedBox(
+//               height: 160,
+//               width: 160,
+//               child: MyAnalogClock(),
+//             ),
             
-            if (weatherModel != null)
-            CurrentWeatherWidget(
-              temperature: weatherModel!.currentWeather["temperature"], 
-              weatherCode: weatherModel!.currentWeather["weathercode"], 
-              winddirection: weatherModel!.currentWeather["winddirection"], 
-              windspeed: weatherModel!.currentWeather["windspeed"], 
-              isDay: weatherModel!.currentWeather["is_day"]
-              ),
-              Positioned(
-                top: 600,
-                left: 50,
-                child: ElevatedButton(
-                  onPressed: () {
-                    Navigator.pushNamed(context, "/graph_pg");
-              },
-              child: Text("view predicted battery power & grid usage"),
-            ),
-                ),
-              Positioned(
-                child: ElevatedButton(
-                  onPressed: () {
-                    Navigator.pushNamed(context, "/fetch_pg");
-                  },
-                  child: Text('fetch weather conditions'),
-                ),
-              ),
-              Positioned(
-                child: ElevatedButton(
-                  onPressed: () {
-                    Navigator.pushNamed(context, "/weather_pg");
-                  },
-                  child: Text('weather page'),
-                ),
-              ),
-              Positioned(
-                child: ElevatedButton(
-                  onPressed: () {
-                    Navigator.pushNamed(context, "/devices");
-                  },
-                  child: Text('manage appliances'),
-                ),
-              ),
-              Positioned(
-                child: ElevatedButton(
-                  onPressed: () {
-                    Navigator.pushNamed(context, "/loadshedding_pg");
-                  },
-                  child: Text('loadshedding schedule'),
-                ),
-              ),
-          ],
-        ),
-      )
-      ),
-    );
-  }
-}
+//             if (weatherModel != null)
+//             CurrentWeatherWidget(
+//               temperature: weatherModel!.currentWeather["temperature"], 
+//               weatherCode: weatherModel!.currentWeather["weathercode"], 
+//               winddirection: weatherModel!.currentWeather["winddirection"], 
+//               windspeed: weatherModel!.currentWeather["windspeed"], 
+//               isDay: weatherModel!.currentWeather["is_day"]
+//               ),
+//               Positioned(
+//                 top: 600,
+//                 left: 50,
+//                 child: ElevatedButton(
+//                   onPressed: () {
+//                     Navigator.pushNamed(context, "/graph_pg");
+//               },
+//               child: Text("view predicted battery power & grid usage"),
+//             ),
+//                 ),
+//               Positioned(
+//                 child: ElevatedButton(
+//                   onPressed: () {
+//                     Navigator.pushNamed(context, "/fetch_pg");
+//                   },
+//                   child: Text('fetch weather conditions'),
+//                 ),
+//               ),
+//               Positioned(
+//                 child: ElevatedButton(
+//                   onPressed: () {
+//                     Navigator.pushNamed(context, "/weather_pg");
+//                   },
+//                   child: Text('weather page'),
+//                 ),
+//               ),
+//               Positioned(
+//                 child: ElevatedButton(
+//                   onPressed: () {
+//                     Navigator.pushNamed(context, "/devices");
+//                   },
+//                   child: Text('manage appliances'),
+//                 ),
+//               ),
+//               Positioned(
+//                 child: ElevatedButton(
+//                   onPressed: () {
+//                     Navigator.pushNamed(context, "/loadshedding_pg");
+//                   },
+//                   child: Text('loadshedding schedule'),
+//                 ),
+//               ),
+//           ],
+//         ),
+//       )
+//       ),
+//     );
+//   }
+// }
 
 class HomePage extends StatelessWidget {
   const HomePage({Key? key}) : super(key: key);
@@ -182,7 +181,7 @@ class HomePage extends StatelessWidget {
               onPressed: () {
                 Navigator.pushNamed(context, "/graph_pg");
               },
-              child: Text("Graph Page"),
+              child: Text("Prediction Graph"),
             ),
           ),
           Positioned(
@@ -242,7 +241,7 @@ class _NavigationDrawerState extends State<NavigationDrawer> {
   String Picture =
       'https://upload.wikimedia.org/wikipedia/en/a/a4/Hide_the_Pain_Harold_%28Andr%C3%A1s_Arat%C3%B3%29.jpg';
   String Name = 'Welcome';
-  var email = getCurrentUserId();
+  var email = userEmail;
 
   @override
   Widget build(BuildContext context) => Drawer(
@@ -294,6 +293,14 @@ class _NavigationDrawerState extends State<NavigationDrawer> {
             },
           ),
           ListTile(
+            leading: Icon(Icons.analytics),
+            title: Text('How the app works'),
+            onTap: () {
+               Navigator.of(context).push(
+                  MaterialPageRoute(builder: (context) => AppWorkings()));
+            },
+          ),
+          ListTile(
             leading: Icon(Icons.settings),
             title: Text('Settings'),
             onTap: () {
@@ -327,7 +334,7 @@ class _NavigationDrawerState extends State<NavigationDrawer> {
           ),
           ListTile(
             leading: Icon(Icons.solar_power),
-            title: Text('Devices'),
+            title: Text('Appliances'),
             onTap: () {
               Navigator.of(context).push(
                   MaterialPageRoute(builder: (context) => SelectDevice()));
