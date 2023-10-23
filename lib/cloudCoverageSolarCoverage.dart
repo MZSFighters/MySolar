@@ -8,7 +8,7 @@ class WeatherPage extends StatefulWidget {
 }
 
 class _WeatherPageState extends State<WeatherPage> {
-  final String apiKey = 'qmBPwJo9VEc60GAqP5A62xz26YfT9VV5';
+  final String apiKey = 'TH3IYCkKwK4nBak5R3jIZ8yUjAUty0sx';
   final String endpoint = 'http://dataservice.accuweather.com/forecasts/v1/hourly/12hour/305448';
 
   List<dynamic>? weatherData;
