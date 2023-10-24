@@ -4,7 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:mysolar/battery_output_calculation/finalOutputCalculation.dart';
 import 'package:mysolar/device_consumption_and_use/deviceConsumption.dart';
 import 'package:mysolar/features/user_auth/firebase_auth_implementation/firebase_auth_services.dart';
-import 'package:mysolar/graph/graph.dart';
+import 'package:mysolar/graph/graph_initiator.dart';
 import 'package:mysolar/themes/CustomTheme.dart';
 import 'package:mysolar/features/app/splash_screen/splash_screen.dart';
 import 'package:mysolar/features/user_auth/presentation/pages/home_page.dart';
@@ -14,7 +14,7 @@ import 'package:mysolar/weather/current_forecast.dart';
 import 'package:mysolar/load_shedding/load_shedding.dart';
 import 'package:mysolar/themes/themes.dart';
 import 'package:firebase_auth/firebase_auth.dart';
-
+import 'dart:math';
 import 'deviceList.dart';
 import 'cloudCoverageSolarCoverage.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
@@ -109,61 +109,41 @@ String? getCurrentUserId() {
   return user?.uid;
 }
 
-// get the consumpiton data for each hour
-Future<List<double>> calculateHourlyConsumption() async {
-  String? userId = getCurrentUserId();
+// // get the consumpiton data for each hour
+// Future<List<double>> calculateHourlyConsumption() async {
+//   String? userId = getCurrentUserId();
 
-  if (userId == null) {
-    throw Exception("User is not logged in");
-  }
-  FirebaseFirestore firestore = FirebaseFirestore.instance;
-  DeviceConsumption deviceConsumption =
-      DeviceConsumption(userId: userId, firestore: firestore);
+//   if (userId == null) {
+//     throw Exception("User is not logged in");
+//   }
+//   FirebaseFirestore firestore = FirebaseFirestore.instance;
+//   DeviceConsumption deviceConsumption =
+//       DeviceConsumption(userId: userId, firestore: firestore);
 
-  // Get the hourly consumption data from devices
-  List<double> deviceHourlyConsumption =
-      await deviceConsumption.calculateHourlyConsumption();
+//   // Get the hourly consumption data from devices
+//   List<double> deviceHourlyConsumption =
+//       await deviceConsumption.calculateHourlyConsumption();
 
-  return deviceHourlyConsumption;
-}
+//   return deviceHourlyConsumption;
+// }
 
-// get devices on at each hour
+// // get devices on at each hour
 
-Future<List<List<String>>> calculateDevicesOnEachHour() async {
-  String? userId = getCurrentUserId();
+// Future<List<List<String>>> calculateDevicesOnEachHour() async {
+//   String? userId = getCurrentUserId();
 
-  if (userId == null) {
-    throw Exception("User is not logged in");
-  }
-  FirebaseFirestore firestore = FirebaseFirestore.instance;
-  DeviceConsumption deviceConsumption =
-      DeviceConsumption(userId: userId, firestore: firestore);
+//   if (userId == null) {
+//     throw Exception("User is not logged in");
+//   }
+//   FirebaseFirestore firestore = FirebaseFirestore.instance;
+//   DeviceConsumption deviceConsumption =
+//       DeviceConsumption(userId: userId, firestore: firestore);
 
-  // get the list of devices on for each hour
-  List<List<String>> devicesOnEachHour =
-      await deviceConsumption.devicesOnEachHour();
-  return devicesOnEachHour;
-}
-
-//final energy usage :
-Future<List<Map<String, dynamic>>> finalOutputData() async {
-  List<double> consumptionData = await calculateHourlyConsumption();
-
-  FinalOutputCalculation finalCalculation = FinalOutputCalculation(
-    batterySize: 10.0, // dummy
-    lowestBatteryPercentage: 10, //  dummy
-    maxPower: 15.0, //dummy value
-    consumptionData: consumptionData, //fetched data
-  );
-
-  List<Map<String, dynamic>> outputData =
-      await finalCalculation.calculateFinalOutput();
-  return outputData;
-}
-
-final Future<List<Map<String, dynamic>>> outputData = finalOutputData();
-
-final Future<List<double>> consumptionData = calculateHourlyConsumption();
+//   // get the list of devices on for each hour
+//   List<List<String>> devicesOnEachHour =
+//       await deviceConsumption.devicesOnEachHour();
+//   return devicesOnEachHour;
+// }
 
 Future main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -212,11 +192,7 @@ class MyApp extends StatelessWidget {
         '/devices': (context) => SelectDevice(),
         '/weather_pg': (context) => CurrentWeatherPage(),
         '/loadshedding_pg': (context) => LoadShedding(),
-        '/graph_pg': (context) => BatteryGraph(
-              batterySize: 10,
-              hourlyKwFuture: finalOutputData(),
-              hourlyAppliancesFuture: calculateDevicesOnEachHour(),
-            ),
+        '/graph_pg': (context) => GraphInitiator(),
         '/fetch_pg': (context) => WeatherPage(),
       },
     );
