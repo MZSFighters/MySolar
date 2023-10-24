@@ -2,12 +2,14 @@ import 'package:flutter/material.dart';
 import 'package:mysolar/graph/graphDisplay.dart';
 
 class BatteryGraph extends StatelessWidget {
-  final double batterySize;
+  final double maxOutput;
+  final double possibleStorage;
   final Future<List<Map<String, dynamic>>> hourlyKwFuture;
   final Future<List<List<String>>> hourlyAppliancesFuture;
 
   BatteryGraph({
-    required this.batterySize,
+    required this.maxOutput,
+    required this.possibleStorage,
     required this.hourlyKwFuture,
     required this.hourlyAppliancesFuture,
   });
@@ -40,7 +42,7 @@ class BatteryGraph extends StatelessWidget {
               } else {
                 List<Map<String, dynamic>> hourlyKw = snapshotKw.data!;
                 List<List<String>> hourlyAppliances = snapshotAppliances.data!;
-                return BatteryGraphDisplay(batterySize: batterySize, hourlyKw: hourlyKw, hourlyAppliances: hourlyAppliances); 
+                return BatteryGraphDisplay(maxOutput: maxOutput,possibleStorage: possibleStorage, hourlyKw: hourlyKw, hourlyAppliances: hourlyAppliances); 
               }
             },
           );
