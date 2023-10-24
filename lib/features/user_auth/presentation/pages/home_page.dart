@@ -191,7 +191,7 @@ class HomePage extends StatelessWidget {
               onPressed: () {
                 Navigator.pushNamed(context, "/fetch_pg");
               },
-              child: Text("fetch weather"),
+              child: Text("Weather Data"),
             ),
           ),
           Positioned(
