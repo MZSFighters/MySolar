@@ -23,20 +23,21 @@ class _SelectDeviceState extends State<SelectDevice> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold( // used to be container incase problems
-        floatingActionButton: addDeviceWidget(),
-        floatingActionButtonLocation: FloatingActionButtonLocation.centerFloat,
-        appBar: AppBar(
-            // leading: BackButton(
-            //   onPressed: () => Navigator.of(context).pop(),
-            // ),
-            title: Center(child: Text("Your Appliances"))),
-        body: Column(
-          children: [
-            Expanded(child: DeviceList()),
-          ],
-        ),
-      );
+    return Scaffold(
+      // used to be container incase problems
+      floatingActionButton: addDeviceWidget(),
+      floatingActionButtonLocation: FloatingActionButtonLocation.centerFloat,
+      appBar: AppBar(
+          // leading: BackButton(
+          //   onPressed: () => Navigator.of(context).pop(),
+          // ),
+          title: Center(child: Text("Your Appliances"))),
+      body: Column(
+        children: [
+          Expanded(child: DeviceList()),
+        ],
+      ),
+    );
   }
 }
 
@@ -91,10 +92,11 @@ class _CustomListTileState extends State<CustomListTile> {
   Widget build(BuildContext context) {
     Device device = Device.devices.firstWhere((element) =>
         element.id == widget.snapshot.data!.docs.elementAt(widget.index).id);
+    print(device.checkIfOn(DateTime.now()));
     return GestureDetector(
       onTap: () async {
         setState(() {
-          device.on = !device.on;
+          device.manual = !device.manual;
         });
       },
       child: Card(
@@ -106,9 +108,9 @@ class _CustomListTileState extends State<CustomListTile> {
         child: Container(
             decoration: BoxDecoration(
                 borderRadius: BorderRadius.circular(15.0),
-                color: !device.on
-                    ? Color.fromRGBO(126, 126, 126, 0.894)
-                    : Color.fromRGBO(134, 182, 255, 0.878)),
+                color: device.checkIfOn(DateTime.now())
+                    ? Color.fromRGBO(236, 155, 48, 0.886)
+                    : Color.fromRGBO(238, 245, 255, 0.875)),
             child: makeListTile(device)),
       ),
     );
@@ -146,95 +148,102 @@ class _CustomListTileState extends State<CustomListTile> {
         return Dialog(
           child: Padding(
             padding: const EdgeInsets.all(20.0),
-            child: Column(
-              children: [
-                Padding(
-                  padding: const EdgeInsets.only(bottom: 30.0),
-                  child: Text(
-                    "Modify Appliance",
-                    style: TextStyle(
-                      fontWeight: FontWeight.bold,
-                      fontSize: 20.0,
+            child: SingleChildScrollView(
+              child: Column(
+                mainAxisSize: MainAxisSize.min,
+                children: [
+                  Padding(
+                    padding: const EdgeInsets.only(bottom: 30.0),
+                    child: Text(
+                      "Modify Appliance",
+                      style: TextStyle(
+                        fontWeight: FontWeight.bold,
+                        fontSize: 20.0,
+                      ),
                     ),
                   ),
-                ),
-                Center(child: Text("Appliance Name")),
-                Form(
-                  key: nameFormKey,
-                  child: TextFormField(
-                    controller: _nameController,
-                    validator: validateNameInput,
+                  Center(child: Text("Appliance Name")),
+                  Form(
+                    key: nameFormKey,
+                    child: TextFormField(
+                      controller: _nameController,
+                      validator: validateNameInput,
+                    ),
                   ),
-                ),
-                Center(child: Text("Start Time")),
-                Form(
-                  key: startTimeFormKey,
-                  child: TextFormField(
-                    validator: validateTimeInput,
-                    controller: _startTimeController,
-                    keyboardType: TextInputType.numberWithOptions(
-                        decimal: true), // Show numeric keyboard
-                    inputFormatters: [
-                      MaskedInputFormatter('##:##')
-                    ], // Allow numbers and a decimal point
+                  Center(child: Text("Start Time")),
+                  Form(
+                    key: startTimeFormKey,
+                    child: TextFormField(
+                      validator: validateTimeInput,
+                      controller: _startTimeController,
+                      keyboardType: TextInputType.numberWithOptions(
+                          decimal: true), // Show numeric keyboard
+                      inputFormatters: [
+                        MaskedInputFormatter('##:##')
+                      ], // Allow numbers and a decimal point
+                    ),
                   ),
-                ),
-                Text("end time"),
-                Form(
-                  key: endTimeFormKey,
-                  child: TextFormField(
-                    validator: validateTimeInput,
-                    controller: _endTimeController,
-                    keyboardType:
-                        TextInputType.numberWithOptions(decimal: true),
-                    inputFormatters: [MaskedInputFormatter('##:##')],
+                  Text("end time"),
+                  Form(
+                    key: endTimeFormKey,
+                    child: TextFormField(
+                      validator: validateTimeInput,
+                      controller: _endTimeController,
+                      keyboardType:
+                          TextInputType.numberWithOptions(decimal: true),
+                      inputFormatters: [MaskedInputFormatter('##:##')],
+                    ),
                   ),
-                ),
-                Text("Power Consumption (kw/h)"),
-                Form(
-                  key: powerFormKey,
-                  child: TextFormField(
-                    validator: validatePowerInput,
-                    controller: _kwController,
-                    keyboardType:
-                        TextInputType.numberWithOptions(decimal: true),
+                  Text("Power Consumption (kw/h)"),
+                  Form(
+                    key: powerFormKey,
+                    child: TextFormField(
+                      validator: validatePowerInput,
+                      controller: _kwController,
+                      keyboardType:
+                          TextInputType.numberWithOptions(decimal: true),
+                    ),
                   ),
-                ),
-                Row(
-                  children: [
-                    Padding(
-                      padding: EdgeInsets.only(right: 40),
-                      child: TextButton(
-                          style: TextButton.styleFrom(
-                              backgroundColor: Colors.blue),
-                          onPressed: () {
-                            if (nameFormKey.currentState!.validate() &&
-                                powerFormKey.currentState!.validate() &&
-                                startTimeFormKey.currentState!.validate() &&
-                                endTimeFormKey.currentState!.validate()) {
-                              update(device, _startTimeController,
-                                  _endTimeController);
+                  Row(
+                    children: [
+                      Padding(
+                        padding: EdgeInsets.only(right: 40),
+                        child: TextButton(
+                            style: TextButton.styleFrom(
+                                backgroundColor: Colors.blue),
+                            onPressed: () {
+                              if (nameFormKey.currentState!.validate() &&
+                                  powerFormKey.currentState!.validate() &&
+                                  startTimeFormKey.currentState!.validate() &&
+                                  endTimeFormKey.currentState!.validate()) {
+                                update(
+                                    device,
+                                    _startTimeController,
+                                    _endTimeController,
+                                    _nameController,
+                                    _kwController);
+                                Navigator.pop(dialogContext);
+                              }
+                            },
+                            child: Text("Update",
+                                style: TextStyle(color: Colors.white))),
+                      ),
+                      Padding(
+                        padding: EdgeInsets.only(left: 40),
+                        child: TextButton(
+                            style: TextButton.styleFrom(
+                                backgroundColor: Colors.red),
+                            onPressed: () {
+                              delete(device);
                               Navigator.pop(dialogContext);
-                            }
-                          },
-                          child: Text("Update",
-                              style: TextStyle(color: Colors.white))),
-                    ),
-                    Padding(
-                      padding: EdgeInsets.only(left: 40),
-                      child: TextButton(
-                          style:
-                              TextButton.styleFrom(backgroundColor: Colors.red),
-                          onPressed: () {
-                            delete(device);
-                            Navigator.pop(dialogContext);
-                          },
-                          child: Text("delete",
-                              style: TextStyle(color: Colors.black))),
-                    ),
-                  ],
-                )
-              ],
+                            },
+                            child: Text("delete",
+                                style: TextStyle(color: Colors.black))),
+                      ),
+                    ],
+                  )
+                ],
+              ),
             ),
           ),
         );
@@ -271,9 +280,15 @@ class _CustomListTileState extends State<CustomListTile> {
     return null;
   }
 
-  update(Device device, TextEditingController startTimeController,
-      TextEditingController endTimeController) {
+  update(
+      Device device,
+      TextEditingController startTimeController,
+      TextEditingController endTimeController,
+      TextEditingController nameController,
+      TextEditingController kwController) {
     var time = Time.makeTime(startTimeController.text, endTimeController.text);
+    device.name = nameController.text;
+    device.kw = int.parse(kwController.text);
     device.time = time;
     DataRepository.updateDevice(device);
   }
@@ -283,7 +298,6 @@ class _CustomListTileState extends State<CustomListTile> {
   }
 
   makeListTile(Device device) {
-    device.checkIfOn();
     return ListTile(
       title: Row(
         children: [
@@ -291,6 +305,12 @@ class _CustomListTileState extends State<CustomListTile> {
             device.name,
             style: TextStyle(color: Colors.black, fontWeight: FontWeight.bold),
           ),
+          if (device.manual == true)
+            Text(
+              " (Manual)",
+              style:
+                  TextStyle(color: Colors.black, fontWeight: FontWeight.bold),
+            ),
         ],
       ),
       subtitle: Column(

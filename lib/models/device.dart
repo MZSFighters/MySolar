@@ -6,6 +6,7 @@ class Device {
   String name;
   int kw;
   Time time;
+  bool manual = false;
   bool on = false; //by default devices are off,
 
   static List<Device> devices =
@@ -19,12 +20,13 @@ class Device {
     this.userId,
   });
 
-  bool checkIfOn() {
-    final currentTime = DateTime.now();
+  bool checkIfOn(final checkTime) {
+    if (manual) {
+      return on;
+    }
 
-    int hours = currentTime.hour;
-    int minutes = currentTime.minute;
-
+    int hours = checkTime.hour;
+    int minutes = checkTime.minute;
     int timeInMinutes = hours * 60 + minutes;
 
     if (time.sameDay == true)
@@ -40,7 +42,7 @@ class Device {
         return true;
       }
     }
-
+    // if its we got to this point the device must be automatically set to off
     on = false;
     return false;
   }
