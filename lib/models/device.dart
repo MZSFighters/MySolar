@@ -6,7 +6,7 @@ class Device {
   String name;
   int kw;
   Time time;
-  bool manual = false;
+  String manualState = "";
   bool on = false; //by default devices are off,
 
   static List<Device> devices =
@@ -21,8 +21,17 @@ class Device {
   });
 
   bool checkIfOn(final checkTime) {
-    if (manual) {
-      return on;
+    if (manualState != "") //then its in manual mode
+    {
+      if (manualState == "on") //device is manually on
+      {
+        on = true;
+        return true;
+      } else if (manualState == "Off") // device is manually off
+      {
+        on = false;
+        return false;
+      }
     }
 
     int hours = checkTime.hour;

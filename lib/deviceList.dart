@@ -92,11 +92,16 @@ class _CustomListTileState extends State<CustomListTile> {
   Widget build(BuildContext context) {
     Device device = Device.devices.firstWhere((element) =>
         element.id == widget.snapshot.data!.docs.elementAt(widget.index).id);
-    print(device.checkIfOn(DateTime.now()));
     return GestureDetector(
       onTap: () async {
         setState(() {
-          device.manual = !device.manual;
+          if (device.manualState == "") {
+            device.manualState = "off";
+          } else if (device.manualState == "off") {
+            device.manualState = "on";
+          } else {
+            device.manualState = "";
+          }
         });
       },
       child: Card(
@@ -305,9 +310,9 @@ class _CustomListTileState extends State<CustomListTile> {
             device.name,
             style: TextStyle(color: Colors.black, fontWeight: FontWeight.bold),
           ),
-          if (device.manual == true)
+          if (device.manualState != "")
             Text(
-              " (Manual)",
+              " (manually set ${device.manualState})",
               style:
                   TextStyle(color: Colors.black, fontWeight: FontWeight.bold),
             ),
