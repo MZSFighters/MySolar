@@ -1,18 +1,16 @@
-name: Flutter CI
+name: Flutter Test
 
 on: [push, pull_request]
 
 jobs:
-  build:
+  test:
     runs-on: ubuntu-latest
+
+    container:
+      image: cirrusci/flutter:stable
 
     steps:
       - uses: actions/checkout@v2
-
-      - name: Setup Flutter
-        uses: subosito/flutter-action@v2
-        with:
-          flutter-version: '3.1.0' 
 
       - name: Install dependencies
         run: flutter pub get
