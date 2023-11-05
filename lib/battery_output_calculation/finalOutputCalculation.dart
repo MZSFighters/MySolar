@@ -1,4 +1,6 @@
 import 'solarPowerProduced.dart';
+import 'fetchWeatherData.dart';
+
 
 class FinalOutputCalculation {
   final double batterySize; 
@@ -13,10 +15,14 @@ class FinalOutputCalculation {
     required this.consumptionData,
   });
 
+  
+
   Future<List<Map<String, dynamic>>> calculateFinalOutput() async {
+    WeatherService weatherService = WeatherService();
+    List<List<dynamic>> weatherData = await weatherService.fetchWeatherData();
 
     SolarPowerProduced solarPower = SolarPowerProduced(maxOutput: maxPower);
-    List<Map<String, dynamic>> solarOutputData = await solarPower.calculateSolarOutput();
+    List<Map<String, dynamic>> solarOutputData = await solarPower.calculateSolarOutput(weatherData);
 
     List<Map<String, dynamic>> finalOutput = [];
 
