@@ -8,31 +8,32 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-    - uses: actions/checkout@v2
+      - uses: actions/checkout@v2
 
-    - name: Setup Flutter
-      uses: subosito/flutter-action@v2
+      - name: Setup Flutter
+        uses: subosito/flutter-action@v2
 
-    - name: Install dependencies
-      run: flutter pub get
+      - name: Install dependencies
+        run: flutter pub get
 
-    - name: Run unit tests
-      run: flutter test
+      - name: Run unit tests
+        run: flutter test
 
   integration-tests:
     name: Run Integration Tests
     needs: unit-tests
     runs-on: ubuntu-latest
 
-        steps:
-      - name: Checkout repository
-        uses: actions/checkout@v2
-      
-      - name: Set up Flutter
-        uses: subosito/flutter-action@v1
-        with:
-          flutter-version: '3.0.5' # specify the Flutter version
+    steps:
+      - uses: actions/checkout@v2
 
+      - name: Setup Flutter
+        uses: subosito/flutter-action@v2
+
+      - name: Install dependencies
+        run: flutter pub get
+
+ 
       - name: Install Android SDK
         run: |
           sudo apt-get update
@@ -40,13 +41,14 @@ jobs:
 
       - name: Set up Android Emulator
         run: |
+          echo "y" | sudo $ANDROID_HOME/tools/bin/sdkmanager --licenses
           echo "y" | sudo $ANDROID_HOME/tools/bin/sdkmanager "system-images;android-29;default;x86"
           echo "no" | sudo $ANDROID_HOME/tools/bin/avdmanager create avd -n test -k "system-images;android-29;default;x86"
-          $ANDROID_HOME/emulator/emulator -avd test -no-window -no-audio -no-boot-anim &
-          $ANDROID_HOME/platform-tools/adb wait-for-device get-serialno
-          $ANDROID_HOME/platform-tools/adb shell input keyevent 82 &
+          sudo $ANDROID_HOME/emulator/emulator -avd test -no-window -no-audio -no-boot-anim &
+          sudo $ANDROID_HOME/platform-tools/adb wait-for-device
+          sudo $ANDROID_HOME/platform-tools/adb shell input keyevent 82 &
 
-      - name: Run tests
+      - name: Run integration tests
         run: |
           flutter devices
           flutter test integration_test
