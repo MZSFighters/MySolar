@@ -9,10 +9,13 @@ jobs:
 
     steps:
       - uses: actions/checkout@v2
+
       - name: Setup Flutter
         uses: subosito/flutter-action@v2
+
       - name: Install dependencies
         run: flutter pub get
+
       - name: Run unit tests
         run: flutter test
 
@@ -23,14 +26,32 @@ jobs:
 
     steps:
       - uses: actions/checkout@v2
+
       - name: Setup Flutter
         uses: subosito/flutter-action@v2
+
       - name: Install dependencies
         run: flutter pub get
+
+      - name: Setup java environment
+        uses: actions/setup-java@v2
+        with:
+          distribution: 'temurin' # AdoptOpenJDK is now part of the Eclipse Foundation
+          java-version: '11'
+
       - name: Run integration tests on Emulator
         uses: reactivecircus/android-emulator-runner@v2
         with:
           api-level: 29
           arch: x86
           profile: Nexus 6
+          emulator-options: "-no-boot-anim -no-snapshot-load -no-window"
           script: flutter test integration_test
+
+      - name: Wait for Emulator
+        run: |
+          until adb devices | grep -e "device$" -e "device product"; do sleep 5; done
+
+      - name: Run integration tests
+        run: flutter test integration_test
+
