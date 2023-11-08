@@ -33,25 +33,46 @@ jobs:
       - name: Install dependencies
         run: flutter pub get
 
-      - name: Setup java environment
+      - name: Set up JDK 11
         uses: actions/setup-java@v2
         with:
-          distribution: 'temurin' # AdoptOpenJDK is now part of the Eclipse Foundation
           java-version: '11'
+          distribution: 'adopt'
 
-      - name: Run integration tests on Emulator
-        uses: reactivecircus/android-emulator-runner@v2
-        with:
-          api-level: 29
-          arch: x86
-          profile: Nexus 6
-          emulator-options: "-no-boot-anim -no-snapshot-load -no-window"
-          script: flutter test integration_test
-
-      - name: Wait for Emulator
+      - name: Install Android SDK
         run: |
-          until adb devices | grep -e "device$" -e "device product"; do sleep 5; done
+          sudo apt-get update
+          sudo apt-get install -y --no-install-recommends \
+              build-essential \
+              file \
+              apt-utils \
+              libc6-i386 \
+              lib32stdc++6 \
+              lib32gcc1 \
+              lib32ncurses5 \
+              lib32z1 \
+              curl \
+              unzip \
+              libqt5widgets5
+          wget -q "https://dl.google.com/android/repository/commandlinetools-linux-7583922_latest.zip" -O cmdlinetools.zip
+          unzip -q cmdlinetools.zip -d ${HOME}/cmdlinetools
+          echo "${HOME}/cmdlinetools/cmdline-tools/bin" >> $GITHUB_PATH
+          mkdir -p ${HOME}/.android && touch ${HOME}/.android/repositories.cfg
+          yes | cmdline-tools/bin/sdkmanager --licenses
+          cmdline-tools/bin/sdkmanager "platform-tools" "platforms;android-29" "build-tools;29.0.3" "emulator" "system-images;android-29;default;x86"
+          echo "no" | cmdline-tools/bin/avdmanager create avd --force --name test --device "pixel" --package "system-images;android-29;default;x86" --abi "x86" --tag "default"
+
+      - name: Start Android Emulator
+        run: |
+          ${HOME}/cmdlinetools/cmdline-tools/bin/emulator -avd test -no-audio -no-boot-anim -no-window -accel off &
+          sleep 30 # Wait for emulator to start
+
+      - name: Wait for Emulator to finish booting
+        run: |
+          adb wait-for-device shell 'while [[ -z $(getprop sys.boot_completed) ]]; do sleep 1; done;'
+
+      - name: Unlock Emulator Screen
+        run: adb shell input keyevent 82
 
       - name: Run integration tests
         run: flutter test integration_test
-
