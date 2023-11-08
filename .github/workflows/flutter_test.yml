@@ -9,13 +9,10 @@ jobs:
 
     steps:
       - uses: actions/checkout@v2
-
       - name: Setup Flutter
         uses: subosito/flutter-action@v2
-
       - name: Install dependencies
         run: flutter pub get
-
       - name: Run unit tests
         run: flutter test
 
@@ -26,29 +23,14 @@ jobs:
 
     steps:
       - uses: actions/checkout@v2
-
       - name: Setup Flutter
         uses: subosito/flutter-action@v2
-
       - name: Install dependencies
         run: flutter pub get
-
- 
-      - name: Install Android SDK
-        run: |
-          sudo apt-get update
-          sudo apt-get install -y android-sdk
-
-      - name: Set up Android Emulator
-        run: |
-          echo "y" | sudo $ANDROID_HOME/tools/bin/sdkmanager --licenses
-          echo "y" | sudo $ANDROID_HOME/tools/bin/sdkmanager "system-images;android-29;default;x86"
-          echo "no" | sudo $ANDROID_HOME/tools/bin/avdmanager create avd -n test -k "system-images;android-29;default;x86"
-          sudo $ANDROID_HOME/emulator/emulator -avd test -no-window -no-audio -no-boot-anim &
-          sudo $ANDROID_HOME/platform-tools/adb wait-for-device
-          sudo $ANDROID_HOME/platform-tools/adb shell input keyevent 82 &
-
-      - name: Run integration tests
-        run: |
-          flutter devices
-          flutter test integration_test
+      - name: Run integration tests on Emulator
+        uses: reactivecircus/android-emulator-runner@v2
+        with:
+          api-level: 29
+          arch: x86
+          profile: Nexus 6
+          script: flutter test integration_test
