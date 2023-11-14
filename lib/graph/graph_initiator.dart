@@ -52,8 +52,10 @@ class GraphInitiator extends StatelessWidget {
             } else if (snapshotKw.hasError) {
               return Scaffold(body: Center(child: Text('Error: ${snapshotKw.error}')));
             }
+            List<Map<String, dynamic>> hourlyKw = snapshotKw.data!;
+            int apiHour = int.parse(hourlyKw[0]['hour'].split(':')[0]);
 
-            final Future<List<List<String>>> minutelyAppliancesFuture = DeviceConsumption(userId: userId, firestore: firestore).devicesOnEachMinute();
+            final Future<List<List<String>>> minutelyAppliancesFuture = DeviceConsumption(userId: userId, firestore: firestore).devicesOnEachMinute(apiHour);
             final Future<List<List<int>>> loadSheddingScheduleFuture = FetchTodaysLoadSheddingSchedule().getCurrentDayLoadShedding();
 
             return FutureBuilder<List<List<String>>>(
@@ -74,7 +76,7 @@ class GraphInitiator extends StatelessWidget {
                       return Scaffold(body: Center(child: Text('Error: ${snapshotLoadShedding.error}')));
                     }
 
-                    List<Map<String, dynamic>> hourlyKw = snapshotKw.data!;
+
                     List<List<String>> minutelyAppliances = snapshotAppliances.data!;
                     List<List<int>>? loadShedding = snapshotLoadShedding.data!;
 
