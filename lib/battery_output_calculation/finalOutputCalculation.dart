@@ -5,7 +5,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 
 class FinalOutputCalculation {
   final double batterySize; 
-  final int lowestBatteryPercentage; 
+  final double lowestBatteryPercentage; 
   final double maxPower;
   final String userID;
   final FirebaseFirestore firestore;

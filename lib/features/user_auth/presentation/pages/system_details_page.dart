@@ -7,14 +7,14 @@ import 'package:mysolar/features/user_auth/firebase_auth_implementation/firebase
 import 'package:photo_view/photo_view.dart';
 
 
-class SystemDetails extends StatefulWidget {
-  const SystemDetails({super.key});
+class systemDetailsIInformation extends StatefulWidget {
+  const systemDetailsIInformation({super.key});
 
   @override
-  State<SystemDetails> createState() => _SystemDetailsPage();
+  State<systemDetailsIInformation> createState() => _systemDetailsIInformationPage();
 }
 
-class _SystemDetailsPage extends State<SystemDetails> {
+class _systemDetailsIInformationPage extends State<systemDetailsIInformation> {
 
   final FirebaseAuthService _auth = FirebaseAuthService();
 
@@ -102,7 +102,7 @@ class _SystemDetailsPage extends State<SystemDetails> {
                 SizedBox(height: 30),
                 _buildInputRow("[1] Solar Panels Max Output (kW/hr) :", _maxPowerOutputController),
                 _buildInputRow("[2] Maximum Battery Storage (kW) :", _batteryCapacityController),
-                _buildInputRow("[3] Lowest Acceptance Battery Percentage % :", _lowestBatteryPercentageController, isPercentage: true),
+                _buildInputRow("[3] Lowest Acceptable Battery Percentage % :", _lowestBatteryPercentageController, isPercentage: true),
                 _buildInputRow("[4] Maximum Inverter Power Threshold (kW)", _maxInverterCapacityController),
                 SizedBox(height: 30),
                 GestureDetector(
@@ -189,11 +189,11 @@ void _openZoomableImage(BuildContext context) {
       DatabaseReference dbRef = FirebaseDatabase.instance.ref("systemDetailsInformation/$USER");
       final user = FirebaseAuth.instance.currentUser;
       final uid = user?.uid;
-      String maxPowerOutput = _maxPowerOutputController.text;
-      String batteryCapacity = _batteryCapacityController.text;
-      String lowestBatteryPercentage = _lowestBatteryPercentageController.text;
-      String maxInverterCapacity = _maxInverterCapacityController.text;
-      Map<String, String> powerInfo = {
+      double maxPowerOutput = double.parse(_maxPowerOutputController.text);
+      double batteryCapacity = double.parse(_batteryCapacityController.text);
+      double lowestBatteryPercentage = double.parse(_lowestBatteryPercentageController.text);
+      double maxInverterCapacity = double.parse(_maxInverterCapacityController.text);
+      Map<String, dynamic> powerInfo = {
         'userID': uid.toString(),
         'maxPowerOutput': maxPowerOutput,
         'batteryCapacity': batteryCapacity,
