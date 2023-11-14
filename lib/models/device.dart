@@ -4,7 +4,7 @@ class Device {
   String? userId;
   String? id;
   String name;
-  int kw;
+  double kw;
   Time time;
   String manualState;
   bool on = false; //by default devices are off,
@@ -75,7 +75,7 @@ class Device {
       };
 
   // power usage method that calculates the power usage for the current hour
-  int calculatePowerUsageForHour(DateTime currentTime) {
+  double calculatePowerUsageForHour(DateTime currentTime) {
     int timeInMinutes =
         currentTime.hour * 60 + currentTime.minute; // time in minutes
 
@@ -112,7 +112,7 @@ class PowerUsageTracker {
         DateTime currentHourTime = currentDate.add(Duration(hours: hour));
 
         //  calculating the power usage for the current hour for the device
-        int powerUsage = device.calculatePowerUsageForHour(currentHourTime);
+        double powerUsage = device.calculatePowerUsageForHour(currentHourTime);
 
         // adding the device to the list for this hour if there is power usage
         if (powerUsage != 0) {

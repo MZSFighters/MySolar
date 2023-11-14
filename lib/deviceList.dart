@@ -284,8 +284,8 @@ class _CustomListTileState extends State<CustomListTile> {
       return "Must specify a power value";
     }
 
-    if (int.tryParse(value) == null) {
-      return "must be a valid integer value";
+    if (double.tryParse(value) == null) {
+      return "must be a valid float value";
     }
 
     return null;
@@ -299,7 +299,7 @@ class _CustomListTileState extends State<CustomListTile> {
       TextEditingController kwController) {
     var time = Time.makeTime(startTimeController.text, endTimeController.text);
     device.name = nameController.text;
-    device.kw = int.parse(kwController.text);
+    device.kw = double.parse(kwController.text);
     device.time = time;
     DataRepository.updateDevice(device);
   }

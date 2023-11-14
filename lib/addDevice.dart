@@ -147,7 +147,7 @@ class _addDeviceWidgetState extends State<addDeviceWidget> {
                                       time: Time.makeTime(
                                           _startTimeController.text,
                                           _endTimeController.text),
-                                      kw: int.parse(_kwController.text));
+                                      kw: double.parse(_kwController.text));
 
                                   DataRepository.addDevice(device);
                                   _nameController.text = "";
@@ -192,7 +192,7 @@ class _addDeviceWidgetState extends State<addDeviceWidget> {
       return "Must specify a power value";
     }
 
-    if (int.tryParse(value) == null) {
+    if (double.tryParse(value) == null) {
       return "must be a valid integer value";
     }
 

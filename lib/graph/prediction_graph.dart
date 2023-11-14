@@ -20,8 +20,7 @@ class _RedSquarePainter extends CustomPainter {
   }
 }
 
-
-class   PredictionGraph extends StatelessWidget {
+class PredictionGraph extends StatelessWidget {
   final double maxOutput;
   final double possibleStorage;
   final List<Map<String, dynamic>> hourlyKw;
@@ -38,24 +37,26 @@ class   PredictionGraph extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-
     //*******************  MULTICOLOURING THE GRAPH ***************************/
 
     // compute blue colour for solar panel production and green for battery storage and grid use orange
     // here the graph shows in its display that solar panel power production is used only when the battery is full
-    // When battery is full, the consumption uses both battery and solar 
+    // When battery is full, the consumption uses both battery and solar
     // else it uses just battery
 
-  List<FlSpot> spotsAboveStorage = []; // the area below will be blue untill possible storage
-  List<FlSpot> spotsBelowStorage = []; //the area below possible storage will be breen untill  zero 
-  List<FlSpot> gridSpots = [];  // the area above will be orange // when wehave negative values
-
+    List<FlSpot> spotsAboveStorage =
+        []; // the area below will be blue untill possible storage
+    List<FlSpot> spotsBelowStorage =
+        []; //the area below possible storage will be breen untill  zero
+    List<FlSpot> gridSpots =
+        []; // the area above will be orange // when wehave negative values
 
     for (var spot in generateData()) {
       if (spot.y >= possibleStorage) {
         spotsAboveStorage.add(spot);
-        spotsBelowStorage.add(FlSpot(spot.x, possibleStorage)); //still exists below storage //these spots should not be clickable
-      } else if (spot.y < possibleStorage && spot.y >= 0){
+        spotsBelowStorage.add(FlSpot(spot.x,
+            possibleStorage)); //still exists below storage //these spots should not be clickable
+      } else if (spot.y < possibleStorage && spot.y >= 0) {
         spotsBelowStorage.add(spot);
       } else {
         gridSpots.add(spot);
@@ -64,33 +65,33 @@ class   PredictionGraph extends StatelessWidget {
 
     // depending on maxOuput and possible storage , we have to adjust the y values visible on graph
     double yInterval = maxOutput + possibleStorage;
-    double minY = -double.parse((yInterval).toStringAsFixed(0)) - 3; //-3 for extra space to view down
-    double maxY = double.parse((yInterval).toStringAsFixed(0)) + 3; // give extra space to view top
+    double minY = -double.parse((yInterval).toStringAsFixed(0)) -
+        3; //-3 for extra space to view down
+    double maxY = double.parse((yInterval).toStringAsFixed(0)) +
+        3; // give extra space to view top
 
-    // find start hour 
+    // find start hour
     String startHour = hourlyKw[0]['hour'];
     List<String> parts = startHour.split(':');
-    int startMinutes = int.parse(parts[0]) * 60;// our minx which is 0
-    print(startMinutes);
-    print(loadShedding);
+    int startMinutes = int.parse(parts[0]) * 60; // our minx which is 0
 
     //adjust loadshedding time list to show on our graph x axis from 0 to 719 correctly
-    
-    List<List<int>> adjusted =[];
-    if(loadShedding.length >= 1){
-      for(int i = 0; i < loadShedding.length; i++){
-      int start = loadShedding[i][0];
-      int end = loadShedding[i][1];
 
-      if(start < end){
-        adjusted.add([start - startMinutes,end-startMinutes]);
-      }else{
-        adjusted.add([start - startMinutes,end+1440-startMinutes]); //next day
+    List<List<int>> adjusted = [];
+    if (loadShedding.length >= 1) {
+      for (int i = 0; i < loadShedding.length; i++) {
+        int start = loadShedding[i][0];
+        int end = loadShedding[i][1];
+
+        if (start < end) {
+          adjusted.add([start - startMinutes, end - startMinutes]);
+        } else {
+          adjusted.add(
+              [start - startMinutes, end + 1440 - startMinutes]); //next day
+        }
       }
-
     }
-    }
-      print(adjusted);
+    print(adjusted);
 
     return Scaffold(
       appBar: AppBar(
@@ -98,302 +99,297 @@ class   PredictionGraph extends StatelessWidget {
       ),
       body: Padding(
         padding: const EdgeInsets.all(8.0),
-         child: Column(
-    crossAxisAlignment: CrossAxisAlignment.stretch,
-    children: <Widget>[
-      // Title
-      Text(
-        "Predicted Solar Panel Power, Battery Power and Grid Usage",
-        style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
-        textAlign: TextAlign.center,
-      ),
-      SizedBox(height: 10), 
-      // Key for Battery Usage
-      Row(
-        children: [
-          Container(
-            width: 20,
-            height: 20,
-            color: Colors.green,
-          ),
-          SizedBox(width: 10), 
-          Text("- Battery Power (kW)"),
-                    SizedBox(width: 20), 
-          Container(
-      width: 20,
-      height: 40,
-      child: CustomPaint(
-        painter: _RedSquarePainter(),
-      ),
-    ),
-    SizedBox(width: 10),
-    Text("- Load Shedding"),
-        ],
-      ),
-      SizedBox(height: 10), 
-      Row(
-        children: [
-          Container(
-            width: 20,
-            height: 20,
-            color: Colors.orange,
-          ),
-          SizedBox(width: 10), 
-          Text("- Grid Usage (kW)"),
-        ],
-      ),
-      SizedBox(height: 10),
-      // Key for Grid Usage
-      Row(
-        children: [
-          Container(
-            width: 20,
-            height: 20,
-            color: Colors.blue,
-          ),
-          SizedBox(width: 10),
-          Text("- Solar Panel Power (kW)"),
-        ],
-      ),
-      SizedBox(height: 20),
-      Expanded( 
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.stretch,
           children: <Widget>[
+            // Title
+            Text(
+              "Predicted Solar Panel Power, Battery Power and Grid Usage",
+              style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
+              textAlign: TextAlign.center,
+            ),
+            SizedBox(height: 10),
+            // Key for Battery Usage
+            Row(
+              children: [
+                Container(
+                  width: 20,
+                  height: 20,
+                  color: Colors.green,
+                ),
+                SizedBox(width: 10),
+                Text("- Battery Power (kW)"),
+                SizedBox(width: 20),
+                Container(
+                  width: 20,
+                  height: 40,
+                  child: CustomPaint(
+                    painter: _RedSquarePainter(),
+                  ),
+                ),
+                SizedBox(width: 10),
+                Text("- Load Shedding"),
+              ],
+            ),
+            SizedBox(height: 10),
+            Row(
+              children: [
+                Container(
+                  width: 20,
+                  height: 20,
+                  color: Colors.orange,
+                ),
+                SizedBox(width: 10),
+                Text("- Grid Usage (kW)"),
+              ],
+            ),
+            SizedBox(height: 10),
+            // Key for Grid Usage
+            Row(
+              children: [
+                Container(
+                  width: 20,
+                  height: 20,
+                  color: Colors.blue,
+                ),
+                SizedBox(width: 10),
+                Text("- Solar Panel Power (kW)"),
+              ],
+            ),
+            SizedBox(height: 20),
             Expanded(
-              child: Container(
-                child: SingleChildScrollView(
-                  scrollDirection: Axis.horizontal,
-                  child: Container(
-                    width: 12 * 60.0, // 12 data points * 60 pixels each
-                    child: LineChart(
-                      LineChartData(
-                        minX: 0,
-                        maxX: 719.0,
-                        minY: minY,
-                        maxY: maxY,
-                        gridData: FlGridData(
-                          show: true,
-                          getDrawingHorizontalLine: (value) {
-                            if (value == 0) {
-                              return FlLine(
-                                color: Colors.black,
-                                strokeWidth: 1,
-                              );
-                            }
-                            return FlLine(
-                              color: Colors.transparent,
-                              strokeWidth: 0,
-                            );
-                          },
-                          drawVerticalLine: true,
-                          getDrawingVerticalLine: (value){  /// load shedding shading
-                                for (int i = 0; i < adjusted.length; i++) {
-                                  int start = adjusted[i][0];
-                                  int end = adjusted[i][1];
-                                     if (value >= start && value <= end) { // x value lies between adjusted values
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.stretch,
+                children: <Widget>[
+                  Expanded(
+                    child: Container(
+                      child: SingleChildScrollView(
+                        scrollDirection: Axis.horizontal,
+                        child: Container(
+                          width: 12 * 60.0, // 12 data points * 60 pixels each
+                          child: LineChart(
+                            LineChartData(
+                              minX: 0,
+                              maxX: 719.0,
+                              minY: minY,
+                              maxY: maxY,
+                              gridData: FlGridData(
+                                  show: true,
+                                  getDrawingHorizontalLine: (value) {
+                                    if (value == 0) {
+                                      return FlLine(
+                                        color: Colors.black,
+                                        strokeWidth: 1,
+                                      );
+                                    }
+                                    return FlLine(
+                                      color: Colors.transparent,
+                                      strokeWidth: 0,
+                                    );
+                                  },
+                                  drawVerticalLine: true,
+                                  getDrawingVerticalLine: (value) {
+                                    /// load shedding shading
+                                    for (int i = 0; i < adjusted.length; i++) {
+                                      int start = adjusted[i][0];
+                                      int end = adjusted[i][1];
+                                      if (value >= start && value <= end) {
+                                        // x value lies between adjusted values
                                         return FlLine(
                                           color: Colors.red.withOpacity(0.3),
                                           strokeWidth: 4,
                                         );
                                       }
-
-                                  }
-                            return FlLine(
-                              color: Colors.transparent,
-                              strokeWidth: 0,
-                            );
-                          }
-                        ),
-                        titlesData: FlTitlesData(
-                          show: true,
-                          bottomTitles: SideTitles(
-                            showTitles: true,
-                            reservedSize: 22,
-                            interval: 60,
-                            getTextStyles: (context, value) => const TextStyle(
-                              color: Color(0xff68737d),
-                              fontWeight: FontWeight.bold,
-                              fontSize: 16,
-                            ),
-                             getTitles: (value) {
-                            if (value % 60 == 0) {
-                              return hourlyKw[(value ~/ 60).toInt()]['hour'];
-                              }else {
-                                return '';
-                              }
-
-                          },
-                          margin: 8,
-                          
-                          ),
-                          leftTitles: SideTitles(
-                            showTitles: true,
-                            reservedSize: 60,
-                            getTextStyles: (context, value) => const TextStyle(
-                              color: Color(0xff67727d),
-                              fontWeight: FontWeight.bold,
-                              fontSize: 15,
-                            ),
-                            getTitles: (value) {
-                              // display every 3 kw ?
-                              final interval = 3.0;
-
-                    
-                              final numberOfIntervals = (yInterval / interval).ceil();
-
-                              for (int i = 0; i <= numberOfIntervals; i++) {
-                                if (value == i * interval) {
-                                  return '${i * interval}kw';
-                                }
-                              }
-                              // negative values
-                              for (int i = 1; i <= numberOfIntervals; i++) {
-                                if (value == -i * interval) {
-                                  return '-${i * interval}kw';
-                                }
-                              }
-
-                              return '';  
-                            },
-                            margin: 12,
-                          ),
-
-                        ),
-                        borderData: FlBorderData(
-                          show: true,
-                          border: Border.all(
-                              color: const Color(0xff37434d), width: 1),
-                        ),
-                        lineTouchData: LineTouchData(
-                          touchSpotThreshold: 1,
-                          touchTooltipData: LineTouchTooltipData(
-                              getTooltipItems:
-                                (List<LineBarSpot> touchedBarSpots) {
-                                  
-                              return touchedBarSpots.map((barSpot) {
-                                final flSpot = barSpot;
-                          if (flSpot.y == possibleStorage) {
-                            return null;  // dont show tooltip for spots where blue is above
-                          }
-                                // final appliancesForHour =
-                                //     hourlyAppliances[flSpot.x.toInt()]
-                                //         .join(', ');
-                                return LineTooltipItem(
-                                    '${flSpot.y}kw', //\nAppliances used: $appliancesForHour',
-                                  const TextStyle(color: Colors.white),
-                                );
-                              }).toList();
-                            },
-                          ),
-                            getTouchedSpotIndicator: (LineChartBarData barData, List<int> indicators) {
-                              return indicators.map((int index) {
-                                
-                                final spot = barData.spots[index];
-
-                                if (spot.y == possibleStorage) { //the behaviour for spots not clickable/ underneath blue
-                                  return null; 
-                                }
-                                // the default behaviour for spots that are clickable
-                                return TouchedSpotIndicatorData(
-                                  FlLine(color: Colors.blue, strokeWidth: 4),
-                                  FlDotData(getDotPainter: (spot, percent, barData, index) {
-                                    return FlDotCirclePainter(
-                                      radius: 8,
-                                      color: Colors.white,
-                                      strokeWidth: 2,
-                                      strokeColor: Colors.blue,
+                                    }
+                                    return FlLine(
+                                      color: Colors.transparent,
+                                      strokeWidth: 0,
                                     );
-                                  })
-                                );
-                              }).toList();
-                            },
+                                  }),
+                              titlesData: FlTitlesData(
+                                show: true,
+                                bottomTitles: SideTitles(
+                                  showTitles: true,
+                                  reservedSize: 22,
+                                  interval: 60,
+                                  getTextStyles: (context, value) =>
+                                      const TextStyle(
+                                    color: Color(0xff68737d),
+                                    fontWeight: FontWeight.bold,
+                                    fontSize: 16,
+                                  ),
+                                  getTitles: (value) {
+                                    if (value % 60 == 0) {
+                                      return hourlyKw[(value ~/ 60).toInt()]
+                                          ['hour'];
+                                    } else {
+                                      return '';
+                                    }
+                                  },
+                                  margin: 8,
+                                ),
+                                leftTitles: SideTitles(
+                                  showTitles: true,
+                                  reservedSize: 60,
+                                  getTextStyles: (context, value) =>
+                                      const TextStyle(
+                                    color: Color(0xff67727d),
+                                    fontWeight: FontWeight.bold,
+                                    fontSize: 15,
+                                  ),
+                                  getTitles: (value) {
+                                    // display every 3 kw ?
+                                    final interval = 3.0;
 
+                                    final numberOfIntervals =
+                                        (yInterval / interval).ceil();
 
+                                    for (int i = 0;
+                                        i <= numberOfIntervals;
+                                        i++) {
+                                      if (value == i * interval) {
+                                        return '${i * interval}kw';
+                                      }
+                                    }
+                                    // negative values
+                                    for (int i = 1;
+                                        i <= numberOfIntervals;
+                                        i++) {
+                                      if (value == -i * interval) {
+                                        return '-${i * interval}kw';
+                                      }
+                                    }
 
-                          touchCallback: (LineTouchResponse touchResponse) {
-                          },
-                          
-                          handleBuiltInTouches: true,
-                          
-                        ),
+                                    return '';
+                                  },
+                                  margin: 12,
+                                ),
+                              ),
+                              borderData: FlBorderData(
+                                show: true,
+                                border: Border.all(
+                                    color: const Color(0xff37434d), width: 1),
+                              ),
+                              lineTouchData: LineTouchData(
+                                touchSpotThreshold: 1,
+                                touchTooltipData: LineTouchTooltipData(
+                                  getTooltipItems:
+                                      (List<LineBarSpot> touchedBarSpots) {
+                                    return touchedBarSpots.map((barSpot) {
+                                      final flSpot = barSpot;
+                                      if (flSpot.y == possibleStorage) {
+                                        return null; // dont show tooltip for spots where blue is above
+                                      }
+                                      // final appliancesForHour =
+                                      //     hourlyAppliances[flSpot.x.toInt()]
+                                      //         .join(', ');
+                                      return LineTooltipItem(
+                                        '${flSpot.y}kw', //\nAppliances used: $appliancesForHour',
+                                        const TextStyle(color: Colors.white),
+                                      );
+                                    }).toList();
+                                  },
+                                ),
+                                getTouchedSpotIndicator:
+                                    (LineChartBarData barData,
+                                        List<int> indicators) {
+                                  return indicators.map((int index) {
+                                    final spot = barData.spots[index];
 
-                        lineBarsData: [
-                          LineChartBarData(
-                            spots: gridSpots,
-                            isCurved: true,
-                            colors: [Colors.black.withOpacity(0.5)],
-                            barWidth: 0.2,
-                            isStrokeCapRound: true,
-                            aboveBarData: BarAreaData(
-                              show: true,
-                              colors: [Colors.orange.withOpacity(0.8)],
-                              cutOffY: 0.0,
-                              applyCutOffY: true,
+                                    if (spot.y == possibleStorage) {
+                                      //the behaviour for spots not clickable/ underneath blue
+                                      return null;
+                                    }
+                                    // the default behaviour for spots that are clickable
+                                    return TouchedSpotIndicatorData(
+                                        FlLine(
+                                            color: Colors.blue, strokeWidth: 4),
+                                        FlDotData(getDotPainter:
+                                            (spot, percent, barData, index) {
+                                      return FlDotCirclePainter(
+                                        radius: 8,
+                                        color: Colors.white,
+                                        strokeWidth: 2,
+                                        strokeColor: Colors.blue,
+                                      );
+                                    }));
+                                  }).toList();
+                                },
+                                touchCallback:
+                                    (LineTouchResponse touchResponse) {},
+                                handleBuiltInTouches: true,
+                              ),
+                              lineBarsData: [
+                                LineChartBarData(
+                                  spots: gridSpots,
+                                  isCurved: true,
+                                  colors: [Colors.black.withOpacity(0.5)],
+                                  barWidth: 0.2,
+                                  isStrokeCapRound: true,
+                                  aboveBarData: BarAreaData(
+                                    show: true,
+                                    colors: [Colors.orange.withOpacity(0.8)],
+                                    cutOffY: 0.0,
+                                    applyCutOffY: true,
+                                  ),
+                                  dotData: FlDotData(show: false),
+                                ),
+                                LineChartBarData(
+                                  spots: spotsAboveStorage,
+                                  isCurved: true,
+                                  colors: [Colors.black.withOpacity(0.5)],
+                                  barWidth: 0.2,
+                                  isStrokeCapRound: true,
+                                  belowBarData: BarAreaData(
+                                    show: true,
+                                    colors: [Colors.blue.withOpacity(0.8)],
+                                    cutOffY: possibleStorage,
+                                    applyCutOffY: true,
+                                  ),
+                                  dotData: FlDotData(show: false),
+                                ),
+                                LineChartBarData(
+                                  spots: spotsBelowStorage,
+                                  isCurved: true,
+                                  colors: [Colors.black.withOpacity(0.5)],
+                                  barWidth: 0.2,
+                                  isStrokeCapRound: true,
+                                  belowBarData: BarAreaData(
+                                    show: true,
+                                    colors: [Colors.green.withOpacity(0.8)],
+                                    cutOffY: 0.00,
+                                    applyCutOffY: true,
+                                  ),
+                                  dotData: FlDotData(show: false),
+                                ),
+                              ],
                             ),
-                            dotData: FlDotData(show: false),                   
                           ),
-                            LineChartBarData(
-                              spots: spotsAboveStorage,
-                              isCurved: true,
-                              colors: [Colors.black.withOpacity(0.5)],
-                              barWidth: 0.2,
-                              isStrokeCapRound: true,
-                              belowBarData: BarAreaData(
-                                show: true,
-                                colors: [Colors.blue.withOpacity(0.8)],
-                                cutOffY: possibleStorage,
-                                applyCutOffY: true,
-                              ),
-                              dotData: FlDotData(show: false),  
-                            ),
-                            LineChartBarData(
-                              spots: spotsBelowStorage,
-                              isCurved: true,
-                              colors: [Colors.black.withOpacity(0.5)],
-                              barWidth: 0.2,
-                              isStrokeCapRound: true,
-                              belowBarData: BarAreaData(
-                                show: true,
-                                colors: [Colors.green.withOpacity(0.8)],
-                                cutOffY: 0.00,
-                                applyCutOffY: true,
-                              ),
-                              
-                              dotData: FlDotData(show: false),  
-                            ),
-                        ],
+                        ),
                       ),
                     ),
                   ),
-                ),
+                ],
               ),
             ),
           ],
         ),
       ),
-    ],
-    ),
-  ),
-  );
-}
-
-
-
-List<FlSpot> generateData() {
-  List<FlSpot> data = [];
-  int minuteCounter = 0; 
-
-  for (int i = 0; i < hourlyKw.length; i++) {
-    List<double> outputKwForHour = hourlyKw[i]['outputKw'];
-
-    for (int j = 0; j < outputKwForHour.length; j++) {
-      data.add(FlSpot(minuteCounter.toDouble(), outputKwForHour[j]));
-      minuteCounter++;
-    }
+    );
   }
-  return data;
-}
 
-}
+  List<FlSpot> generateData() {
+    List<FlSpot> data = [];
+    int minuteCounter = 0;
 
+    for (int i = 0; i < hourlyKw.length; i++) {
+      List<double> outputKwForHour = hourlyKw[i]['outputKw'];
+
+      for (int j = 0; j < outputKwForHour.length; j++) {
+        data.add(FlSpot(minuteCounter.toDouble(), outputKwForHour[j]));
+        minuteCounter++;
+      }
+    }
+    return data;
+  }
+}
