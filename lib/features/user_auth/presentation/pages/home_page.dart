@@ -17,109 +17,6 @@ import 'package:one_clock/one_clock.dart';
 final user = FirebaseAuth.instance.currentUser;
 final userEmail = user?.email;
 
-
-// class MyHomePage2 extends StatefulWidget {
-//   const MyHomePage2({super.key});
-
-//   @override
-//   State<MyHomePage2> createState() => _MyHomePage2State();
-// }
-
-// class _MyHomePage2State extends State<MyHomePage2> {
-
-//   var weatherModel;
-
-//   @override
-//   void initState() {
-//     getWeather();
-//     super.initState();
-//   }
-
-//     getWeather() async{
-//     weatherModel = await WeatherAPICall().request();
-//     setState(() {
-     
-//     });
-//   }
-
-//   @override
-//   Widget build(BuildContext context) {
-//     return Scaffold(
-//     appBar: AppBar(
-//       title: Text('Home'),
-//     ),
-//     drawer: NavigationDrawer(),
-//     body: SafeArea(
-//       child: SingleChildScrollView(
-//         child: Column(
-//           mainAxisAlignment: MainAxisAlignment.center,
-//           crossAxisAlignment: CrossAxisAlignment.center,
-//           children: [
-//             Location_Date_Widget(),
-//             SizedBox(
-//               height: 160,
-//               width: 160,
-//               child: MyAnalogClock(),
-//             ),
-            
-//             if (weatherModel != null)
-//             CurrentWeatherWidget(
-//               temperature: weatherModel!.currentWeather["temperature"], 
-//               weatherCode: weatherModel!.currentWeather["weathercode"], 
-//               winddirection: weatherModel!.currentWeather["winddirection"], 
-//               windspeed: weatherModel!.currentWeather["windspeed"], 
-//               isDay: weatherModel!.currentWeather["is_day"]
-//               ),
-//               Positioned(
-//                 top: 600,
-//                 left: 50,
-//                 child: ElevatedButton(
-//                   onPressed: () {
-//                     Navigator.pushNamed(context, "/graph_pg");
-//               },
-//               child: Text("view predicted battery power & grid usage"),
-//             ),
-//                 ),
-//               Positioned(
-//                 child: ElevatedButton(
-//                   onPressed: () {
-//                     Navigator.pushNamed(context, "/fetch_pg");
-//                   },
-//                   child: Text('fetch weather conditions'),
-//                 ),
-//               ),
-//               Positioned(
-//                 child: ElevatedButton(
-//                   onPressed: () {
-//                     Navigator.pushNamed(context, "/weather_pg");
-//                   },
-//                   child: Text('weather page'),
-//                 ),
-//               ),
-//               Positioned(
-//                 child: ElevatedButton(
-//                   onPressed: () {
-//                     Navigator.pushNamed(context, "/devices");
-//                   },
-//                   child: Text('manage appliances'),
-//                 ),
-//               ),
-//               Positioned(
-//                 child: ElevatedButton(
-//                   onPressed: () {
-//                     Navigator.pushNamed(context, "/loadshedding_pg");
-//                   },
-//                   child: Text('loadshedding schedule'),
-//                 ),
-//               ),
-//           ],
-//         ),
-//       )
-//       ),
-//     );
-//   }
-// }
-
 class HomePage extends StatelessWidget {
   const HomePage({Key? key}) : super(key: key);
 
@@ -129,10 +26,32 @@ class HomePage extends StatelessWidget {
     return Scaffold(
       appBar: AppBar(
         title: Text("HomePage"),
-        //backgroundColor: Colors.deepOrange,
-        //foregroundColor: Colors.white,
+        leading: Builder(
+          builder: (context) {
+            return IconButton(
+              icon: Icon(Icons.menu),
+              onPressed: (){
+                Scaffold.of(context).openDrawer();
+              },
+          );
+        }
       ),
+      actions: <Widget>[
+        Builder(
+          builder: (context) {
+            return IconButton(
+              icon: Icon(Icons.notifications),
+              onPressed: () {
+                Scaffold.of(context).openEndDrawer();
+              },
+            );
+          },
+        )
+      ],
+      ),
+
       drawer: NavigationDrawer(),
+      endDrawer: NotificationsDrawer(),
       body: Stack(
         children: <Widget>[
           Positioned(
@@ -230,6 +149,25 @@ class HomePage extends StatelessWidget {
   }
 }
 
+class NotificationsDrawer extends StatefulWidget {
+  const NotificationsDrawer({super.key});
+
+  @override
+  State<NotificationsDrawer> createState() => _NotificationsDrawerState();
+}
+
+class _NotificationsDrawerState extends State<NotificationsDrawer> {
+  @override
+  Widget build(BuildContext context) => Drawer(
+    child: Container(
+      color: Colors.blueGrey,
+      child: Center(
+        child: Text('Testing PLace Holder'),
+      ),
+    ),
+  );
+}
+
 class NavigationDrawer extends StatefulWidget {
   NavigationDrawer({super.key});
 
@@ -258,7 +196,7 @@ class _NavigationDrawerState extends State<NavigationDrawer> {
 
   Widget BuildHeader(BuildContext context) => Container(
         //color: Colors.blue,
-        color: Colors.grey,
+        color: Colors.blueGrey,
         padding: EdgeInsets.only(
           top: 24 + MediaQuery.of(context).padding.top,
           bottom: 24,

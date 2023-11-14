@@ -241,11 +241,10 @@ Future<void> fetchData() async {
     List<dynamic> seventhDay = dayTimes(stageNo, 7);
     String daySix = days[6];
 
-    return MaterialApp(
-        home: Scaffold(
+    return Scaffold(
             appBar: AppBar(
               title: const Text("Load Shedding Page"),
-              backgroundColor: Colors.deepOrange,
+              // backgroundColor: Colors.deepOrange,
             ),
             body: SingleChildScrollView(
                 child: Center(
@@ -441,7 +440,7 @@ Future<void> fetchData() async {
                             child: Text(i.toString()))
                     ]))
               ],
-            )))));
+            ))));
   }
 }
 //${(tempData['events'][0]['note'])[6]}
