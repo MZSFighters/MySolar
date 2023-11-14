@@ -1,6 +1,6 @@
 ////// need charles  to commit because this has to be changed////////
+import 'dart:core';
 import 'dart:math';
-
 import 'package:flutter/material.dart';
 import 'package:mysolar/battery_output_calculation/finalOutputCalculation.dart';
 import 'package:mysolar/graph/prediction_graph.dart';
