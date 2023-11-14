@@ -40,9 +40,9 @@ class FinalOutputCalculation {
       double solarPanelOutputForHour = double.parse(solarOutputData[a]['solarOutput'].toStringAsFixed(3)); // 3 decimal places
       // 
       // print('At Hour : ${solarOutputData[a]['hour']} -  $solarPanelOutputForHour and battery output is : $batteryStorage');
-      if(a==2 || a == 6){
-        solarPanelOutputForHour = 5;
-      }
+      // if(a==2 || a == 6){
+      //   solarPanelOutputForHour = 5;
+      // }
 
       /**************************************************************************************/
       // There is the potential here to  add logic that distributes solarPanelOutputForHour (the solar panel production), according to a user's inverter system

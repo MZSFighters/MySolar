@@ -1,13 +1,14 @@
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
-import 'package:mysolar/features/user_auth/presentation/pages/power_page.dart';
+import 'package:mysolar/features/user_auth/presentation/pages/system_details_page.dart';
 import 'package:mysolar/graph/graph_initiator.dart';
 import 'package:mysolar/themes/CustomTheme.dart';
 import 'package:mysolar/features/app/splash_screen/splash_screen.dart';
 import 'package:mysolar/features/user_auth/presentation/pages/home_page.dart';
 import 'package:mysolar/features/user_auth/presentation/pages/login_page.dart';
 import 'package:mysolar/features/user_auth/presentation/pages/sign_up_page.dart';
+import 'package:mysolar/features/user_auth/presentation/pages/system_details_page.dart';
 import 'package:mysolar/weather/current_forecast.dart';
 import 'package:mysolar/load_shedding/load_shedding.dart';
 import 'package:mysolar/themes/themes.dart';
@@ -61,7 +62,7 @@ class MyApp extends StatelessWidget {
               // Here, you can decide whether to show the LoginPage or HomePage based on user authentication
               child: LoginPage(),
             ),
-        '/power': (context) => PowerPage(),
+        '/power': (context) => SystemDetails(),
         '/login': (context) => LoginPage(),
         '/signUp': (context) => SignUpScreen(),
         '/home': (context) => HomePage(),
