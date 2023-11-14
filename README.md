@@ -1,5 +1,6 @@
 # MySolar App
-> Outline a brief description of your project.
+>In South Africa, the challenges of load shedding have inadvertently paved the way for a surge in the adoption of solar power systems. As a response to this shift, my group has been tasked to develop an android app designed not only to help users monitor and maximize their solar power system's efficiency but also to promote the use of greener energy sources. By reducing reliance on the grid, users can not only ensure uninterrupted power but also contribute to a more sustainable and environmentally friendly energy consumption pattern.
+
 <!-- Live demo [_here_](https://www.example.com).  If you have the project hosted somewhere, include the link here. -->
 
 ## Table of Contents
