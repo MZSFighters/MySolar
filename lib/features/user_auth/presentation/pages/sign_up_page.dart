@@ -78,15 +78,29 @@ void _submitForm() async {
       }
     } catch (e) {
       // Here you catch and print the error
-      print("An error occurred during sign up: $e");
+      _showErrorDialog(e.toString());
     }
 
-    // In this example, we're just printing the email and password.
-    print('Email: $email');
-    print('Password: $password');
   }
 }
 
+void _showErrorDialog(String message) {
+  showDialog(
+    context: context,
+    builder: (ctx) => AlertDialog(
+      title: Text('An Error Occurred'),
+      content: Text(message),
+      actions: <Widget>[
+        TextButton(
+          child: Text('Okay'),
+          onPressed: () {
+            Navigator.of(ctx).pop();
+          },
+        )
+      ],
+    ),
+  );
+}
 
   void _togglePasswordVisibility() {
     setState(() {

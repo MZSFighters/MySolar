@@ -41,8 +41,11 @@ class _LoginPageState extends State<LoginPage> {
       setState(() {
         _emailError = 'Email is required';
       });
-    }
-    else {
+    }else if (!RegExp(r'^[\w-]+(\.[\w-]+)*@[\w-]+(\.[\w-]+)+$').hasMatch(email)) {
+      setState(() {
+        _emailError = 'Enter a valid email address';
+      });
+    }else {
       setState(() {
         _emailError = '';
       });
@@ -66,6 +69,24 @@ class _LoginPageState extends State<LoginPage> {
       });
     }
   }
+
+  void _showErrorDialog(String message) {
+  showDialog(
+    context: context,
+    builder: (ctx) => AlertDialog(
+      title: Text('An Error Occurred'),
+      content: Text(message),
+      actions: <Widget>[
+        TextButton(
+          child: Text('Okay'),
+          onPressed: () {
+            Navigator.of(ctx).pop();
+          },
+        )
+      ],
+    ),
+  );
+}
 
   @override
   Widget build(BuildContext context) {
@@ -96,6 +117,8 @@ class _LoginPageState extends State<LoginPage> {
                 validator: (value) {
                   if (value!.isEmpty) {
                     return 'Email is required';
+                  }else if (!RegExp(r'^[\w-]+(\.[\w-]+)*@[\w-]+(\.[\w-]+)+$').hasMatch(value)) {
+                          return 'Enter a valid email address';
                   }
                   return null;
                 },
@@ -165,15 +188,19 @@ class _LoginPageState extends State<LoginPage> {
       String email = _emailController.text;
       String password = _passwordController.text;
 
+      try {
       User? user = await _auth.signInWithEmailAndPassword(email, password);
 
       if (user != null) {
-        print("User is successfully signedIn");
-        Navigator.pushNamed(context, "/home");
+        print("User was successfully signedIn");
+        Navigator.pushNamed(context, "/power");
+      } else {
+        print("User creation returned null, but no exception was thrown.");
       }
-      else {
-        print("Some error happend");
-      }
+    } catch (e) {
+      // Here you catch and display the error
+      _showErrorDialog(e.toString());
+    }
     }
   }
 }
