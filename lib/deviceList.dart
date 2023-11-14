@@ -95,13 +95,19 @@ class _CustomListTileState extends State<CustomListTile> {
     return GestureDetector(
       onTap: () async {
         setState(() {
-          if (device.manualState == "") {
-            device.manualState = "off";
-          } else if (device.manualState == "off") {
-            device.manualState = "on";
-          } else {
-            device.manualState = "";
+          switch (device.manualState) {
+            case "null":
+              device.manualState = "off";
+              break;
+            case "off":
+              device.manualState = "on";
+              break;
+
+            case "on":
+              device.manualState = "null";
+              break;
           }
+          DataRepository.updateDevice(device);
         });
       },
       child: Card(
@@ -242,7 +248,7 @@ class _CustomListTileState extends State<CustomListTile> {
                               delete(device);
                               Navigator.pop(dialogContext);
                             },
-                            child: Text("delete",
+                            child: Text("Delete",
                                 style: TextStyle(color: Colors.black))),
                       ),
                     ],
@@ -310,7 +316,7 @@ class _CustomListTileState extends State<CustomListTile> {
             device.name,
             style: TextStyle(color: Colors.black, fontWeight: FontWeight.bold),
           ),
-          if (device.manualState != "")
+          if (device.manualState != "null")
             Text(
               " (manually set ${device.manualState})",
               style:

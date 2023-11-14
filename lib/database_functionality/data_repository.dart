@@ -16,14 +16,13 @@ class DataRepository {
     userId = user!.uid;
     collection = FirebaseFirestore.instance.collection('appliances');
 
-    print("DBWASRUN");
-
     StreamSubscription sub = getStream().listen((event) {
       Device.devices = event.docs
           .map((e) => Device(
               userId: userId,
               id: e.id,
               name: e['name'],
+              manualState: e['manualState'],
               time: Time.fromJson(e['time']),
               kw: e['kw']))
           .toList();

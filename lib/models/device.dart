@@ -6,7 +6,7 @@ class Device {
   String name;
   int kw;
   Time time;
-  String manualState = "";
+  String manualState;
   bool on = false; //by default devices are off,
 
   static List<Device> devices =
@@ -14,6 +14,7 @@ class Device {
 
   Device({
     this.id,
+    this.manualState = "null",
     required this.name,
     required this.time,
     required this.kw,
@@ -21,13 +22,13 @@ class Device {
   });
 
   bool checkIfOn(final checkTime) {
-    if (manualState != "") //then its in manual mode
+    if (manualState != "null") //then its in manual mode
     {
       if (manualState == "on") //device is manually on
       {
         on = true;
         return true;
-      } else if (manualState == "Off") // device is manually off
+      } else if (manualState == "off") // device is manually off
       {
         on = false;
         return false;
@@ -57,8 +58,12 @@ class Device {
   }
 
   static Device fromJson(json) {
-    return Device(
-        name: json['name'], time: Time.fromJson(json['time']), kw: json['kw']);
+    var device = Device(
+        name: json['name'],
+        manualState: json['manualState'],
+        time: Time.fromJson(json['time']),
+        kw: json['kw']);
+    return device;
   }
 
   Map<String, dynamic> toJson(Device device) => <String, dynamic>{
@@ -66,6 +71,7 @@ class Device {
         'name': device.name,
         'time': Time.toJson(time),
         'kw': device.kw,
+        'manualState': device.manualState,
       };
 
   // power usage method that calculates the power usage for the current hour
