@@ -24,14 +24,14 @@ class PredictionGraph extends StatelessWidget {
   final double maxOutput;
   final double possibleStorage;
   final List<Map<String, dynamic>> hourlyKw;
-  final List<List<String>> hourlyAppliances;
+  final List<List<String>> minutelyAppliances;
   final List<List<int>> loadShedding;
 
   PredictionGraph({
     required this.maxOutput,
     required this.possibleStorage,
     required this.hourlyKw,
-    required this.hourlyAppliances,
+    required this.minutelyAppliances,
     required this.loadShedding,
   });
 
@@ -44,25 +44,6 @@ class PredictionGraph extends StatelessWidget {
     // When battery is full, the consumption uses both battery and solar
     // else it uses just battery
 
-    List<FlSpot> spotsAboveStorage =
-        []; // the area below will be blue untill possible storage
-    List<FlSpot> spotsBelowStorage =
-        []; //the area below possible storage will be breen untill  zero
-    List<FlSpot> gridSpots =
-        []; // the area above will be orange // when wehave negative values
-
-    for (var spot in generateData()) {
-      if (spot.y >= possibleStorage) {
-        spotsAboveStorage.add(spot);
-        spotsBelowStorage.add(FlSpot(spot.x,
-            possibleStorage)); //still exists below storage //these spots should not be clickable
-      } else if (spot.y < possibleStorage && spot.y >= 0) {
-        spotsBelowStorage.add(spot);
-      } else {
-        gridSpots.add(spot);
-      }
-    }
-
     // depending on maxOuput and possible storage , we have to adjust the y values visible on graph
     double yInterval = maxOutput + possibleStorage;
     double minY = -double.parse((yInterval).toStringAsFixed(0)) -
@@ -74,6 +55,8 @@ class PredictionGraph extends StatelessWidget {
     String startHour = hourlyKw[0]['hour'];
     List<String> parts = startHour.split(':');
     int startMinutes = int.parse(parts[0]) * 60; // our minx which is 0
+    // print(startMinutes);
+    // print(loadShedding);
 
     //adjust loadshedding time list to show on our graph x axis from 0 to 719 correctly
 
@@ -91,7 +74,6 @@ class PredictionGraph extends StatelessWidget {
         }
       }
     }
-    print(adjusted);
 
     return Scaffold(
       appBar: AppBar(
@@ -277,14 +259,14 @@ class PredictionGraph extends StatelessWidget {
                                       (List<LineBarSpot> touchedBarSpots) {
                                     return touchedBarSpots.map((barSpot) {
                                       final flSpot = barSpot;
-                                      if (flSpot.y == possibleStorage) {
-                                        return null; // dont show tooltip for spots where blue is above
-                                      }
-                                      // final appliancesForHour =
-                                      //     hourlyAppliances[flSpot.x.toInt()]
-                                      //         .join(', ');
+                                      // if (flSpot.y == possibleStorage) {
+                                      //   return null;  // dont show tooltip for spots where blue is above
+                                      // }
+                                      final appliancesForMinute =
+                                          minutelyAppliances[flSpot.x.toInt()]
+                                              .join(', ');
                                       return LineTooltipItem(
-                                        '${flSpot.y}kw', //\nAppliances used: $appliancesForHour',
+                                        '${flSpot.y}kw \n Appliances used: $appliancesForMinute ', //\nAppliances used: $appliancesForHour',
                                         const TextStyle(color: Colors.white),
                                       );
                                     }).toList();
@@ -294,12 +276,11 @@ class PredictionGraph extends StatelessWidget {
                                     (LineChartBarData barData,
                                         List<int> indicators) {
                                   return indicators.map((int index) {
-                                    final spot = barData.spots[index];
+                                    // final spot = barData.spots[index];
 
-                                    if (spot.y == possibleStorage) {
-                                      //the behaviour for spots not clickable/ underneath blue
-                                      return null;
-                                    }
+                                    // if (spot.y == possibleStorage) { //the behaviour for spots not clickable/ underneath blue
+                                    //   return null;
+                                    // }
                                     // the default behaviour for spots that are clickable
                                     return TouchedSpotIndicatorData(
                                         FlLine(
@@ -320,48 +301,7 @@ class PredictionGraph extends StatelessWidget {
                                 handleBuiltInTouches: true,
                               ),
                               lineBarsData: [
-                                LineChartBarData(
-                                  spots: gridSpots,
-                                  isCurved: true,
-                                  colors: [Colors.black.withOpacity(0.5)],
-                                  barWidth: 0.2,
-                                  isStrokeCapRound: true,
-                                  aboveBarData: BarAreaData(
-                                    show: true,
-                                    colors: [Colors.orange.withOpacity(0.8)],
-                                    cutOffY: 0.0,
-                                    applyCutOffY: true,
-                                  ),
-                                  dotData: FlDotData(show: false),
-                                ),
-                                LineChartBarData(
-                                  spots: spotsAboveStorage,
-                                  isCurved: true,
-                                  colors: [Colors.black.withOpacity(0.5)],
-                                  barWidth: 0.2,
-                                  isStrokeCapRound: true,
-                                  belowBarData: BarAreaData(
-                                    show: true,
-                                    colors: [Colors.blue.withOpacity(0.8)],
-                                    cutOffY: possibleStorage,
-                                    applyCutOffY: true,
-                                  ),
-                                  dotData: FlDotData(show: false),
-                                ),
-                                LineChartBarData(
-                                  spots: spotsBelowStorage,
-                                  isCurved: true,
-                                  colors: [Colors.black.withOpacity(0.5)],
-                                  barWidth: 0.2,
-                                  isStrokeCapRound: true,
-                                  belowBarData: BarAreaData(
-                                    show: true,
-                                    colors: [Colors.green.withOpacity(0.8)],
-                                    cutOffY: 0.00,
-                                    applyCutOffY: true,
-                                  ),
-                                  dotData: FlDotData(show: false),
-                                ),
+                                createLineChartBarData(generateData(), 0.0),
                               ],
                             ),
                           ),
@@ -391,5 +331,40 @@ class PredictionGraph extends StatelessWidget {
       }
     }
     return data;
+  }
+
+  LineChartBarData createLineChartBarData(List<FlSpot> spots, double cutOffY) {
+    // Determine the colors for the spots based on the Y value
+    List<Color> colours = spots.map((spot) {
+      if (spot.y > possibleStorage) {
+        return Colors.blue.withOpacity(0.8);
+      } else if (spot.y >= 0) {
+        return Colors.green.withOpacity(0.8);
+      } else {
+        return Colors.orange.withOpacity(0.8);
+      }
+    }).toList();
+
+    // Create the LineChartBarData
+    return LineChartBarData(
+      spots: spots,
+      isCurved: false,
+      colors: colours,
+      barWidth: 3,
+      isStrokeCapRound: true,
+      // belowBarData: BarAreaData(
+      //   show: true,
+      //   colors: colours,
+      //   cutOffY: cutOffY,
+      //   applyCutOffY: true,
+      // ),
+      // aboveBarData: BarAreaData(
+      //   show: true,
+      //   colors: colours,
+      //   cutOffY: cutOffY,
+      //   applyCutOffY: true,
+      // ),
+      dotData: FlDotData(show: false),
+    );
   }
 }
