@@ -1,84 +1,156 @@
-
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:mysolar/features/user_auth/firebase_auth_implementation/firebase_auth_services.dart';
 import 'package:mysolar/features/user_auth/presentation/pages/login_page.dart';
 import 'package:mysolar/features/user_auth/presentation/widgets/form_container_widget.dart';
 
-
-class SignUpPage extends StatefulWidget {
-  const SignUpPage({super.key});
-
+class SignUpScreen extends StatefulWidget {
+  const SignUpScreen({super.key});
   @override
-  State<SignUpPage> createState() => _SignUpPageState();
+  State<SignUpScreen> createState() => _SignUpScreenState();
 }
 
-class _SignUpPageState extends State<SignUpPage> {
-
+class _SignUpScreenState extends State<SignUpScreen> {
   final FirebaseAuthService _auth = FirebaseAuthService();
-
-  TextEditingController _usernameController = TextEditingController();
-  TextEditingController _emailController = TextEditingController();
-  TextEditingController _passwordController = TextEditingController();
-
+  final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
+  final TextEditingController _emailController = TextEditingController();
+  final TextEditingController _passwordController = TextEditingController();
+  bool _obscureText = true, buttonPressed = true;
+  String _emailError = '';
+  String _passwordError = '';
 
   @override
   void dispose() {
-    _usernameController.dispose();
     _emailController.dispose();
     _passwordController.dispose();
     super.dispose();
+  }
+
+  void _validateEmail(String email) {
+    if (email.isEmpty) {
+      setState(() {
+        _emailError = 'Email is required';
+      });
+    } else if (!RegExp(r'^[\w-]+(\.[\w-]+)*@[\w-]+(\.[\w-]+)+$').hasMatch(email)) {
+      setState(() {
+        _emailError = 'Enter a valid email address';
+      });
+    } else {
+      setState(() {
+        _emailError = '';
+      });
+    }
+  }
+
+  void _validatePassword(String password) {
+    if (password.isEmpty) {
+      setState(() {
+        _passwordError = 'Password is required';
+      });
+    } else if (password.length < 6) {
+      setState(() {
+        _passwordError = 'Password must be at least 6 characters';
+      });
+    } else {
+      setState(() {
+        _passwordError = '';
+      });
+    }
+  }
+
+  void _submitForm() async {
+    setState(() {
+      buttonPressed = !buttonPressed;
+    });
+    if (_formKey.currentState!.validate()) {
+      // Form is valid, you can proceed with submission
+      String email = _emailController.text;
+      String password = _passwordController.text;
+
+      User? user = await _auth.signUpWithEmailAndPassword(email, password);
+
+      if (user!= null){
+        print("User is successfully created");
+        Navigator.pushNamed(context, "/power");
+      } else{
+        print("Some error happend");
+      }
+      // In this example, we're just printing the email and password.
+      print('Email: $email');
+      print('Password: $password');
+    }
+  }
+
+  void _togglePasswordVisibility() {
+    setState(() {
+      _obscureText = !_obscureText;
+    });
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text("SignUp"),
+        title: Text('Sign Up Page'),
         backgroundColor: Colors.deepOrange, // appbar color.
         foregroundColor: Colors.white,
       ),
       body: Center(
         child: Padding(
           padding: const EdgeInsets.symmetric(horizontal: 15),
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
+            child: Form(
+              key: _formKey,
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    Text(
+                   "Sign Up",
+                    style: TextStyle(fontSize: 27, fontWeight: FontWeight.bold),
+                    ),
+                    TextFormField(
+                      controller: _emailController,
+                      decoration: InputDecoration(labelText: 'Email'),
+                      validator: (value) {
+                        if (value!.isEmpty) {
+                          return 'Email is required';
+                        }
+                        else if (!RegExp(r'^[\w-]+(\.[\w-]+)*@[\w-]+(\.[\w-]+)+$').hasMatch(value)) {
+                          return 'Enter a valid email address';
+                        }
+                        return null;
+                        },
+                    ),
+                    Text(
+                      _emailError,
+                      style: TextStyle(color: Colors.red),
+                    ),
+                    SizedBox(height: 20),
+                    TextFormField(
+                      controller: _passwordController,
+                      decoration: InputDecoration(labelText: 'Password', suffixIcon: IconButton(
+                        icon: _obscureText
+                        ? Icon(Icons.visibility)
+                        : Icon(Icons.visibility_off),
+                        onPressed: _togglePasswordVisibility,),
+                      ),
+                obscureText: _obscureText,
+                validator: (value) {
+                  if (value!.isEmpty) {
+                    return 'Password is required';
+                  }
+                  else if (value.length < 6) {
+                    return 'Password must be at least 6 characters';
+                  }
+                  return null;
+                },
+              ),
               Text(
-                "Sign Up",
-                style: TextStyle(fontSize: 27, fontWeight: FontWeight.bold),
+                _passwordError,
+                style: TextStyle(color: Colors.red),
               ),
-              SizedBox(
-                height: 30,
-              ),
-              FormContainerWidget(
-controller: _usernameController,
-                hintText: "Username",
-                isPasswordField: false,
-              ),
-              SizedBox(
-                height: 10,
-              ),
-              FormContainerWidget(
-
-controller: _emailController,
-                hintText: "Email",
-                isPasswordField: false,
-              ),
-              SizedBox(
-                height: 10,
-              ),
-              FormContainerWidget(
-controller: _passwordController,
-
-                hintText: "Password",
-                isPasswordField: true,
-              ),
-              SizedBox(
-                height: 30,
-              ),
+              SizedBox(height: 20),
               GestureDetector(
-                onTap: _signUp,
+                onTap: _submitForm,
                 child: Container(
                   width: double.infinity,
                   height: 45,
@@ -89,7 +161,7 @@ controller: _passwordController,
                   child: Center(
                       child: Text(
                         "Sign Up",
-                        style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold),
+                        style:  TextStyle(color: Colors.white, fontWeight: FontWeight.bold),
                       )),
                 ),
               ),
@@ -110,23 +182,7 @@ controller: _passwordController,
           ),
         ),
       ),
+      ),
     );
   }
-
-  void _signUp() async {
-    String username = _usernameController.text;
-    String email = _emailController.text;
-    String password = _passwordController.text;
-
-    User? user = await _auth.signUpWithEmailAndPassword(email, password);
-
-    if (user!= null){
-      print("User is successfully created");
-      Navigator.pushNamed(context, "/home");
-    } else{
-      print("Some error happend");
-    }
-
-  }
-
 }
