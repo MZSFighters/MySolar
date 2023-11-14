@@ -58,28 +58,35 @@ class _SignUpScreenState extends State<SignUpScreen> {
     }
   }
 
-  void _submitForm() async {
-    setState(() {
-      buttonPressed = !buttonPressed;
-    });
-    if (_formKey.currentState!.validate()) {
-      // Form is valid, you can proceed with submission
-      String email = _emailController.text;
-      String password = _passwordController.text;
+void _submitForm() async {
+  setState(() {
+    buttonPressed = !buttonPressed;
+  });
+  if (_formKey.currentState!.validate()) {
+    // Form is valid, you can proceed with submission
+    String email = _emailController.text;
+    String password = _passwordController.text;
 
+    try {
       User? user = await _auth.signUpWithEmailAndPassword(email, password);
 
-      if (user!= null){
-        print("User is successfully created");
+      if (user != null) {
+        print("User was successfully created");
         Navigator.pushNamed(context, "/power");
-      } else{
-        print("Some error happend");
+      } else {
+        print("User creation returned null, but no exception was thrown.");
       }
-      // In this example, we're just printing the email and password.
-      print('Email: $email');
-      print('Password: $password');
+    } catch (e) {
+      // Here you catch and print the error
+      print("An error occurred during sign up: $e");
     }
+
+    // In this example, we're just printing the email and password.
+    print('Email: $email');
+    print('Password: $password');
   }
+}
+
 
   void _togglePasswordVisibility() {
     setState(() {

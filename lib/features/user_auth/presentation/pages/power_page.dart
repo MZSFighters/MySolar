@@ -30,16 +30,16 @@ class _PowerPageState extends State<PowerPage> {
   @override
   void initState() {
     super.initState();
-    DatabaseReference dbRef = FirebaseDatabase.instance.ref("powerInformation/$USER");
+    DatabaseReference dbRef = FirebaseDatabase.instance.ref("systemDetailsInformation/$USER");
     dbRef.onValue.listen((event) {
       if(event.snapshot.exists){
         setState(() {
           Map powerInfo = event.snapshot.value as Map;
           powerInfo["key"] = event.snapshot.key;
-          _maxOutputController.text = powerInfo["powerOutput"];
-          _maxStorageController.text = powerInfo["powerCapacity"];
-          _lowLevelController.text = powerInfo["limitedUsage"];
-          _maxInverterController.text = powerInfo["maxInverter"];
+          _maxOutputController.text = powerInfo["maxPowerOutput"];
+          _maxStorageController.text = powerInfo["batteryCapacity"];
+          _lowLevelController.text = powerInfo["lowestBatteryPercentage"];
+          _maxInverterController.text = powerInfo["maxInverterCapacity"];
         });
       }else{
         print("no data");
