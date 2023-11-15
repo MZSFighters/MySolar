@@ -81,7 +81,7 @@ class NotificationsCalculator {
 
       for (int i = 0; i < consumptionPerMinute.length; i++) {
         if (consumptionPerMinute[i] > systemDetails.maxInverterCapacity) {
-          String time = formatTime(apiHour,(i%60));
+          String time = formatTime(((apiHour*60+i)~/60)%24,(i%60));
           notifications.add("Warning! : Consumption at time $time exceeds your max inverter capacity of ${systemDetails.maxInverterCapacity} (kW)");
           break;
         }
