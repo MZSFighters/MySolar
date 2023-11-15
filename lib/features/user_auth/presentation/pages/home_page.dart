@@ -5,12 +5,15 @@ import 'package:mysolar/ManualPage.dart';
 import 'package:mysolar/deviceList.dart';
 import 'package:mysolar/weather/current_forecast.dart';
 import 'package:mysolar/HelpPage.dart';
+import 'package:mysolar/database_functionality/data_repository.dart';
 
 class HomePage extends StatelessWidget {
   const HomePage({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
+    DataRepository();
+    
     return Scaffold(
       appBar: AppBar(
         title: Text("HomePage"),
