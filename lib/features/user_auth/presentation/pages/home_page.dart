@@ -1,17 +1,25 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:mysolar/SettingsPage.dart';
+import 'package:mysolar/ManualPage.dart';
 import 'package:mysolar/appWorkings.dart';
 import 'package:mysolar/deviceList.dart';
 import 'package:mysolar/features/user_auth/presentation/pages/clock.dart';
 import 'package:mysolar/load_shedding/load_shedding.dart';
 import 'package:mysolar/notifications/notifications_calculator.dart';
+import 'package:mysolar/weather/api_call.dart';
 import 'package:mysolar/weather/current_forecast.dart';
+import 'package:mysolar/HelpPage.dart';
 import 'package:mysolar/database_functionality/data_repository.dart';
+import 'package:mysolar/weather/current_weather_widget.dart';
+import 'package:mysolar/weather/models.dart';
+import 'package:one_clock/one_clock.dart';
 import 'package:visibility_detector/visibility_detector.dart';
+
 
 final user = FirebaseAuth.instance.currentUser;
 final userEmail = user?.email;
+
 
 class HomePage extends StatelessWidget {
   const HomePage({Key? key}) : super(key: key);
@@ -22,27 +30,30 @@ class HomePage extends StatelessWidget {
     return Scaffold(
       appBar: AppBar(
         title: Text("Home"),
-        leading: Builder(builder: (context) {
-          return IconButton(
-            icon: Icon(Icons.menu),
-            onPressed: () {
-              Scaffold.of(context).openDrawer();
-            },
+        leading: Builder(
+          builder: (context) {
+            return IconButton(
+              icon: Icon(Icons.menu),
+              onPressed: (){
+                Scaffold.of(context).openDrawer();
+              },
           );
-        }),
-        actions: <Widget>[
-          Builder(
-            builder: (context) {
-              return IconButton(
-                icon: Icon(Icons.notifications),
-                onPressed: () {
-                  Scaffold.of(context).openEndDrawer();
-                },
-              );
-            },
-          )
-        ],
+        }
       ),
+      actions: <Widget>[
+        Builder(
+          builder: (context) {
+            return IconButton(
+              icon: Icon(Icons.notifications),
+              onPressed: () {
+                Scaffold.of(context).openEndDrawer();
+              },
+            );
+          },
+        )
+      ],
+      ),
+
       drawer: NavigationDrawer(),
       endDrawer: NotificationsDrawer(),
       body: Column(
@@ -118,7 +129,6 @@ class HomePage extends StatelessWidget {
     );
   }
 }
-
 // ====================================================================
 // Class setting up notifications drawer
 class NotificationsDrawer extends StatefulWidget {
@@ -127,6 +137,7 @@ class NotificationsDrawer extends StatefulWidget {
   @override
   State<NotificationsDrawer> createState() => _NotificationsDrawerState();
 }
+
 
 class _NotificationsDrawerState extends State<NotificationsDrawer> {
   List<String> notifications = [];
@@ -150,17 +161,13 @@ class _NotificationsDrawerState extends State<NotificationsDrawer> {
       },
       child: Drawer(
         child: isLoading
-            ? Center(
-                child: CircularProgressIndicator(
-                color: Colors.black,
-              ))
+            ? Center(child: CircularProgressIndicator(color: Colors.white,))
             : notifications.isEmpty
                 ? Center(child: Text('There are no new notifications', style: TextStyle(color: Colors.white)))
                 : ListView.builder(
                     itemCount: notifications.length,
                     itemBuilder: (context, index) {
-                      return NotificationTile(
-                          notification: notifications[index]);
+                      return NotificationTile(notification: notifications[index]);
                     },
                   ),
       ),
@@ -168,12 +175,12 @@ class _NotificationsDrawerState extends State<NotificationsDrawer> {
   }
 }
 
+
 // displaying notifications
 class NotificationTile extends StatelessWidget {
   final String notification;
 
-  const NotificationTile({Key? key, required this.notification})
-      : super(key: key);
+  const NotificationTile({Key? key, required this.notification}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -255,8 +262,8 @@ class _NavigationDrawerState extends State<NavigationDrawer> {
             title: Text('How the app works'),
             textColor: Colors.white,
             onTap: () {
-              Navigator.of(context)
-                  .push(MaterialPageRoute(builder: (context) => AppWorkings()));
+               Navigator.of(context).push(
+                  MaterialPageRoute(builder: (context) => AppWorkings()));
             },
           ),
           ListTile(
@@ -292,7 +299,7 @@ class _NavigationDrawerState extends State<NavigationDrawer> {
             textColor: Colors.white,
             onTap: () {
               Navigator.of(context).push(
-                  MaterialPageRoute(builder: (context) => LoadShedding()));
+                MaterialPageRoute(builder: (context) => LoadShedding()));
             },
           ),
           const Divider(color: Colors.black54),
@@ -301,10 +308,10 @@ class _NavigationDrawerState extends State<NavigationDrawer> {
             title: Text('Sign Out'),
             textColor: Colors.white,
             onTap: () {
-              FirebaseAuth.instance.signOut();
-              Navigator.pop(context);
-              Navigator.pop(context, "/login");
-            },
+                FirebaseAuth.instance.signOut();
+                Navigator.pop(context);
+                Navigator.pop(context, "/login");
+                },
           ),
         ],
       );
