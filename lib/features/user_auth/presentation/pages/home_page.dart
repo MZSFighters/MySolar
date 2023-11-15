@@ -17,6 +17,7 @@ import 'package:one_clock/one_clock.dart';
 final user = FirebaseAuth.instance.currentUser;
 final userEmail = user?.email;
 
+
 class HomePage extends StatelessWidget {
   const HomePage({Key? key}) : super(key: key);
 
@@ -25,7 +26,7 @@ class HomePage extends StatelessWidget {
     DataRepository dr = DataRepository();
     return Scaffold(
       appBar: AppBar(
-        title: Text("HomePage"),
+        title: Text("Home"),
         leading: Builder(
           builder: (context) {
             return IconButton(
@@ -52,50 +53,17 @@ class HomePage extends StatelessWidget {
 
       drawer: NavigationDrawer(),
       endDrawer: NotificationsDrawer(),
-      body: Stack(
+      body: Column(
         children: <Widget>[
-          Positioned(
-
+          Positioned(child: Location_Date_Widget()),
+          SizedBox(
+            height: 170,
+            width: 170,
             child: MyAnalogClock(),
-          ),
-          Column(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              Center(
-                // child: Text(
-                //   "Welcome Home buddy!",
-                //   style: TextStyle(fontWeight: FontWeight.bold, fontSize: 19),
-                // ),
-              ),
-              // SizedBox(height: 30),
-              // GestureDetector(
-              //   // onTap: () {
-              //   //   FirebaseAuth.instance.signOut();
-              //   //   Navigator.pop(context, "/login");
-              //   // },
-              //   child: Container(
-              //     height: 45,
-              //     width: 100,
-              //     decoration: BoxDecoration(
-              //       color: Colors.deepOrangeAccent,
-              //       borderRadius: BorderRadius.circular(10),
-              //     ),
-              //     child: Center(
-              //       child: Text(
-              //         "Sign out",
-              //         style: TextStyle(
-              //             color: Colors.white,
-              //             fontWeight: FontWeight.bold,
-              //             fontSize: 18),
-              //       ),
-              //     ),
-              //   ),
-              // ),
-            ],
           ),
           Positioned(
             top: 150,
-            left: 90,
+            left: 70,
             child: ElevatedButton(
               onPressed: () {
                 Navigator.pushNamed(context, "/graph_pg");
@@ -158,7 +126,8 @@ class HomePage extends StatelessWidget {
     );
   }
 }
-
+// ====================================================================
+// Class setting up notifications drawer
 class NotificationsDrawer extends StatefulWidget {
   const NotificationsDrawer({super.key});
 
@@ -177,6 +146,9 @@ class _NotificationsDrawerState extends State<NotificationsDrawer> {
     ),
   );
 }
+
+//===========================================
+// Class for navigation drawer / side menu
 
 class NavigationDrawer extends StatefulWidget {
   NavigationDrawer({super.key});
@@ -258,22 +230,6 @@ class _NavigationDrawerState extends State<NavigationDrawer> {
                   MaterialPageRoute(builder: (context) => SettingsPage()));
             },
           ),
-          // ListTile( // user manual/tutorial : will do maybe before final submisison
-          //   leading: Icon(Icons.book),
-          //   title: Text('User Manual'),
-          //   onTap: () {
-          //     Navigator.of(context)
-          //         .push(MaterialPageRoute(builder: (context) => ManualPage()));
-          //   },
-          // ),
-          // ListTile( // help section : will do before final submission maybe?
-          //   leading: Icon(Icons.question_mark),
-          //   title: Text('Help'),
-          //   onTap: () {
-          //     Navigator.of(context)
-          //         .push(MaterialPageRoute(builder: (context) => HelpPage()));
-          //   },
-          // ),
           ListTile(
             leading: Icon(Icons.sunny),
             title: Text('Weather'),

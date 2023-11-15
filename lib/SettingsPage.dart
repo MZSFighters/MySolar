@@ -24,14 +24,14 @@ class SettingsPage extends StatelessWidget {
             child: Text('Change Theme'),
           ),
           ),
-          Center(
-            child: ElevatedButton(
-              onPressed: () {
-                Navigator.of(context).push(
-                    MaterialPageRoute(builder: (context) => EditProfilePage()));
-              },
-              child: Text('Edit Profile')),
-          )
+          // Center(
+          //   child: ElevatedButton(
+          //     onPressed: () {
+          //       Navigator.of(context).push(
+          //           MaterialPageRoute(builder: (context) => EditProfilePage()));
+          //     },
+          //     child: Text('Edit Profile')),
+          // )
           
         ],
       ));
