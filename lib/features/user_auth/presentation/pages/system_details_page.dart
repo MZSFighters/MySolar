@@ -61,7 +61,7 @@ class _systemDetailsIInformationPage extends State<systemDetailsIInformation> {
     return Scaffold(
       appBar: AppBar(
         title: Text("System Details Information"),
-        backgroundColor: Colors.deepOrange,
+        // backgroundColor: Colors.deepOrange,
         foregroundColor: Colors.white,
       ),
       body: SingleChildScrollView(

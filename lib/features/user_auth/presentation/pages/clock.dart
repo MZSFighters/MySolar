@@ -7,8 +7,8 @@ class MyAnalogClock extends StatelessWidget {
   @override
   Widget build(BuildContext context) => Container(
     padding: EdgeInsets.only(
-      top: 5 + MediaQuery.of(context).padding.top,
-      bottom: 24,
+      top: 10 + MediaQuery.of(context).padding.top,
+      bottom: 10,
     ),
     child: Center(
       child: AnalogClock(
