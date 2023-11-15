@@ -61,7 +61,7 @@ class GraphInitiator extends StatelessWidget {
             int apiHour = int.parse(hourlyKw[0]['hour'].split(':')[0]);
 
             final Future<List<List<String>>> minutelyAppliancesFuture =
-                DeviceConsumption().devicesOnEachMinute();
+                DeviceConsumption().devicesOnEachMinute(apiHour);
             final Future<List<List<int>>> loadSheddingScheduleFuture =
                 FetchTodaysLoadSheddingSchedule().getCurrentDayLoadShedding();
 
