@@ -1,19 +1,13 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:mysolar/SettingsPage.dart';
-import 'package:mysolar/ManualPage.dart';
 import 'package:mysolar/appWorkings.dart';
 import 'package:mysolar/deviceList.dart';
 import 'package:mysolar/features/user_auth/presentation/pages/clock.dart';
 import 'package:mysolar/load_shedding/load_shedding.dart';
 import 'package:mysolar/notifications/notifications_calculator.dart';
-import 'package:mysolar/weather/api_call.dart';
 import 'package:mysolar/weather/current_forecast.dart';
-import 'package:mysolar/HelpPage.dart';
 import 'package:mysolar/database_functionality/data_repository.dart';
-import 'package:mysolar/weather/current_weather_widget.dart';
-import 'package:mysolar/weather/models.dart';
-import 'package:one_clock/one_clock.dart';
 import 'package:visibility_detector/visibility_detector.dart';
 
 final user = FirebaseAuth.instance.currentUser;

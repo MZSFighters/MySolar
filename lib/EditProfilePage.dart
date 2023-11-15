@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
-import 'package:mysolar/SettingsPage.dart';
 
 class EditProfilePage extends StatelessWidget {
   const EditProfilePage({super.key});

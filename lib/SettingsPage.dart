@@ -1,7 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/widgets.dart';
 import 'package:mysolar/themes/ThemesPage.dart';
-import 'package:mysolar/EditProfilePage.dart';
 
 class SettingsPage extends StatelessWidget {
   const SettingsPage({super.key});
@@ -16,24 +14,14 @@ class SettingsPage extends StatelessWidget {
       body: Column(
         children: <Widget>[
           Center(
-            child:           ElevatedButton(
-            onPressed: () {
-              Navigator.of(context)
-                  .push(MaterialPageRoute(builder: (context) => ThemesPage()));
-            },
-            child: Text('Change Theme'),
+            child: ElevatedButton(
+              onPressed: () {
+                Navigator.of(context).push(
+                    MaterialPageRoute(builder: (context) => ThemesPage()));
+              },
+              child: Text('Change Theme'),
+            ),
           ),
-          ),
-          // Center(
-          //   child: ElevatedButton(
-          //     onPressed: () {
-          //       Navigator.of(context).push(
-          //           MaterialPageRoute(builder: (context) => EditProfilePage()));
-          //     },
-          //     child: Text('Edit Profile')),
-          // )
-          
         ],
       ));
 }
-
