@@ -3,13 +3,13 @@ import '../models/device.dart';
 class DeviceConsumption {
   List<Device> devices = Device.devices;
 
-  Future<List<double>> calculateMinuteConsumption() async {
+  Future<List<double>> calculateMinuteConsumption(int apiHour) async {
     List<double> minuteConsumption = List.filled(720, 0.0);
     DateTime now = DateTime.now();
-    int currentHour = now.hour;
+    int currentHour = apiHour;
 
     for (int i = 0; i < 720; i++) {
-      int hourToCheck = (currentHour + 1 + i ~/ 60) % 24;
+      int hourToCheck = currentHour;
       int minuteToCheck = i % 60;
 
       DateTime time =
@@ -24,14 +24,14 @@ class DeviceConsumption {
     return minuteConsumption;
   }
 
-  Future<List<List<String>>> devicesOnEachMinute() async {
+  Future<List<List<String>>> devicesOnEachMinute(int apiHour) async {
     List<List<String>> devicesOn = List.generate(720, (index) => <String>[]);
 
     DateTime now = DateTime.now();
-    int currentHour = now.hour;
+    int currentHour = apiHour;
 
     for (int i = 0; i < 720; i++) {
-      int hourToCheck = (currentHour + 1 + i ~/ 60) % 24;
+      int hourToCheck = currentHour;
       int minuteToCheck = i % 60;
 
       DateTime time =
