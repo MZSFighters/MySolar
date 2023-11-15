@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:mysolar/themes/CustomTheme.dart';
 import 'package:mysolar/themes/themes.dart';
-import 'package:mysolar/SettingsPage.dart';
 
 class ThemesPage extends StatefulWidget {
   const ThemesPage({super.key});

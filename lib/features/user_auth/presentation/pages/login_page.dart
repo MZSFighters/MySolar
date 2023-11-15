@@ -1,12 +1,9 @@
-
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 //import 'package:mysolar/features/user_auth/presentation/pages/sign_up_screen.dart';
 import 'package:mysolar/features/user_auth/presentation/pages/sign_up_page.dart';
 
 import '../../firebase_auth_implementation/firebase_auth_services.dart';
-
-
 
 class LoginPage extends StatefulWidget {
   const LoginPage({super.key});
@@ -31,21 +28,24 @@ class _LoginPageState extends State<LoginPage> {
     _passwordController.dispose();
     super.dispose();
   }
+
   void _togglePasswordVisibility() {
     setState(() {
       _obscureText = !_obscureText;
     });
   }
+
   void _validateEmail(String email) {
     if (email.isEmpty) {
       setState(() {
         _emailError = 'Email is required';
       });
-    }else if (!RegExp(r'^[\w-]+(\.[\w-]+)*@[\w-]+(\.[\w-]+)+$').hasMatch(email)) {
+    } else if (!RegExp(r'^[\w-]+(\.[\w-]+)*@[\w-]+(\.[\w-]+)+$')
+        .hasMatch(email)) {
       setState(() {
         _emailError = 'Enter a valid email address';
       });
-    }else {
+    } else {
       setState(() {
         _emailError = '';
       });
@@ -57,13 +57,11 @@ class _LoginPageState extends State<LoginPage> {
       setState(() {
         _passwordError = 'Password is required';
       });
-    }
-    else if (password.length < 6) {
+    } else if (password.length < 6) {
       setState(() {
         _passwordError = 'Password must be at least 6 characters';
       });
-    }
-    else {
+    } else {
       setState(() {
         _passwordError = '';
       });
@@ -71,22 +69,22 @@ class _LoginPageState extends State<LoginPage> {
   }
 
   void _showErrorDialog(String message) {
-  showDialog(
-    context: context,
-    builder: (ctx) => AlertDialog(
-      title: Text('An Error Occurred'),
-      content: Text(message),
-      actions: <Widget>[
-        TextButton(
-          child: Text('Okay'),
-          onPressed: () {
-            Navigator.of(ctx).pop();
-          },
-        )
-      ],
-    ),
-  );
-}
+    showDialog(
+      context: context,
+      builder: (ctx) => AlertDialog(
+        title: Text('An Error Occurred'),
+        content: Text(message),
+        actions: <Widget>[
+          TextButton(
+            child: Text('Okay'),
+            onPressed: () {
+              Navigator.of(ctx).pop();
+            },
+          )
+        ],
+      ),
+    );
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -101,82 +99,102 @@ class _LoginPageState extends State<LoginPage> {
           padding: const EdgeInsets.symmetric(horizontal: 15),
           child: Form(
             key: _formKey,
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              Text(
-                "Login",
-                style: TextStyle(fontSize: 27, fontWeight: FontWeight.bold),
-              ),
-              SizedBox(
-                height: 30,
-              ),
-              TextFormField(
-                controller: _emailController,
-                decoration: InputDecoration(labelText: 'Email'),
-                validator: (value) {
-                  if (value!.isEmpty) {
-                    return 'Email is required';
-                  }else if (!RegExp(r'^[\w-]+(\.[\w-]+)*@[\w-]+(\.[\w-]+)+$').hasMatch(value)) {
-                          return 'Enter a valid email address';
-                  }
-                  return null;
-                },
-              ),
-              Text(
-                _emailError,
-                style: TextStyle(color: Colors.red),
-              ),
-              SizedBox(height: 20),
-              TextFormField(
-                controller: _passwordController,
-                decoration: InputDecoration(labelText: 'Password', suffixIcon: IconButton(
-                  icon: _obscureText
-                      ? Icon(Icons.visibility)
-                      : Icon(Icons.visibility_off),
-                  onPressed: _togglePasswordVisibility,),
-                ),
-                obscureText: _obscureText,
-                validator: (value) {
-                  if (value!.isEmpty) {
-                    return 'Password is required';
-                  }
-                  return null;
-                },
-              ),
-              Text(
-                _passwordError,
-                style: TextStyle(color: Colors.red),
-              ),
-              SizedBox(height: 30,),
-              GestureDetector(
-                onTap: _signIn,
-                child: Container(
-                  width: double.infinity,
-                  height: 45,
-                  decoration: BoxDecoration(
-                    color: Colors.deepOrangeAccent,
-                    borderRadius: BorderRadius.circular(10),
-                  ),
-                  child: Center(child:Text("Login",style: TextStyle(color: Colors.white,fontWeight: FontWeight.bold),)),
-                ),
-              ),
-              SizedBox(height: 20,),
-              Row(mainAxisAlignment: MainAxisAlignment.center,
+            child: SingleChildScrollView(
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.center,
                 children: [
-                  Text("Don't have an account?"),
-                  SizedBox(width: 5,),
+                  Text(
+                    "Login",
+                    style: TextStyle(fontSize: 27, fontWeight: FontWeight.bold),
+                  ),
+                  SizedBox(
+                    height: 30,
+                  ),
+                  TextFormField(
+                    controller: _emailController,
+                    decoration: InputDecoration(labelText: 'Email'),
+                    validator: (value) {
+                      if (value!.isEmpty) {
+                        return 'Email is required';
+                      } else if (!RegExp(
+                              r'^[\w-]+(\.[\w-]+)*@[\w-]+(\.[\w-]+)+$')
+                          .hasMatch(value)) {
+                        return 'Enter a valid email address';
+                      }
+                      return null;
+                    },
+                  ),
+                  Text(
+                    _emailError,
+                    style: TextStyle(color: Colors.red),
+                  ),
+                  SizedBox(height: 20),
+                  TextFormField(
+                    controller: _passwordController,
+                    decoration: InputDecoration(
+                      labelText: 'Password',
+                      suffixIcon: IconButton(
+                        icon: _obscureText
+                            ? Icon(Icons.visibility)
+                            : Icon(Icons.visibility_off),
+                        onPressed: _togglePasswordVisibility,
+                      ),
+                    ),
+                    obscureText: _obscureText,
+                    validator: (value) {
+                      if (value!.isEmpty) {
+                        return 'Password is required';
+                      }
+                      return null;
+                    },
+                  ),
+                  Text(
+                    _passwordError,
+                    style: TextStyle(color: Colors.red),
+                  ),
                   GestureDetector(
-                      onTap: (){
-                        Navigator.pushAndRemoveUntil(context, MaterialPageRoute(builder: (context) => SignUpScreen()), (route) => false);
-                      },
-                      child: Text("Sign Up",style: TextStyle(color: Colors.deepOrange,fontWeight: FontWeight.bold),))
+                    onTap: _signIn,
+                    child: Container(
+                      width: double.infinity,
+                      height: 45,
+                      decoration: BoxDecoration(
+                        color: Colors.deepOrangeAccent,
+                        borderRadius: BorderRadius.circular(10),
+                      ),
+                      child: Center(
+                          child: Text(
+                        "Login",
+                        style: TextStyle(
+                            color: Colors.white, fontWeight: FontWeight.bold),
+                      )),
+                    ),
+                  ),
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      Text("Don't have an account?"),
+                      SizedBox(
+                        width: 5,
+                      ),
+                      GestureDetector(
+                          onTap: () {
+                            Navigator.pushAndRemoveUntil(
+                                context,
+                                MaterialPageRoute(
+                                    builder: (context) => SignUpScreen()),
+                                (route) => false);
+                          },
+                          child: Text(
+                            "Sign Up",
+                            style: TextStyle(
+                                color: Colors.deepOrange,
+                                fontWeight: FontWeight.bold),
+                          ))
+                    ],
+                  )
                 ],
-              )
-
-
-            ],
-          ),
+              ),
+            ),
           ),
         ),
       ),
@@ -189,18 +207,18 @@ class _LoginPageState extends State<LoginPage> {
       String password = _passwordController.text;
 
       try {
-      User? user = await _auth.signInWithEmailAndPassword(email, password);
+        User? user = await _auth.signInWithEmailAndPassword(email, password);
 
-      if (user != null) {
-        print("User was successfully signedIn");
-        Navigator.pushNamed(context, "/home");
-      } else {
-        print("User creation returned null, but no exception was thrown.");
+        if (user != null) {
+          print("User was successfully signedIn");
+          Navigator.pushNamed(context, "/home");
+        } else {
+          print("User creation returned null, but no exception was thrown.");
+        }
+      } catch (e) {
+        // Here you catch and display the error
+        _showErrorDialog(e.toString());
       }
-    } catch (e) {
-      // Here you catch and display the error
-      _showErrorDialog(e.toString());
-    }
     }
   }
 }

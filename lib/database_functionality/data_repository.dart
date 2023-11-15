@@ -1,3 +1,5 @@
+// ignore_for_file: unused_local_variable
+
 import 'package:cloud_firestore/cloud_firestore.dart';
 import '/models/device.dart';
 import 'package:firebase_auth/firebase_auth.dart';
@@ -16,14 +18,13 @@ class DataRepository {
     userId = user!.uid;
     collection = FirebaseFirestore.instance.collection('appliances');
 
-    print("DBWASRUN");
-
     StreamSubscription sub = getStream().listen((event) {
       Device.devices = event.docs
           .map((e) => Device(
               userId: userId,
               id: e.id,
               name: e['name'],
+              manualState: e['manualState'],
               time: Time.fromJson(e['time']),
               kw: e['kw']))
           .toList();

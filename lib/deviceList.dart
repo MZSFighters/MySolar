@@ -1,5 +1,4 @@
-// ignore_for_file: prefer_const_constructors, prefer_const_literals_to_create_immutables
-
+// ignore_for_file: prefer_const_constructors, prefer_const_literals_to_create_immutables, must_be_immutable
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'models/device.dart';
@@ -31,7 +30,7 @@ class _SelectDeviceState extends State<SelectDevice> {
           // leading: BackButton(
           //   onPressed: () => Navigator.of(context).pop(),
           // ),
-          title: Text('Your Appliances')),
+          title: Center(child: Text("Your Appliances"))),
       body: Column(
         children: [
           Expanded(child: DeviceList()),
@@ -95,13 +94,19 @@ class _CustomListTileState extends State<CustomListTile> {
     return GestureDetector(
       onTap: () async {
         setState(() {
-          if (device.manualState == "") {
-            device.manualState = "off";
-          } else if (device.manualState == "off") {
-            device.manualState = "on";
-          } else {
-            device.manualState = "";
+          switch (device.manualState) {
+            case "null":
+              device.manualState = "off";
+              break;
+            case "off":
+              device.manualState = "on";
+              break;
+
+            case "on":
+              device.manualState = "null";
+              break;
           }
+          DataRepository.updateDevice(device);
         });
       },
       child: Card(
@@ -120,8 +125,6 @@ class _CustomListTileState extends State<CustomListTile> {
       ),
     );
   }
-
-  //Dialog Box
 
   makeDialog(context, snapshot) {
     final nameFormKey = GlobalKey<FormState>();
@@ -242,7 +245,7 @@ class _CustomListTileState extends State<CustomListTile> {
                               delete(device);
                               Navigator.pop(dialogContext);
                             },
-                            child: Text("delete",
+                            child: Text("Delete",
                                 style: TextStyle(color: Colors.black))),
                       ),
                     ],
@@ -278,8 +281,8 @@ class _CustomListTileState extends State<CustomListTile> {
       return "Must specify a power value";
     }
 
-    if (int.tryParse(value) == null) {
-      return "must be a valid integer value";
+    if (double.tryParse(value) == null) {
+      return "must be a valid float value";
     }
 
     return null;
@@ -293,7 +296,7 @@ class _CustomListTileState extends State<CustomListTile> {
       TextEditingController kwController) {
     var time = Time.makeTime(startTimeController.text, endTimeController.text);
     device.name = nameController.text;
-    device.kw = int.parse(kwController.text);
+    device.kw = double.parse(kwController.text);
     device.time = time;
     DataRepository.updateDevice(device);
   }
@@ -310,7 +313,7 @@ class _CustomListTileState extends State<CustomListTile> {
             device.name,
             style: TextStyle(color: Colors.black, fontWeight: FontWeight.bold),
           ),
-          if (device.manualState != "")
+          if (device.manualState != "null")
             Text(
               " (manually set ${device.manualState})",
               style:
