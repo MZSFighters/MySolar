@@ -160,9 +160,9 @@ class _NotificationsDrawerState extends State<NotificationsDrawer> {
   @override
   Widget build(BuildContext context) => Drawer(
     child: Container(
-      color: Colors.blueGrey,
+      // color: Colors.blueGrey,
       child: Center(
-        child: Text('Testing PLace Holder'),
+        child: Text('Testing Place Holder'),
       ),
     ),
   );
@@ -196,7 +196,7 @@ class _NavigationDrawerState extends State<NavigationDrawer> {
 
   Widget BuildHeader(BuildContext context) => Container(
         //color: Colors.blue,
-        color: Colors.blueGrey,
+        // color: Colors.blueGrey,
         padding: EdgeInsets.only(
           top: 24 + MediaQuery.of(context).padding.top,
           bottom: 24,
@@ -211,11 +211,11 @@ class _NavigationDrawerState extends State<NavigationDrawer> {
           SizedBox(height: 12),
           Text(
             Name,
-            style: TextStyle(fontSize: 28, color: Colors.black),
+            style: TextStyle(fontSize: 28, color: Colors.white),
           ),
           Text(
             email.toString(),
-            style: TextStyle(fontSize: 16, color: Colors.black),
+            style: TextStyle(fontSize: 16, color: Colors.white),
           ),
         ]),
       );
