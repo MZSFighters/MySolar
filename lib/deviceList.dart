@@ -1,5 +1,4 @@
-// ignore_for_file: prefer_const_constructors, prefer_const_literals_to_create_immutables
-
+// ignore_for_file: prefer_const_constructors, prefer_const_literals_to_create_immutables, must_be_immutable
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'models/device.dart';
@@ -92,6 +91,8 @@ class _CustomListTileState extends State<CustomListTile> {
   Widget build(BuildContext context) {
     Device device = Device.devices.firstWhere((element) =>
         element.id == widget.snapshot.data!.docs.elementAt(widget.index).id);
+
+    device.on = device.checkIfOn(DateTime.now());
     return GestureDetector(
       onTap: () async {
         setState(() {
@@ -119,15 +120,13 @@ class _CustomListTileState extends State<CustomListTile> {
         child: Container(
             decoration: BoxDecoration(
                 borderRadius: BorderRadius.circular(15.0),
-                color: device.checkIfOn(DateTime.now())
+                color: device.on
                     ? Color.fromRGBO(236, 155, 48, 0.886)
                     : Color.fromRGBO(238, 245, 255, 0.875)),
             child: makeListTile(device)),
       ),
     );
   }
-
-  //Dialog Box
 
   makeDialog(context, snapshot) {
     final nameFormKey = GlobalKey<FormState>();

@@ -31,7 +31,8 @@ class _SignUpScreenState extends State<SignUpScreen> {
       setState(() {
         _emailError = 'Email is required';
       });
-    } else if (!RegExp(r'^[\w-]+(\.[\w-]+)*@[\w-]+(\.[\w-]+)+$').hasMatch(email)) {
+    } else if (!RegExp(r'^[\w-]+(\.[\w-]+)*@[\w-]+(\.[\w-]+)+$')
+        .hasMatch(email)) {
       setState(() {
         _emailError = 'Enter a valid email address';
       });
@@ -58,35 +59,34 @@ class _SignUpScreenState extends State<SignUpScreen> {
     }
   }
 
-void _submitForm() async {
-  setState(() {
-    buttonPressed = !buttonPressed;
-  });
-  if (_formKey.currentState!.validate()) {
-    // Form is valid, you can proceed with submission
-    String email = _emailController.text;
-    String password = _passwordController.text;
+  void _submitForm() async {
+    setState(() {
+      buttonPressed = !buttonPressed;
+    });
+    if (_formKey.currentState!.validate()) {
+      // Form is valid, you can proceed with submission
+      String email = _emailController.text;
+      String password = _passwordController.text;
 
-    try {
-      User? user = await _auth.signUpWithEmailAndPassword(email, password);
+      try {
+        User? user = await _auth.signUpWithEmailAndPassword(email, password);
 
-      if (user != null) {
-        print("User was successfully created");
-        Navigator.pushNamed(context, "/power");
-      } else {
-        print("User creation returned null, but no exception was thrown.");
+        if (user != null) {
+          print("User was successfully created");
+          Navigator.pushNamed(context, "/power");
+        } else {
+          print("User creation returned null, but no exception was thrown.");
+        }
+      } catch (e) {
+        // Here you catch and print the error
+        print("An error occurred during sign up: $e");
       }
-    } catch (e) {
-      // Here you catch and print the error
-      print("An error occurred during sign up: $e");
+
+      // In this example, we're just printing the email and password.
+      print('Email: $email');
+      print('Password: $password');
     }
-
-    // In this example, we're just printing the email and password.
-    print('Email: $email');
-    print('Password: $password');
   }
-}
-
 
   void _togglePasswordVisibility() {
     setState(() {
@@ -103,92 +103,111 @@ void _submitForm() async {
         foregroundColor: Colors.white,
       ),
       body: Center(
-        child: Padding(
-          padding: const EdgeInsets.symmetric(horizontal: 15),
+        child: SingleChildScrollView(
+          child: Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 15),
             child: Form(
               key: _formKey,
               child: Column(
                 mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    Text(
-                   "Sign Up",
-                    style: TextStyle(fontSize: 27, fontWeight: FontWeight.bold),
-                    ),
-                    TextFormField(
-                      controller: _emailController,
-                      decoration: InputDecoration(labelText: 'Email'),
-                      validator: (value) {
-                        if (value!.isEmpty) {
-                          return 'Email is required';
-                        }
-                        else if (!RegExp(r'^[\w-]+(\.[\w-]+)*@[\w-]+(\.[\w-]+)+$').hasMatch(value)) {
-                          return 'Enter a valid email address';
-                        }
-                        return null;
-                        },
-                    ),
-                    Text(
-                      _emailError,
-                      style: TextStyle(color: Colors.red),
-                    ),
-                    SizedBox(height: 20),
-                    TextFormField(
-                      controller: _passwordController,
-                      decoration: InputDecoration(labelText: 'Password', suffixIcon: IconButton(
-                        icon: _obscureText
-                        ? Icon(Icons.visibility)
-                        : Icon(Icons.visibility_off),
-                        onPressed: _togglePasswordVisibility,),
-                      ),
-                obscureText: _obscureText,
-                validator: (value) {
-                  if (value!.isEmpty) {
-                    return 'Password is required';
-                  }
-                  else if (value.length < 6) {
-                    return 'Password must be at least 6 characters';
-                  }
-                  return null;
-                },
-              ),
-              Text(
-                _passwordError,
-                style: TextStyle(color: Colors.red),
-              ),
-              SizedBox(height: 20),
-              GestureDetector(
-                onTap: _submitForm,
-                child: Container(
-                  width: double.infinity,
-                  height: 45,
-                  decoration: BoxDecoration(
-                    color: Colors.deepOrangeAccent,
-                    borderRadius: BorderRadius.circular(10),
-                  ),
-                  child: Center(
-                      child: Text(
-                        "Sign Up",
-                        style:  TextStyle(color: Colors.white, fontWeight: FontWeight.bold),
-                      )),
-                ),
-              ),
-              SizedBox(height: 20,),
-              Row(mainAxisAlignment: MainAxisAlignment.center,
                 children: [
-                  Text("Already have an account?"),
-                  SizedBox(width: 5,),
+                  Text(
+                    "Sign Up",
+                    style: TextStyle(fontSize: 27, fontWeight: FontWeight.bold),
+                  ),
+                  TextFormField(
+                    controller: _emailController,
+                    decoration: InputDecoration(labelText: 'Email'),
+                    validator: (value) {
+                      if (value!.isEmpty) {
+                        return 'Email is required';
+                      } else if (!RegExp(
+                              r'^[\w-]+(\.[\w-]+)*@[\w-]+(\.[\w-]+)+$')
+                          .hasMatch(value)) {
+                        return 'Enter a valid email address';
+                      }
+                      return null;
+                    },
+                  ),
+                  Text(
+                    _emailError,
+                    style: TextStyle(color: Colors.red),
+                  ),
+                  SizedBox(height: 20),
+                  TextFormField(
+                    controller: _passwordController,
+                    decoration: InputDecoration(
+                      labelText: 'Password',
+                      suffixIcon: IconButton(
+                        icon: _obscureText
+                            ? Icon(Icons.visibility)
+                            : Icon(Icons.visibility_off),
+                        onPressed: _togglePasswordVisibility,
+                      ),
+                    ),
+                    obscureText: _obscureText,
+                    validator: (value) {
+                      if (value!.isEmpty) {
+                        return 'Password is required';
+                      } else if (value.length < 6) {
+                        return 'Password must be at least 6 characters';
+                      }
+                      return null;
+                    },
+                  ),
+                  Text(
+                    _passwordError,
+                    style: TextStyle(color: Colors.red),
+                  ),
+                  SizedBox(height: 20),
                   GestureDetector(
-                      onTap: () {
-                        Navigator.pushAndRemoveUntil(
-                            context, MaterialPageRoute(builder: (context) => LoginPage()), (route) => false);
-                      },
-                      child: Text("Login", style: TextStyle(color: Colors.deepOrange, fontWeight: FontWeight.bold),))
+                    onTap: _submitForm,
+                    child: Container(
+                      width: double.infinity,
+                      height: 45,
+                      decoration: BoxDecoration(
+                        color: Colors.deepOrangeAccent,
+                        borderRadius: BorderRadius.circular(10),
+                      ),
+                      child: Center(
+                          child: Text(
+                        "Sign Up",
+                        style: TextStyle(
+                            color: Colors.white, fontWeight: FontWeight.bold),
+                      )),
+                    ),
+                  ),
+                  SizedBox(
+                    height: 20,
+                  ),
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      Text("Already have an account?"),
+                      SizedBox(
+                        width: 5,
+                      ),
+                      GestureDetector(
+                          onTap: () {
+                            Navigator.pushAndRemoveUntil(
+                                context,
+                                MaterialPageRoute(
+                                    builder: (context) => LoginPage()),
+                                (route) => false);
+                          },
+                          child: Text(
+                            "Login",
+                            style: TextStyle(
+                                color: Colors.deepOrange,
+                                fontWeight: FontWeight.bold),
+                          ))
+                    ],
+                  )
                 ],
-              )
-            ],
+              ),
+            ),
           ),
         ),
-      ),
       ),
     );
   }

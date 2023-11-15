@@ -17,7 +17,6 @@ import 'package:one_clock/one_clock.dart';
 final user = FirebaseAuth.instance.currentUser;
 final userEmail = user?.email;
 
-
 // class MyHomePage2 extends StatefulWidget {
 //   const MyHomePage2({super.key});
 
@@ -38,7 +37,7 @@ final userEmail = user?.email;
 //     getWeather() async{
 //     weatherModel = await WeatherAPICall().request();
 //     setState(() {
-     
+
 //     });
 //   }
 
@@ -61,13 +60,13 @@ final userEmail = user?.email;
 //               width: 160,
 //               child: MyAnalogClock(),
 //             ),
-            
+
 //             if (weatherModel != null)
 //             CurrentWeatherWidget(
-//               temperature: weatherModel!.currentWeather["temperature"], 
-//               weatherCode: weatherModel!.currentWeather["weathercode"], 
-//               winddirection: weatherModel!.currentWeather["winddirection"], 
-//               windspeed: weatherModel!.currentWeather["windspeed"], 
+//               temperature: weatherModel!.currentWeather["temperature"],
+//               weatherCode: weatherModel!.currentWeather["weathercode"],
+//               winddirection: weatherModel!.currentWeather["winddirection"],
+//               windspeed: weatherModel!.currentWeather["windspeed"],
 //               isDay: weatherModel!.currentWeather["is_day"]
 //               ),
 //               Positioned(
@@ -136,18 +135,17 @@ class HomePage extends StatelessWidget {
       body: Stack(
         children: <Widget>[
           Positioned(
-
             child: MyAnalogClock(),
           ),
           Column(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
               Center(
-                // child: Text(
-                //   "Welcome Home buddy!",
-                //   style: TextStyle(fontWeight: FontWeight.bold, fontSize: 19),
-                // ),
-              ),
+                  // child: Text(
+                  //   "Welcome Home buddy!",
+                  //   style: TextStyle(fontWeight: FontWeight.bold, fontSize: 19),
+                  // ),
+                  ),
               // SizedBox(height: 30),
               // GestureDetector(
               //   // onTap: () {
@@ -296,8 +294,8 @@ class _NavigationDrawerState extends State<NavigationDrawer> {
             leading: Icon(Icons.analytics),
             title: Text('How the app works'),
             onTap: () {
-               Navigator.of(context).push(
-                  MaterialPageRoute(builder: (context) => AppWorkings()));
+              Navigator.of(context)
+                  .push(MaterialPageRoute(builder: (context) => AppWorkings()));
             },
           ),
           ListTile(
@@ -345,7 +343,7 @@ class _NavigationDrawerState extends State<NavigationDrawer> {
             title: Text('Loadshedding Schedule'),
             onTap: () {
               Navigator.of(context).push(
-                MaterialPageRoute(builder: (context) => LoadShedding()));
+                  MaterialPageRoute(builder: (context) => LoadShedding()));
             },
           ),
           const Divider(color: Colors.black54),
@@ -353,10 +351,10 @@ class _NavigationDrawerState extends State<NavigationDrawer> {
             leading: Icon(Icons.door_back_door),
             title: Text('Sign Out'),
             onTap: () {
-                FirebaseAuth.instance.signOut();
-                Navigator.pop(context);
-                Navigator.pop(context, "/login");
-                },
+              FirebaseAuth.instance.signOut();
+              Navigator.pop(context);
+              Navigator.pop(context, "/login");
+            },
           ),
         ],
       );

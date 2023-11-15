@@ -2,11 +2,13 @@ import 'dart:convert';
 import 'package:http/http.dart' as http;
 
 class WeatherService {
-  final String apiKey = 'TH3IYCkKwK4nBak5R3jIZ8yUjAUty0sx';
-  final String endpoint = 'http://dataservice.accuweather.com/forecasts/v1/hourly/12hour/305448';
+  final String apiKey = 'XyNiG70yIvGbE8Z40Nu1wzLhPytHDi3W';
+  final String endpoint =
+      'http://dataservice.accuweather.com/forecasts/v1/hourly/12hour/305448';
 
   Future<List<List<dynamic>>> fetchWeatherData() async {
-    final response = await http.get(Uri.parse('$endpoint?apikey=$apiKey&language=en-us&details=true&metric=true'));
+    final response = await http.get(Uri.parse(
+        '$endpoint?apikey=$apiKey&language=en-us&details=true&metric=true'));
 
     if (response.statusCode == 200) {
       List<dynamic> rawData = json.decode(response.body);
@@ -14,7 +16,9 @@ class WeatherService {
 
       for (var data in rawData) {
         String dateTime = data['DateTime'];
-        String hour = DateTime.parse(dateTime).toLocal().hour.toString().padLeft(2, '0') + ":00";
+        String hour =
+            DateTime.parse(dateTime).toLocal().hour.toString().padLeft(2, '0') +
+                ":00";
         int cloudCover = data['CloudCover'];
         double solarIrradiance = data['SolarIrradiance']['Value'];
 

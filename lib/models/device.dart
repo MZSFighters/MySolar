@@ -21,16 +21,14 @@ class Device {
     this.userId,
   });
 
-  bool checkIfOn(final checkTime) {
+  bool checkIfOn(DateTime checkTime) {
     if (manualState != "null") //then its in manual mode
     {
       if (manualState == "on") //device is manually on
       {
-        on = true;
         return true;
       } else if (manualState == "off") // device is manually off
       {
-        on = false;
         return false;
       }
     }
@@ -43,17 +41,14 @@ class Device {
     // then the device is on if the current time is between startTime and endTime
     {
       if (time.startTime <= timeInMinutes && time.endTime >= timeInMinutes) {
-        on = true;
         return true;
       }
     } else {
       if (time.startTime <= timeInMinutes && time.endTime <= timeInMinutes) {
-        on = true;
         return true;
       }
     }
     // if its we got to this point the device must be automatically set to off
-    on = false;
     return false;
   }
 
@@ -90,48 +85,5 @@ class Device {
       }
     }
     return 0;
-  }
-}
-
-class PowerUsageTracker {
-  Map<int, double> powerUsageByHour = {};
-  Map<int, List<Device>> devicesByHour = {};
-
-  // update power usage for the nwxt 24 hours (have to call it every time we draw the graph)
-  void updatePowerUsageForDay(List<Device> devices) {
-    DateTime currentDate = DateTime.now();
-
-    // initializing power usage for each hour to 0 and the devices per hour list
-    for (int hour = 0; hour < 24; hour++) {
-      powerUsageByHour[hour] = 0.0;
-      devicesByHour[hour] = [];
-    }
-
-    for (Device device in devices) {
-      for (int hour = 0; hour < 24; hour++) {
-        DateTime currentHourTime = currentDate.add(Duration(hours: hour));
-
-        //  calculating the power usage for the current hour for the device
-        double powerUsage = device.calculatePowerUsageForHour(currentHourTime);
-
-        // adding the device to the list for this hour if there is power usage
-        if (powerUsage != 0) {
-          devicesByHour[hour]!.add(device);
-        }
-
-        // adding the current power suage to the total power usage for this hour
-        powerUsageByHour[hour] = (powerUsageByHour[hour] ?? 0) + powerUsage;
-      }
-    }
-  }
-
-  // get power usage method for a specific hour
-  double getPowerUsageForHour(int hour) {
-    return powerUsageByHour[hour] ?? 0.0;
-  }
-
-  // get devices method for a specific hour
-  List<Device> getDevicesForHour(int hour) {
-    return devicesByHour[hour] ?? [];
   }
 }

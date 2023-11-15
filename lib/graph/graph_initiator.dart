@@ -41,8 +41,7 @@ class GraphInitiator extends StatelessWidget {
   final Future<List<Map<String, dynamic>>> outputData =
       GraphInitiator.finalOutputData();
   final Future<List<List<String>>> minutelyAppliancesFuture =
-      DeviceConsumption(userId: userId, firestore: firestore)
-          .devicesOnEachMinute();
+      DeviceConsumption().devicesOnEachMinute();
   final Future<List<List<int>>> loadSheddingScheduleFuture =
       FetchTodaysLoadSheddingSchedule().getCurrentDayLoadShedding();
 
