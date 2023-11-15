@@ -125,6 +125,10 @@ class _SignUpScreenState extends State<SignUpScreen> {
               child: Column(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
+                  SizedBox(
+                    height: 200,
+                    child: Image.asset('assets/logo5_1.png'),
+                  ),
                   Text(
                     "Sign Up",
                     style: TextStyle(fontSize: 27, fontWeight: FontWeight.bold),

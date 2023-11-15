@@ -111,7 +111,7 @@ class Location_Date_Widget extends StatelessWidget {
           child: Text(
             city,
             style: TextStyle(
-              fontSize: 35,
+              fontSize: 24,
               height: 2,
             ),
           ),
@@ -122,7 +122,7 @@ class Location_Date_Widget extends StatelessWidget {
           child: Text(
             date,
             style: TextStyle(
-              fontSize: 20,
+              fontSize: 18,
               height: 1.5,
               color: Colors.grey[700],
             ),

@@ -17,7 +17,6 @@ import 'package:one_clock/one_clock.dart';
 import 'package:visibility_detector/visibility_detector.dart';
 import 'package:mysolar/database_functionality/data_repository.dart';
 
-
 final user = FirebaseAuth.instance.currentUser;
 final userEmail = user?.email;
 
@@ -58,18 +57,32 @@ class HomePage extends StatelessWidget {
 
       drawer: NavigationDrawer(),
       endDrawer: NotificationsDrawer(),
-      body: Column(
+      body: SingleChildScrollView(
+        child: Column(
         children: <Widget>[
+          Padding(padding: EdgeInsets.only(
+            top: 10,
+            bottom: 10
+          )),
+          SizedBox(height: 200,
+          child: Image.asset('assets/logo5_1.png'),
+          ),
+          Text('Welcome', style: TextStyle(fontSize: 20, color: Colors.black),),
+          Text(userEmail.toString(), style: TextStyle(fontSize: 16, color: Colors.black),),
           Positioned(child: Location_Date_Widget()),
           SizedBox(
-            height: 170,
-            width: 170,
+            height: 150,
+            width: 150,
             child: MyAnalogClock(),
           ),
-          Positioned(
+          Row(
+            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+            children: <Widget>[
+            Positioned(
             top: 150,
             left: 70,
             child: ElevatedButton(
+              style: ElevatedButton.styleFrom(minimumSize: Size(165, 40)),
               onPressed: () {
                 Navigator.pushNamed(context, "/graph_pg");
               },
@@ -80,16 +93,23 @@ class HomePage extends StatelessWidget {
             top: 150,
             right: 50,
             child: ElevatedButton(
+              style: ElevatedButton.styleFrom(minimumSize: Size(165, 40)),
               onPressed: () {
                 Navigator.pushNamed(context, "/power");
               },
               child: Text("System Details"),
             ),
           ),
+            ],
+          ),
+          Row(
+            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+            children: <Widget>[
           Positioned(
             top: 50,
             right: 50,
             child: ElevatedButton(
+              style: ElevatedButton.styleFrom(minimumSize: Size(165, 40)),
               onPressed: () {
                 Navigator.pushNamed(context, "/fetch_pg");
               },
@@ -100,16 +120,23 @@ class HomePage extends StatelessWidget {
             top: 100,
             right: 50,
             child: ElevatedButton(
+              style: ElevatedButton.styleFrom(minimumSize: Size(165, 40)),
               onPressed: () {
                 Navigator.pushNamed(context, "/weather_pg");
               },
               child: Text("Weather Page"),
             ),
           ),
+            ],
+          ),
+          Row(
+            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+            children: <Widget>[
           Positioned(
             top: 50,
             left: 50,
             child: ElevatedButton(
+              style: ElevatedButton.styleFrom(minimumSize: Size(165, 40)),
               onPressed: () {
                 Navigator.pushNamed(context, "/loadshedding_pg");
               },
@@ -120,14 +147,18 @@ class HomePage extends StatelessWidget {
             top: 100,
             left: 100,
             child: ElevatedButton(
+              style: ElevatedButton.styleFrom(minimumSize: Size(165, 40)),
               onPressed: () {
                 Navigator.pushNamed(context, "/devices");
               },
               child: Text("Appliances"),
             ),
           )
+            ],
+          )
         ],
       ),
+    )
     );
   }
 }
