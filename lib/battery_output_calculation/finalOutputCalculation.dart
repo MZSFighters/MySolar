@@ -5,7 +5,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 
 class FinalOutputCalculation {
   final double batterySize;
-  final int lowestBatteryPercentage;
+  final double lowestBatteryPercentage;
   final double maxPower;
   final String userID;
   final FirebaseFirestore firestore;
@@ -26,8 +26,12 @@ class FinalOutputCalculation {
     List<Map<String, dynamic>> solarOutputData =
         await solarPower.calculateSolarOutput(weatherData);
 
+    int apiHour = int.parse(solarOutputData[0]['hour'].split(':')[0]);
+    print(apiHour);
+
     List<double> consumptionPerMinute =
-        await DeviceConsumption().calculateMinuteConsumption();
+        await DeviceConsumption(userId: userID, firestore: firestore)
+            .calculateMinuteConsumption(apiHour);
 
     List<Map<String, dynamic>> finalOutput = [];
 
@@ -42,17 +46,12 @@ class FinalOutputCalculation {
       double solarPanelOutputForHour = double.parse(solarOutputData[a]
               ['solarOutput']
           .toStringAsFixed(3)); // 3 decimal places
-      //
-      // print('At Hour : ${solarOutputData[a]['hour']} -  $solarPanelOutputForHour and battery output is : $batteryStorage');
-      if (a == 2 || a == 6) {
-        solarPanelOutputForHour = 5;
-      }
 
       /**************************************************************************************/
       // There is the potential here to  add logic that distributes solarPanelOutputForHour (the solar panel production), according to a user's inverter system
       // Some can go to battery storage whilst some can be used directly for consumptionData
       // We have decided to not implement this logic.
-      // Instead, the distribution specified here, is that the battery is filled to its possible storage, and used to feed the house
+      // Instead, the distribution specified here, is that the battery is filled to its possible storage, and used to feed the house.
       // Only, when the battery is full, does solarOutputForHour (the solar panel production) feed the house as well.
       /**************************************************************************************/
 

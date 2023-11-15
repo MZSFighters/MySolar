@@ -30,7 +30,7 @@ class _SelectDeviceState extends State<SelectDevice> {
           // leading: BackButton(
           //   onPressed: () => Navigator.of(context).pop(),
           // ),
-          title: Center(child: Text("Your Appliances"))),
+          title: Text('Your Appliances')),
       body: Column(
         children: [
           Expanded(child: DeviceList()),

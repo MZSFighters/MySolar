@@ -1,5 +1,3 @@
-import 'fetchWeatherData.dart';
-
 class SolarPowerProduced {
   final double maxOutput; // maximum output in kW/hr
   
