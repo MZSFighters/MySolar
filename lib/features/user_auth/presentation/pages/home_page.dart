@@ -152,7 +152,7 @@ class _NotificationsDrawerState extends State<NotificationsDrawer> {
         child: isLoading
             ? Center(
                 child: CircularProgressIndicator(
-                color: Colors.white,
+                color: Colors.black,
               ))
             : notifications.isEmpty
                 ? Center(child: Text('There are no notifications present'))
