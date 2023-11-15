@@ -9,7 +9,7 @@ class DeviceConsumption {
     int currentHour = apiHour;
 
     for (int i = 0; i < 720; i++) {
-      int hourToCheck = currentHour;
+      int hourToCheck = currentHour + (i / 60).floor();
       int minuteToCheck = i % 60;
 
       DateTime time =
@@ -31,7 +31,7 @@ class DeviceConsumption {
     int currentHour = apiHour;
 
     for (int i = 0; i < 720; i++) {
-      int hourToCheck = currentHour;
+      int hourToCheck = currentHour + (i / 60).floor();
       int minuteToCheck = i % 60;
 
       DateTime time =

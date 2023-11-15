@@ -16,6 +16,9 @@ class DataRepository {
   DataRepository() {
     User? user = auth.currentUser;
     userId = user!.uid;
+    print(user);
+    print(userId);
+    print("FUCVCCSKs");
     collection = FirebaseFirestore.instance.collection('appliances');
 
     StreamSubscription sub = getStream().listen((event) {

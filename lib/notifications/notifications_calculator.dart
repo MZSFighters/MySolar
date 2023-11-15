@@ -82,7 +82,7 @@ class NotificationsCalculator {
       for (int i = 0; i < consumptionPerMinute.length; i++) {
         if (consumptionPerMinute[i] > systemDetails.maxInverterCapacity) {
           String time = formatTime(apiHour,(i%60));
-          notifications.add("Warning! : Consumption at time $time exceeds your max inverter capacity (${systemDetails.maxInverterCapacity} kW)");
+          notifications.add("Warning! : Consumption at time $time exceeds your max inverter capacity of ${systemDetails.maxInverterCapacity} (kW)");
           break;
         }
       }
@@ -113,7 +113,7 @@ class NotificationsCalculator {
               }
                   for(int s = adjustedStart ; s < end; s++){ //loop through the minutes of that loadshedding period 
                       if(finalOutputKw[s] < 0 ){
-                        notifications.add('Warning! : You will be using grid during the load shedding period from $startTime - $endTime');
+                        notifications.add('Warning! : You will be using grid power during the load shedding period from $startTime - $endTime');
                         break; //only warn once for this interval
                       }
                       }
