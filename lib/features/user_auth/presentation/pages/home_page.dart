@@ -161,7 +161,7 @@ class _NotificationsDrawerState extends State<NotificationsDrawer> {
       },
       child: Drawer(
         child: isLoading
-            ? Center(child: CircularProgressIndicator(color: Colors.black,))
+            ? Center(child: CircularProgressIndicator(color: Colors.white,))
             : notifications.isEmpty
                 ? Center(child: Text('There are no notifications present'))
                 : ListView.builder(
