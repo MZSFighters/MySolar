@@ -27,11 +27,9 @@ class FinalOutputCalculation {
         await solarPower.calculateSolarOutput(weatherData);
 
     int apiHour = int.parse(solarOutputData[0]['hour'].split(':')[0]);
-    print(apiHour);
 
     List<double> consumptionPerMinute =
-        await DeviceConsumption(userId: userID, firestore: firestore)
-            .calculateMinuteConsumption(apiHour);
+        await DeviceConsumption().calculateMinuteConsumption();
 
     List<Map<String, dynamic>> finalOutput = [];
 

@@ -26,8 +26,26 @@ class HomePage extends StatelessWidget {
     return Scaffold(
       appBar: AppBar(
         title: Text("HomePage"),
-        //backgroundColor: Colors.deepOrange,
-        //foregroundColor: Colors.white,
+        leading: Builder(builder: (context) {
+          return IconButton(
+            icon: Icon(Icons.menu),
+            onPressed: () {
+              Scaffold.of(context).openDrawer();
+            },
+          );
+        }),
+        actions: <Widget>[
+          Builder(
+            builder: (context) {
+              return IconButton(
+                icon: Icon(Icons.notifications),
+                onPressed: () {
+                  Scaffold.of(context).openEndDrawer();
+                },
+              );
+            },
+          )
+        ],
       ),
       drawer: NavigationDrawer(),
       endDrawer: NotificationsDrawer(),
@@ -135,6 +153,25 @@ class HomePage extends StatelessWidget {
       ),
     );
   }
+}
+
+class NotificationsDrawer extends StatefulWidget {
+  const NotificationsDrawer({super.key});
+
+  @override
+  State<NotificationsDrawer> createState() => _NotificationsDrawerState();
+}
+
+class _NotificationsDrawerState extends State<NotificationsDrawer> {
+  @override
+  Widget build(BuildContext context) => Drawer(
+        child: Container(
+          // color: Colors.blueGrey,
+          child: Center(
+            child: Text('Testing Place Holder'),
+          ),
+        ),
+      );
 }
 
 class NavigationDrawer extends StatefulWidget {

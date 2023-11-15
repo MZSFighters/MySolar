@@ -24,8 +24,6 @@ class GraphInitiator extends StatelessWidget {
           Map<String, dynamic>.from(snapshot.value as Map);
       return SystemDetails.fromMap(data);
     } else {
-      print(userId);
-      print("No data available.");
       return null;
     }
   }
@@ -63,8 +61,7 @@ class GraphInitiator extends StatelessWidget {
             int apiHour = int.parse(hourlyKw[0]['hour'].split(':')[0]);
 
             final Future<List<List<String>>> minutelyAppliancesFuture =
-                DeviceConsumption(userId: userId, firestore: firestore)
-                    .devicesOnEachMinute(apiHour);
+                DeviceConsumption().devicesOnEachMinute();
             final Future<List<List<int>>> loadSheddingScheduleFuture =
                 FetchTodaysLoadSheddingSchedule().getCurrentDayLoadShedding();
 
