@@ -30,7 +30,7 @@ class _SelectDeviceState extends State<SelectDevice> {
           // leading: BackButton(
           //   onPressed: () => Navigator.of(context).pop(),
           // ),
-          title: Text('Your Appliances')),
+          title: Center(child: Text("Your Appliances"))),
       body: Column(
         children: [
           Expanded(child: DeviceList()),
@@ -91,8 +91,6 @@ class _CustomListTileState extends State<CustomListTile> {
   Widget build(BuildContext context) {
     Device device = Device.devices.firstWhere((element) =>
         element.id == widget.snapshot.data!.docs.elementAt(widget.index).id);
-
-    device.on = device.checkIfOn(DateTime.now());
     return GestureDetector(
       onTap: () async {
         setState(() {
@@ -120,7 +118,7 @@ class _CustomListTileState extends State<CustomListTile> {
         child: Container(
             decoration: BoxDecoration(
                 borderRadius: BorderRadius.circular(15.0),
-                color: device.on
+                color: device.checkIfOn(DateTime.now())
                     ? Color.fromRGBO(236, 155, 48, 0.886)
                     : Color.fromRGBO(238, 245, 255, 0.875)),
             child: makeListTile(device)),

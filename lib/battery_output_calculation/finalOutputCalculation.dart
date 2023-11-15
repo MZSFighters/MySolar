@@ -26,8 +26,6 @@ class FinalOutputCalculation {
     List<Map<String, dynamic>> solarOutputData =
         await solarPower.calculateSolarOutput(weatherData);
 
-    int apiHour = int.parse(solarOutputData[0]['hour'].split(':')[0]);
-
     List<double> consumptionPerMinute =
         await DeviceConsumption().calculateMinuteConsumption();
 
