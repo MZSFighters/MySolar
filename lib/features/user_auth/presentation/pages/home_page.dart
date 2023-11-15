@@ -7,8 +7,8 @@ import 'package:mysolar/features/user_auth/presentation/pages/clock.dart';
 import 'package:mysolar/load_shedding/load_shedding.dart';
 import 'package:mysolar/notifications/notifications_calculator.dart';
 import 'package:mysolar/weather/current_forecast.dart';
-import 'package:mysolar/database_functionality/data_repository.dart';
 import 'package:visibility_detector/visibility_detector.dart';
+import 'package:mysolar/database_functionality/data_repository.dart';
 
 final user = FirebaseAuth.instance.currentUser;
 final userEmail = user?.email;
@@ -18,7 +18,8 @@ class HomePage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    DataRepository dr = DataRepository();
+    DataRepository();
+
     return Scaffold(
       appBar: AppBar(
         title: Text("Home"),
@@ -155,7 +156,9 @@ class _NotificationsDrawerState extends State<NotificationsDrawer> {
                 color: Colors.black,
               ))
             : notifications.isEmpty
-                ? Center(child: Text('There are no new notifications', style: TextStyle(color: Colors.white)))
+                ? Center(
+                    child: Text('There are no new notifications',
+                        style: TextStyle(color: Colors.white)))
                 : ListView.builder(
                     itemCount: notifications.length,
                     itemBuilder: (context, index) {
