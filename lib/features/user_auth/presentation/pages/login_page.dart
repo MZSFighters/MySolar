@@ -193,7 +193,7 @@ class _LoginPageState extends State<LoginPage> {
 
       if (user != null) {
         print("User was successfully signedIn");
-        Navigator.pushNamed(context, "/power");
+        Navigator.pushNamed(context, "/home");
       } else {
         print("User creation returned null, but no exception was thrown.");
       }

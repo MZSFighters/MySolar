@@ -95,12 +95,22 @@ class HomePage extends StatelessWidget {
           ),
           Positioned(
             top: 150,
-            left: 100,
+            left: 90,
             child: ElevatedButton(
               onPressed: () {
                 Navigator.pushNamed(context, "/graph_pg");
               },
               child: Text("Prediction Graph"),
+            ),
+          ),
+          Positioned(
+            top: 150,
+            right: 50,
+            child: ElevatedButton(
+              onPressed: () {
+                Navigator.pushNamed(context, "/power");
+              },
+              child: Text("System Details"),
             ),
           ),
           Positioned(

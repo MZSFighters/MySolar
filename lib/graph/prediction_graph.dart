@@ -97,7 +97,7 @@ class   PredictionGraph extends StatelessWidget {
         children: [
           Container(
             width: 20,
-            height: 20,
+            height: 8,
             color: Colors.green,
           ),
           SizedBox(width: 10), 
@@ -119,7 +119,7 @@ class   PredictionGraph extends StatelessWidget {
         children: [
           Container(
             width: 20,
-            height: 20,
+            height: 8,
             color: Colors.orange,
           ),
           SizedBox(width: 10), 
@@ -132,7 +132,7 @@ class   PredictionGraph extends StatelessWidget {
         children: [
           Container(
             width: 20,
-            height: 20,
+            height: 8,
             color: Colors.blue,
           ),
           SizedBox(width: 10),
