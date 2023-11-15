@@ -6,6 +6,7 @@ import 'package:mysolar/appWorkings.dart';
 import 'package:mysolar/deviceList.dart';
 import 'package:mysolar/features/user_auth/presentation/pages/clock.dart';
 import 'package:mysolar/load_shedding/load_shedding.dart';
+import 'package:mysolar/notifications/notifications_calculator.dart';
 import 'package:mysolar/weather/api_call.dart';
 import 'package:mysolar/weather/current_forecast.dart';
 import 'package:mysolar/HelpPage.dart';
@@ -13,6 +14,8 @@ import 'package:mysolar/database_functionality/data_repository.dart';
 import 'package:mysolar/weather/current_weather_widget.dart';
 import 'package:mysolar/weather/models.dart';
 import 'package:one_clock/one_clock.dart';
+import 'package:visibility_detector/visibility_detector.dart';
+
 
 final user = FirebaseAuth.instance.currentUser;
 final userEmail = user?.email;
@@ -166,16 +169,57 @@ class NotificationsDrawer extends StatefulWidget {
   State<NotificationsDrawer> createState() => _NotificationsDrawerState();
 }
 
+
 class _NotificationsDrawerState extends State<NotificationsDrawer> {
+  List<String> notifications = [];
+  bool isLoading = true;
+
+  void fetchNotifications() async {
+    setState(() => isLoading = true);
+    NotificationsCalculator calculator = NotificationsCalculator();
+    notifications = await calculator.calculateNotifications();
+    setState(() => isLoading = false);
+  }
+
   @override
-  Widget build(BuildContext context) => Drawer(
-    child: Container(
-      // color: Colors.blueGrey,
-      child: Center(
-        child: Text('Testing Place Holder'),
+  Widget build(BuildContext context) {
+    return VisibilityDetector(
+      key: Key('notifications-drawer'),
+      onVisibilityChanged: (VisibilityInfo info) {
+        if (info.visibleFraction > 0) {
+          fetchNotifications();
+        }
+      },
+      child: Drawer(
+        child: isLoading
+            ? Center(child: CircularProgressIndicator(color: Colors.black,))
+            : notifications.isEmpty
+                ? Center(child: Text('There are no notifications present'))
+                : ListView.builder(
+                    itemCount: notifications.length,
+                    itemBuilder: (context, index) {
+                      return NotificationTile(notification: notifications[index]);
+                    },
+                  ),
       ),
-    ),
-  );
+    );
+  }
+}
+
+
+// displaying notifications
+class NotificationTile extends StatelessWidget {
+  final String notification;
+
+  const NotificationTile({Key? key, required this.notification}) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return ListTile(
+      title: Text(notification),
+      // add more styling and functionality as needed
+    );
+  }
 }
 
 class NavigationDrawer extends StatefulWidget {
