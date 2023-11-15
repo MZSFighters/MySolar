@@ -163,7 +163,7 @@ class _NotificationsDrawerState extends State<NotificationsDrawer> {
         child: isLoading
             ? Center(child: CircularProgressIndicator(color: Colors.white,))
             : notifications.isEmpty
-                ? Center(child: Text('There are no notifications present'))
+                ? Center(child: Text('There are no new notifications', style: TextStyle(color: Colors.white)))
                 : ListView.builder(
                     itemCount: notifications.length,
                     itemBuilder: (context, index) {
@@ -186,6 +186,7 @@ class NotificationTile extends StatelessWidget {
   Widget build(BuildContext context) {
     return ListTile(
       title: Text(notification),
+      textColor: Colors.white,
       // add more styling and functionality as needed
     );
   }
