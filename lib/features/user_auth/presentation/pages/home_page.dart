@@ -205,8 +205,7 @@ class _NavigationDrawerState extends State<NavigationDrawer> {
       );
 
   Widget BuildHeader(BuildContext context) => Container(
-        //color: Colors.blue,
-        // color: Colors.blueGrey,
+        color: Colors.white,
         padding: EdgeInsets.only(
           top: 24 + MediaQuery.of(context).padding.top,
           bottom: 24,
@@ -221,11 +220,11 @@ class _NavigationDrawerState extends State<NavigationDrawer> {
           SizedBox(height: 12),
           Text(
             Name,
-            style: TextStyle(fontSize: 28, color: Colors.white),
+            style: TextStyle(fontSize: 28, color: Colors.black),
           ),
           Text(
             email.toString(),
-            style: TextStyle(fontSize: 16, color: Colors.white),
+            style: TextStyle(fontSize: 16, color: Colors.black),
           ),
         ]),
       );
@@ -236,6 +235,7 @@ class _NavigationDrawerState extends State<NavigationDrawer> {
           ListTile(
             leading: Icon(Icons.home),
             title: Text('Home'),
+            textColor: Colors.white,
             onTap: () {
               Navigator.of(context).pop();
             },
@@ -243,6 +243,7 @@ class _NavigationDrawerState extends State<NavigationDrawer> {
           ListTile(
             leading: Icon(Icons.analytics),
             title: Text('How the app works'),
+            textColor: Colors.white,
             onTap: () {
                Navigator.of(context).push(
                   MaterialPageRoute(builder: (context) => AppWorkings()));
@@ -251,6 +252,7 @@ class _NavigationDrawerState extends State<NavigationDrawer> {
           ListTile(
             leading: Icon(Icons.settings),
             title: Text('Settings'),
+            textColor: Colors.white,
             onTap: () {
               Navigator.of(context).push(
                   MaterialPageRoute(builder: (context) => SettingsPage()));
@@ -275,6 +277,7 @@ class _NavigationDrawerState extends State<NavigationDrawer> {
           ListTile(
             leading: Icon(Icons.sunny),
             title: Text('Weather'),
+            textColor: Colors.white,
             onTap: () {
               Navigator.of(context).push(MaterialPageRoute(
                   builder: (context) => CurrentWeatherPage()));
@@ -283,6 +286,7 @@ class _NavigationDrawerState extends State<NavigationDrawer> {
           ListTile(
             leading: Icon(Icons.solar_power),
             title: Text('Appliances'),
+            textColor: Colors.white,
             onTap: () {
               Navigator.of(context).push(
                   MaterialPageRoute(builder: (context) => SelectDevice()));
@@ -291,6 +295,7 @@ class _NavigationDrawerState extends State<NavigationDrawer> {
           ListTile(
             leading: Icon(Icons.electric_meter),
             title: Text('Loadshedding Schedule'),
+            textColor: Colors.white,
             onTap: () {
               Navigator.of(context).push(
                 MaterialPageRoute(builder: (context) => LoadShedding()));
@@ -300,6 +305,7 @@ class _NavigationDrawerState extends State<NavigationDrawer> {
           ListTile(
             leading: Icon(Icons.door_back_door),
             title: Text('Sign Out'),
+            textColor: Colors.white,
             onTap: () {
                 FirebaseAuth.instance.signOut();
                 Navigator.pop(context);

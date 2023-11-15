@@ -113,7 +113,7 @@ void _showErrorDialog(String message) {
     return Scaffold(
       appBar: AppBar(
         title: Text('Sign Up Page'),
-        backgroundColor: Colors.deepOrange, // appbar color.
+        // backgroundColor: Colors.deepOrange, // appbar color.
         foregroundColor: Colors.white,
       ),
       body: Center(

@@ -10,7 +10,7 @@ class MyAnalogClock extends StatelessWidget {
       top: 5 + MediaQuery.of(context).padding.top,
       bottom: 24,
     ),
-    child: Expanded(
+    child: Center(
       child: AnalogClock(
                 decoration: BoxDecoration(
                 border: Border.all(width: 2.0 ,color: Colors.black),
