@@ -43,7 +43,7 @@ List the ready features here:
 ## Usage
 How does one go about using it?
 
-One can just download the latest release source code from the GitHub and run the app with an emulator. 
+You can simply download the latest release source code from GitHub and run the app using an android emulator
 
 ## Project Status
 Project is: _in progress_
