@@ -19,6 +19,8 @@ class _AppWorkingsState extends State<AppWorkings> {
               Icons.paste_outlined, "assets/your_image2.png"),
           _buildExpansionTile("Notifications", Icons.notifications_none,
               "assets/your_image3.png"),
+          _buildExpansionTile("Device List Tutorial", Icons.notifications_none,
+              "assets/your_image3.png"),
         ],
       ),
     );
@@ -148,6 +150,19 @@ class _AppWorkingsState extends State<AppWorkings> {
               ],
             ),
           ),
+        ],
+      );
+    } else if (title == "Device Modes") {
+      return Column(
+        children: [
+          Padding(
+            padding: const EdgeInsets.only(left: 16.0, top: 8.0),
+            child: Text(
+              "Devices can have three modes, these being automatic, manually off (device will remain off), manually (device will remain on) \n In the device List, if a device is on it will shaded orange, while if the device is off it will be shaded grey ",
+              style: TextStyle(fontSize: 14),
+            ),
+          ),
+          SizedBox(height: 8.0),
         ],
       );
     } else {

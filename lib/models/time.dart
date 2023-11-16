@@ -46,7 +46,7 @@ class Time {
   static bool validateInputTime(String input) {
     input = handleSingleDigitHour(input);
 
-    if (int.parse(input.substring(0, 2)) > 24 ||
+    if (int.parse(input.substring(0, 2)) >= 24 ||
         int.parse(input.substring(3)) > 59) {
       return false;
     }
@@ -56,6 +56,7 @@ class Time {
 
   static int convertToMinutes(String input) {
     // if string is only of length 4 append a zero to its left
+
     input = handleSingleDigitHour(input);
     var minuteTime = 0;
     minuteTime =
@@ -66,6 +67,10 @@ class Time {
   static convertToHourMinutes(int minutes) {
     String str = "";
     str += (minutes / 60).floor().toString();
+    if (str.length == 1) {
+      str = "0" + str;
+    }
+
     str += ":";
     String minute = (minutes % 60).toString();
 
