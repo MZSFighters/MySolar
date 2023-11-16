@@ -30,13 +30,12 @@
 
 
 ## Features
-List the ready features here:
-- Awesome feature 1
-- Awesome feature 2
-- Awesome feature 3
+- You can access the weather forecast and the load shedding schedules within the app
+- You can add your power consuming appliances and schedule them as you wish
+- A graph predicts the overall power for the next 12 hours in the battery based on solar power production and power consumption information
 
 
-## Screenshots
+<!--## Screenshots-->
 
 
 
