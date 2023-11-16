@@ -103,6 +103,10 @@ class _LoginPageState extends State<LoginPage> {
               child: Column(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
+                  SizedBox(
+                    height: 200,
+                    child: Image.asset('assets/logo5_1.png'),
+                  ),
                   Text(
                     "Login",
                     style: TextStyle(fontSize: 27, fontWeight: FontWeight.bold),
