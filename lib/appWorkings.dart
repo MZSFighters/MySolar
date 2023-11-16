@@ -19,8 +19,8 @@ class _AppWorkingsState extends State<AppWorkings> {
               Icons.paste_outlined, "assets/your_image2.png"),
           _buildExpansionTile("Notifications", Icons.notifications_none,
               "assets/your_image3.png"),
-          _buildExpansionTile("Device List Tutorial", Icons.notifications_none,
-              "assets/your_image3.png"),
+          _buildExpansionTile(
+              "Appliance Modes", Icons.desktop_windows_rounded, ""),
         ],
       ),
     );
@@ -152,13 +152,13 @@ class _AppWorkingsState extends State<AppWorkings> {
           ),
         ],
       );
-    } else if (title == "Device Modes") {
+    } else if (title == "Appliance Modes") {
       return Column(
         children: [
           Padding(
             padding: const EdgeInsets.only(left: 16.0, top: 8.0),
             child: Text(
-              "Devices can have three modes, these being automatic, manually off (device will remain off), manually (device will remain on) \n In the device List, if a device is on it will shaded orange, while if the device is off it will be shaded grey ",
+              "Appliances (or Devices) are stored in a list, each device can be set to turn on and off at a certain time automatically \n or the device can be set to be manually on or manually off, the device will remain in manual mode until it is put back into automatic mode \n to swap between these states, you can press on the list tile of the relevant device \n Finally, if a device is on its list tile will turn orange and if the the device is off it will turn grey",
               style: TextStyle(fontSize: 14),
             ),
           ),

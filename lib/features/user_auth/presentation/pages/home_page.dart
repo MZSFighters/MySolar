@@ -5,6 +5,7 @@ import 'package:mysolar/ManualPage.dart';
 import 'package:mysolar/appWorkings.dart';
 import 'package:mysolar/deviceList.dart';
 import 'package:mysolar/features/user_auth/presentation/pages/clock.dart';
+import 'package:mysolar/features/user_auth/presentation/pages/login_page.dart';
 import 'package:mysolar/load_shedding/load_shedding.dart';
 import 'package:mysolar/notifications/notifications_calculator.dart';
 import 'package:mysolar/weather/api_call.dart';
@@ -20,7 +21,6 @@ import 'package:mysolar/database_functionality/data_repository.dart';
 final user = FirebaseAuth.instance.currentUser;
 final userEmail = user?.email;
 
-
 class HomePage extends StatelessWidget {
   const HomePage({Key? key}) : super(key: key);
 
@@ -29,139 +29,146 @@ class HomePage extends StatelessWidget {
     DataRepository();
 
     return Scaffold(
-      appBar: AppBar(
-        title: Text("Home"),
-        leading: Builder(
-          builder: (context) {
+        appBar: AppBar(
+          title: Text("Home"),
+          leading: Builder(builder: (context) {
             return IconButton(
               icon: Icon(Icons.menu),
-              onPressed: (){
+              onPressed: () {
                 Scaffold.of(context).openDrawer();
               },
-          );
-        }
-      ),
-      actions: <Widget>[
-        Builder(
-          builder: (context) {
-            return IconButton(
-              icon: Icon(Icons.notifications),
-              onPressed: () {
-                Scaffold.of(context).openEndDrawer();
-              },
             );
-          },
-        )
-      ],
-      ),
-
-      drawer: NavigationDrawer(),
-      endDrawer: NotificationsDrawer(),
-      body: SingleChildScrollView(
-        child: Column(
-        children: <Widget>[
-          Padding(padding: EdgeInsets.only(
-            top: 10,
-            bottom: 10
-          )),
-          SizedBox(height: 200,
-          child: Image.asset('assets/logo5_1.png'),
-          ),
-          Text('Welcome', style: TextStyle(fontSize: 20, color: Colors.black),),
-          Text(userEmail.toString(), style: TextStyle(fontSize: 16, color: Colors.black),),
-          Positioned(child: Location_Date_Widget()),
-          SizedBox(
-            height: 150,
-            width: 150,
-            child: MyAnalogClock(),
-          ),
-          Row(
-            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+          }),
+          actions: <Widget>[
+            Builder(
+              builder: (context) {
+                return IconButton(
+                  icon: Icon(Icons.notifications),
+                  onPressed: () {
+                    Scaffold.of(context).openEndDrawer();
+                  },
+                );
+              },
+            )
+          ],
+        ),
+        drawer: NavigationDrawer(),
+        endDrawer: NotificationsDrawer(),
+        body: SingleChildScrollView(
+          child: Column(
             children: <Widget>[
-            Positioned(
-            top: 150,
-            left: 70,
-            child: ElevatedButton(
-              style: ElevatedButton.styleFrom(minimumSize: Size(165, 40)),
-              onPressed: () {
-                Navigator.pushNamed(context, "/graph_pg");
-              },
-              child: Text("Prediction Graph"),
-            ),
-          ),
-          Positioned(
-            top: 150,
-            right: 50,
-            child: ElevatedButton(
-              style: ElevatedButton.styleFrom(minimumSize: Size(165, 40)),
-              onPressed: () {
-                Navigator.pushNamed(context, "/power");
-              },
-              child: Text("System Details"),
-            ),
-          ),
+              Padding(padding: EdgeInsets.only(top: 10, bottom: 10)),
+              SizedBox(
+                height: 200,
+                child: Image.asset('assets/logo5_1.png'),
+              ),
+              Text(
+                'Welcome',
+                style: TextStyle(fontSize: 20, color: Colors.black),
+              ),
+              Text(
+                userEmail.toString(),
+                style: TextStyle(fontSize: 16, color: Colors.black),
+              ),
+              Positioned(child: Location_Date_Widget()),
+              SizedBox(
+                height: 150,
+                width: 150,
+                child: MyAnalogClock(),
+              ),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                children: <Widget>[
+                  Positioned(
+                    top: 150,
+                    left: 70,
+                    child: ElevatedButton(
+                      style:
+                          ElevatedButton.styleFrom(minimumSize: Size(165, 40)),
+                      onPressed: () {
+                        Navigator.pushNamed(context, "/graph_pg");
+                      },
+                      child: Text("Prediction Graph"),
+                    ),
+                  ),
+                  Positioned(
+                    top: 150,
+                    right: 50,
+                    child: ElevatedButton(
+                      style:
+                          ElevatedButton.styleFrom(minimumSize: Size(165, 40)),
+                      onPressed: () {
+                        Navigator.pushNamed(context, "/power");
+                      },
+                      child: Text("System Details"),
+                    ),
+                  ),
+                ],
+              ),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                children: <Widget>[
+                  Positioned(
+                    top: 50,
+                    right: 50,
+                    child: ElevatedButton(
+                      style:
+                          ElevatedButton.styleFrom(minimumSize: Size(165, 40)),
+                      onPressed: () {
+                        Navigator.pushNamed(context, "/fetch_pg");
+                      },
+                      child: Text("Weather Data"),
+                    ),
+                  ),
+                  Positioned(
+                    top: 100,
+                    right: 50,
+                    child: ElevatedButton(
+                      style:
+                          ElevatedButton.styleFrom(minimumSize: Size(165, 40)),
+                      onPressed: () {
+                        Navigator.pushNamed(context, "/weather_pg");
+                      },
+                      child: Text("Weather Page"),
+                    ),
+                  ),
+                ],
+              ),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                children: <Widget>[
+                  Positioned(
+                    top: 50,
+                    left: 50,
+                    child: ElevatedButton(
+                      style:
+                          ElevatedButton.styleFrom(minimumSize: Size(165, 40)),
+                      onPressed: () {
+                        Navigator.pushNamed(context, "/loadshedding_pg");
+                      },
+                      child: Text("Load Shedding Page"),
+                    ),
+                  ),
+                  Positioned(
+                    top: 100,
+                    left: 100,
+                    child: ElevatedButton(
+                      style:
+                          ElevatedButton.styleFrom(minimumSize: Size(165, 40)),
+                      onPressed: () {
+                        Navigator.pushNamed(context, "/devices");
+                      },
+                      child: Text("Appliances"),
+                    ),
+                  )
+                ],
+              )
             ],
           ),
-          Row(
-            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-            children: <Widget>[
-          Positioned(
-            top: 50,
-            right: 50,
-            child: ElevatedButton(
-              style: ElevatedButton.styleFrom(minimumSize: Size(165, 40)),
-              onPressed: () {
-                Navigator.pushNamed(context, "/fetch_pg");
-              },
-              child: Text("Weather Data"),
-            ),
-          ),
-          Positioned(
-            top: 100,
-            right: 50,
-            child: ElevatedButton(
-              style: ElevatedButton.styleFrom(minimumSize: Size(165, 40)),
-              onPressed: () {
-                Navigator.pushNamed(context, "/weather_pg");
-              },
-              child: Text("Weather Page"),
-            ),
-          ),
-            ],
-          ),
-          Row(
-            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-            children: <Widget>[
-          Positioned(
-            top: 50,
-            left: 50,
-            child: ElevatedButton(
-              style: ElevatedButton.styleFrom(minimumSize: Size(165, 40)),
-              onPressed: () {
-                Navigator.pushNamed(context, "/loadshedding_pg");
-              },
-              child: Text("Load Shedding Page"),
-            ),
-          ),
-          Positioned(
-            top: 100,
-            left: 100,
-            child: ElevatedButton(
-              style: ElevatedButton.styleFrom(minimumSize: Size(165, 40)),
-              onPressed: () {
-                Navigator.pushNamed(context, "/devices");
-              },
-              child: Text("Appliances"),
-            ),
-          )
-            ],
-          )
-        ],
-      ),
-    )
-    );
+        ));
   }
 }
+
 // ====================================================================
 // Class setting up notifications drawer
 class NotificationsDrawer extends StatefulWidget {
@@ -170,7 +177,6 @@ class NotificationsDrawer extends StatefulWidget {
   @override
   State<NotificationsDrawer> createState() => _NotificationsDrawerState();
 }
-
 
 class _NotificationsDrawerState extends State<NotificationsDrawer> {
   List<String> notifications = [];
@@ -194,7 +200,10 @@ class _NotificationsDrawerState extends State<NotificationsDrawer> {
       },
       child: Drawer(
         child: isLoading
-            ? Center(child: CircularProgressIndicator(color: Colors.white,))
+            ? Center(
+                child: CircularProgressIndicator(
+                color: Colors.white,
+              ))
             : notifications.isEmpty
                 ? Center(
                     child: Text('There are no new notifications',
@@ -202,7 +211,8 @@ class _NotificationsDrawerState extends State<NotificationsDrawer> {
                 : ListView.builder(
                     itemCount: notifications.length,
                     itemBuilder: (context, index) {
-                      return NotificationTile(notification: notifications[index]);
+                      return NotificationTile(
+                          notification: notifications[index]);
                     },
                   ),
       ),
@@ -210,12 +220,12 @@ class _NotificationsDrawerState extends State<NotificationsDrawer> {
   }
 }
 
-
 // displaying notifications
 class NotificationTile extends StatelessWidget {
   final String notification;
 
-  const NotificationTile({Key? key, required this.notification}) : super(key: key);
+  const NotificationTile({Key? key, required this.notification})
+      : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -297,8 +307,8 @@ class _NavigationDrawerState extends State<NavigationDrawer> {
             title: Text('How the app works'),
             textColor: Colors.white,
             onTap: () {
-               Navigator.of(context).push(
-                  MaterialPageRoute(builder: (context) => AppWorkings()));
+              Navigator.of(context)
+                  .push(MaterialPageRoute(builder: (context) => AppWorkings()));
             },
           ),
           ListTile(
@@ -334,7 +344,7 @@ class _NavigationDrawerState extends State<NavigationDrawer> {
             textColor: Colors.white,
             onTap: () {
               Navigator.of(context).push(
-                MaterialPageRoute(builder: (context) => LoadShedding()));
+                  MaterialPageRoute(builder: (context) => LoadShedding()));
             },
           ),
           const Divider(color: Colors.black54),
@@ -343,10 +353,12 @@ class _NavigationDrawerState extends State<NavigationDrawer> {
             title: Text('Sign Out'),
             textColor: Colors.white,
             onTap: () {
-                FirebaseAuth.instance.signOut();
-                Navigator.pop(context);
-                Navigator.pop(context, "/login");
-                },
+              FirebaseAuth.instance.signOut();
+              Navigator.pushAndRemoveUntil(
+                  context,
+                  MaterialPageRoute(builder: (context) => LoginPage()),
+                  (route) => false);
+            },
           ),
         ],
       );
