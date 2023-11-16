@@ -37,12 +37,6 @@ class PredictionGraph extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    //*******************  MULTICOLOURING THE GRAPH ***************************/
-
-    // compute blue colour for solar panel production and green for battery storage and grid use orange
-    // here the graph shows in its display that solar panel power production is used only when the battery is full
-    // When battery is full, the consumption uses both battery and solar
-    // else it uses just battery
 
     // depending on maxOuput and possible storage , we have to adjust the y values visible on graph
     double yInterval = maxOutput + possibleStorage;
@@ -55,8 +49,6 @@ class PredictionGraph extends StatelessWidget {
     String startHour = hourlyKw[0]['hour'];
     List<String> parts = startHour.split(':');
     int startMinutes = int.parse(parts[0]) * 60; // our minx which is 0
-    // print(startMinutes);
-    // print(loadShedding);
 
     //adjust loadshedding time list to show on our graph x axis from 0 to 719 correctly
 
@@ -259,14 +251,11 @@ class PredictionGraph extends StatelessWidget {
                                       (List<LineBarSpot> touchedBarSpots) {
                                     return touchedBarSpots.map((barSpot) {
                                       final flSpot = barSpot;
-                                      // if (flSpot.y == possibleStorage) {
-                                      //   return null;  // dont show tooltip for spots where blue is above
-                                      // }
                                       final appliancesForMinute =
                                           minutelyAppliances[flSpot.x.toInt()]
                                               .join(', ');
                                       return LineTooltipItem(
-                                        '${flSpot.y}kw \n Appliances used: $appliancesForMinute ', //\nAppliances used: $appliancesForHour',
+                                        '${flSpot.y}kw \n Appliances used: $appliancesForMinute ',
                                         const TextStyle(color: Colors.white),
                                       );
                                     }).toList();
@@ -276,12 +265,6 @@ class PredictionGraph extends StatelessWidget {
                                     (LineChartBarData barData,
                                         List<int> indicators) {
                                   return indicators.map((int index) {
-                                    // final spot = barData.spots[index];
-
-                                    // if (spot.y == possibleStorage) { //the behaviour for spots not clickable/ underneath blue
-                                    //   return null;
-                                    // }
-                                    // the default behaviour for spots that are clickable
                                     return TouchedSpotIndicatorData(
                                         FlLine(
                                             color: Colors.blue, strokeWidth: 4),
@@ -332,6 +315,11 @@ class PredictionGraph extends StatelessWidget {
     }
     return data;
   }
+
+      //*******************  MULTICOLOURING THE GRAPH ***************************/
+
+    // compute blue colour for solar panel production and green for battery storage and grid use orange
+    
 
   LineChartBarData createLineChartBarData(List<FlSpot> spots, double cutOffY) {
     // Determine the colors for the spots based on the Y value

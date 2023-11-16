@@ -77,6 +77,8 @@ class FinalOutputCalculation {
       List<double> hourlyOutput = [];
       // double remainderAfterSolar = 0.0;
 
+      /////  Algorithm to calculate the final output in kw/hr , considering depleting battery and solar power and consumption usage ////
+
       for (int i = a * 60; i < (a + 1) * 60; i++) {
         // for each minute in that hour
 
