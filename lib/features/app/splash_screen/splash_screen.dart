@@ -26,13 +26,17 @@ class _SplashScreenState extends State<SplashScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       body: Center(
-        child: Text(
-          "Welcome To MySolar Firebase App",
-          style: TextStyle(
-            color: Colors.deepOrangeAccent,
-            fontWeight: FontWeight.bold,
-          ),
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: <Widget>[
+            SizedBox(
+              height: 300,
+              child: Image.asset('assets/logo5_1.png'),
+            ),
+            Text('Powering Tomorrow, Today', style: TextStyle(color: Colors.blue, fontWeight: FontWeight.bold),)
+          ],
         ),
+
       ),
     );
   }

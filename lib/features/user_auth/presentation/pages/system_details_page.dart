@@ -126,7 +126,7 @@ class _systemDetailsIInformationPage extends State<systemDetailsIInformation> {
                       width: double.infinity,
                       height: 45,
                       decoration: BoxDecoration(
-                        color: Colors.deepOrangeAccent,
+                        color: Colors.blue,
                         borderRadius: BorderRadius.circular(10),
                       ),
                       child: Center(

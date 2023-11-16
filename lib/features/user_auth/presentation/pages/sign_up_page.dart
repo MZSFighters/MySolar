@@ -184,7 +184,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
                       width: double.infinity,
                       height: 45,
                       decoration: BoxDecoration(
-                        color: Colors.deepOrangeAccent,
+                        color: Colors.blue,
                         borderRadius: BorderRadius.circular(10),
                       ),
                       child: Center(
@@ -216,7 +216,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
                           child: Text(
                             "Login",
                             style: TextStyle(
-                                color: Colors.deepOrange,
+                                color: Colors.blue,
                                 fontWeight: FontWeight.bold),
                           ))
                     ],
