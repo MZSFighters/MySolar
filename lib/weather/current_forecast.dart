@@ -43,9 +43,7 @@ class _CurrentWeatherPageState extends State<CurrentWeatherPage> {
                 onPressed: () async {
                   // Running the request to fetch  weather data from the api
                   weatherModel = await WeatherAPICall().request();
-                  print("pressed");
-                  //print(weatherModel!.hourlyWeather["temperature_2m"]);
-                  //print(weatherModel!.hourlyWeather["time"]);
+                  
                   setState(() {}); // Trigger a UI update after fetching data
                 },
                 child: const Text('Refresh'),
